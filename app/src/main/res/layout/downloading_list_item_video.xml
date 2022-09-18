@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_video"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/windows_background"
+        android:paddingStart="@dimen/default_general_margin"
+        android:paddingTop="@dimen/default_normal_margin"
+        android:paddingEnd="@dimen/default_general_margin"
+        android:paddingBottom="@dimen/default_normal_margin">
+
+        <org.nudt.player.component.ShapeImageView
+            android:id="@+id/iv_video_pic"
+            android:layout_width="@dimen/video_cover_width"
+            android:layout_height="@dimen/video_cover_height"
+            android:contentDescription="@string/image"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:siv_round_radius="@dimen/image_radius"
+            tools:srcCompat="@drawable/default_image" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/sample_long_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_video_pic"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:layout_marginBottom="@dimen/default_tiny_margin"
+            android:layout_toEndOf="@+id/iv_video_pic"
+            android:text="已暂停"
+            android:textColor="@color/progress_bar_pink"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar"
+            app:layout_constraintStart_toEndOf="@+id/iv_video_pic"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.Material.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="3dp"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:progress="25"
+            android:progressDrawable="@drawable/progress_bar_drawable"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_video_pic" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

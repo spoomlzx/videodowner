@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.download.DownloadFragment">
+
+    <include
+        android:id="@+id/tb_common"
+        layout="@layout/tool_bar_layout" />
+
+    <LinearLayout
+        android:id="@+id/ll_downloading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/default_general_margin">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/default_general_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_menu_offline_downloading"
+                android:textSize="@dimen/text_size_medium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="@dimen/icon_small"
+                android:layout_height="@dimen/icon_small"
+                android:src="@drawable/arrow_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <org.nudt.player.component.ShapeImageView
+                android:id="@+id/iv_downloading_video_pic"
+                android:layout_width="@dimen/video_cover_width"
+                android:layout_height="@dimen/video_cover_height"
+                android:contentDescription="@string/image"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:siv_round_radius="@dimen/image_radius"
+                tools:srcCompat="@drawable/default_image" />
+
+            <TextView
+                android:id="@+id/tv_downloading_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_general_margin"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/sample_long_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_downloading_video_pic"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_downloading_video_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_general_margin"
+                android:layout_marginBottom="@dimen/default_tiny_margin"
+                android:layout_toEndOf="@+id/iv_downloading_video_pic"
+                android:text="15个内容"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_downloading_video_pic" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_downloaded"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/default_general_margin"
+            android:paddingTop="@dimen/default_general_margin"
+            android:paddingEnd="@dimen/default_general_margin"
+            android:text="@string/title_downloaded"
+            android:textSize="@dimen/text_size_medium" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_video_downloaded"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>

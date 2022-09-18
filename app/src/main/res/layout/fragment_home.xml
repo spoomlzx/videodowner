@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_main"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_height"
+            android:background="@color/tab_background"
+            android:contentInsetStart="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/ll_main_drawer_toggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/tv_main_avatar"
+                        app:srcCompat="@drawable/avatar"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_main_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/search_margin"
+                    android:layout_marginRight="@dimen/search_margin"
+                    android:background="@drawable/search_bg"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/search_padding"
+                    android:paddingRight="@dimen/search_padding"
+                    android:text="@string/main_search_text"
+                    android:textColor="@color/text_search_bar"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <com.cy.tablayoutniubility.TabLayoutScroll
+            android:id="@+id/tbs_main"
+            app:cy_space_horizontal="@dimen/tab_item_width"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/tab_layout_height"
+            android:background="@color/tab_background">
+
+            <com.cy.tablayoutniubility.IndicatorLineView
+                app:cy_color_indicator="@color/colorPrimary"
+                app:cy_height_indicator="@dimen/height_indicator"
+                app:cy_width_indicator_max="@dimen/width_indicator_max"
+                app:cy_width_indicator_selected="@dimen/width_indicator_selected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.cy.tablayoutniubility.TabLayoutScroll>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never" />
+</LinearLayout>

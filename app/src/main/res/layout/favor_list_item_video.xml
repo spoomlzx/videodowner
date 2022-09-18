@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_video"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/windows_background"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/windows_background"
+        android:paddingStart="@dimen/default_general_margin"
+        android:paddingEnd="@dimen/default_general_margin"
+        android:paddingTop="@dimen/default_normal_margin"
+        android:paddingBottom="@dimen/default_normal_margin">
+
+        <org.nudt.player.component.ShapeImageView
+            android:id="@+id/iv_video_pic"
+            android:layout_width="@dimen/video_cover_width"
+            android:layout_height="@dimen/video_cover_height"
+            android:contentDescription="@string/image"
+            android:scaleType="centerCrop"
+            app:siv_round_radius="@dimen/image_radius"
+            tools:srcCompat="@drawable/default_image" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:layout_marginEnd="@dimen/default_general_margin"
+            android:layout_toEndOf="@+id/iv_video_pic"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="@string/sample_long_text" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:layout_marginTop="@dimen/default_normal_margin"
+            android:layout_toEndOf="@+id/iv_video_pic"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:layout_width="@dimen/video_state_icon_size"
+                android:layout_height="@dimen/video_state_icon_size"
+                android:src="@drawable/ic_video_play_time" />
+
+            <TextView
+                android:id="@+id/tv_play_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_normal_margin"
+                android:text="1:01:05"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_size_smaller" />
+
+            <ImageView
+                android:layout_width="@dimen/video_state_icon_size"
+                android:layout_height="@dimen/video_state_icon_size"
+                android:layout_marginStart="@dimen/default_general_margin"
+                android:src="@drawable/ic_video_size" />
+
+            <TextView
+                android:id="@+id/tv_file_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_normal_margin"
+                android:text="860M"
+                android:textColor="@color/text_gray"
+                android:textSize="@dimen/text_size_smaller" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
