@@ -1,6 +1,6 @@
 package org.nudt.player.data.model
 
-object VideoSource {
+object VideoType {
     /**
      * 电影
      */

@@ -44,8 +44,8 @@ class PageKeyedRemoteMediator(
                     remoteKey.nextPageKey
                 }
             }
+            // 如果pagekey为空，则从第一页开始加载
             val page = pageKey ?: 1
-            XLog.d("page: $page")
             val videos = videoApi.getVideoList(
                 type, page, limit = when (loadType) {
                     LoadType.REFRESH -> state.config.initialLoadSize
@@ -53,14 +53,16 @@ class PageKeyedRemoteMediator(
                 }
             ).Data
 
-            val endOfPaginationReached = videos.isEmpty()
-            XLog.d("endOfPaginationReached: $endOfPaginationReached")
+            // 如果未加载到数据或加载的数据不满一页，说明已经没有更多了
+            val endOfPaginationReached = videos.isEmpty() || videos.size < state.config.pageSize
 
             db.withTransaction {
+                // 更新时删除所有数据和key
                 if (loadType == LoadType.REFRESH) {
                     videoDao.deleteByType(type)
                     remoteKeyDao.deleteByType(type)
                 }
+                // 如果已经没有更多数据则为null，有的话key加一页
                 val nextKey = if (endOfPaginationReached) null else page + 1
                 remoteKeyDao.insert(VideoRemoteKey(type, nextKey))
                 videoDao.insertAll(videos)

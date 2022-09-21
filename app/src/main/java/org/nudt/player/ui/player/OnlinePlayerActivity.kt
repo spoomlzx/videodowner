@@ -1,7 +1,5 @@
 package org.nudt.player.ui.player
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -15,7 +13,6 @@ import org.nudt.player.R
 import org.nudt.player.component.JzvdStdAutoOrizental
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.data.model.Video
-import org.nudt.player.data.model.VideoSource
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
 import org.nudt.player.utils.SpUtils

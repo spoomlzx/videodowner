@@ -13,7 +13,7 @@ import com.cy.tablayoutniubility.*
 import org.nudt.player.R
 import org.nudt.player.component.TabMediatorVp2
 import org.nudt.player.databinding.FragmentHomeBinding
-import org.nudt.player.data.model.VideoSource
+import org.nudt.player.data.model.VideoType
 import org.nudt.player.ui.search.SearchActivity
 import org.nudt.player.ui.setting.SettingActivity
 
@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
             override fun createFragment(bean: String?, position: Int): Fragment {
                 if (fragments[position] == null) {
                     when (position) {
-                        0 -> fragments[position] = VideoFragment.newInstance(VideoSource.MOVIE)
+                        0 -> fragments[position] = VideoFragment.newInstance(VideoType.VARIETY)
                         // 1 -> fragments[position] = VideoFragment.newInstance(VideoSource.TV)
                         // 2 -> fragments[position] = VideoFragment.newInstance(VideoSource.COMIC)
                         // 3 -> fragments[position] = VideoFragment.newInstance(VideoSource.VARIETY)

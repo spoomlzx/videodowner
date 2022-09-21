@@ -42,7 +42,7 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
 
         // 预刷新的距离，距离最后一个 item 多远时加载数据
         // 默认为 pageSize
-        prefetchDistance = 4,
+        //prefetchDistance = 4,
 
         /**
          * 初始化加载数量，默认为 pageSize * 3
