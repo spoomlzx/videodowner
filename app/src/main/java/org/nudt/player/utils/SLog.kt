@@ -10,7 +10,7 @@ import org.json.JSONObject
  * email:qinwei_it@163.com
  */
 object SLog {
-    const val TAG = "SPlayer"
+    const val TAG = "VideoDowner"
     var LOG_LEVEL = Log.DEBUG
 
     fun v(msg: String?) {

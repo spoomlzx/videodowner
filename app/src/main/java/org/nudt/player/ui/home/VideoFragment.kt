@@ -15,10 +15,10 @@ import org.nudt.player.adapter.VideoPagingAdapter
 import org.nudt.player.databinding.FragmentVideoBinding
 import org.nudt.player.ui.VideoViewModel
 
-private const val SOURCE_PARAM = "source_id"
+private const val TYPE_PARAM = "type_id"
 
 class VideoFragment : Fragment() {
-    private var source: Int = 1
+    private var type: Int = 1
 
     private val binding by lazy { FragmentVideoBinding.inflate(layoutInflater) }
 
@@ -31,7 +31,7 @@ class VideoFragment : Fragment() {
         context?.let {
             adapter = VideoPagingAdapter(it, videoViewModel)
             binding.rvVideo.adapter = adapter
-            binding.rvVideo.layoutManager = GridLayoutManager(it, 2)
+            binding.rvVideo.layoutManager = GridLayoutManager(it, 3)
             binding.swipeRefreshLayout.setOnRefreshListener {
                 adapter.refresh()
             }
@@ -41,12 +41,12 @@ class VideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        source = requireArguments().getInt(SOURCE_PARAM)
+        type = requireArguments().getInt(TYPE_PARAM)
 
         lifecycleScope.launchWhenCreated {
             launch {
                 // 更新页面数据
-                videoViewModel.bindHomePage(source).collectLatest {
+                videoViewModel.bindHomePage(type).collectLatest {
                     adapter.submitData(it)
                 }
 
@@ -65,12 +65,12 @@ class VideoFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param keyWord Parameter 1.
+         * @param type Parameter 1.
          * @return A new instance of fragment VideoFragment.
          */
-        @JvmStatic fun newInstance(source: Int) = VideoFragment().apply {
+        @JvmStatic fun newInstance(type: Int) = VideoFragment().apply {
             arguments = Bundle().apply {
-                putInt(SOURCE_PARAM, source)
+                putInt(TYPE_PARAM, type)
             }
         }
     }

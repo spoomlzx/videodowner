@@ -1,14 +1,18 @@
 <resources>
 
     <string-array name="sections">
-        <item>@string/section_mall9</item>
-        <item>@string/section_2048</item>
+<!--        <item>@string/section_movie</item>-->
+<!--        <item>@string/section_tv</item>-->
+<!--        <item>@string/section_comic</item>-->
+        <item>@string/section_variety</item>
     </string-array>
 
     <!--    fragment tabLayout title-->
     <string name="section_recommend">推荐</string>
-    <string name="section_2048">2048</string>
-    <string name="section_mall9">mall9</string>
+    <string name="section_movie">电影</string>
+    <string name="section_tv">电视剧</string>
+    <string name="section_comic">动漫</string>
+    <string name="section_variety">综艺</string>
 
     <string name="section_face">露脸</string>
     <string name="section_cn">中文</string>
@@ -29,7 +33,7 @@
     <string name="title_downloaded">已缓存视频</string>
 
     <!--    history-->
-    <string name="main_menu_history">浏览记录</string>
+    <string name="main_menu_history">缓存视频信息</string>
 
     <!--    search-->
     <string name="main_search_text">搜索 影片、动漫</string>

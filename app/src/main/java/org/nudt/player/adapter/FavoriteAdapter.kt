@@ -9,9 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.nudt.player.R
 import org.nudt.player.databinding.FavorListItemVideoBinding
-import org.nudt.player.model.Video
+import org.nudt.player.data.model.Video
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.player.OnlinePlayerActivity
+import org.nudt.player.utils.SpUtils
 
 class FavoriteAdapter(private val context: Context, private val videoViewModel: VideoViewModel) :
     RecyclerView.Adapter<FavoriteAdapter.FavorViewHolder>() {
@@ -25,8 +26,8 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
     override fun onBindViewHolder(holder: FavorViewHolder, position: Int) {
         favoriteList.let {
             val video = it[position]
-            holder.binding.tvTitle.text = video.title
-            Glide.with(context).load(video.pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            holder.binding.tvTitle.text = video.vod_name
+            Glide.with(context).load(SpUtils.basePicUrl+video.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
@@ -36,7 +37,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
 
             holder.binding.cvVideo.setOnLongClickListener {
                 val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
-                    videoViewModel.setFavor(false, video.id)
+                    videoViewModel.setFavor(false, video.vod_id)
                 }.setNegativeButton("取消") { _, _ ->
                     // User cancelled the dialog
                 }.create()

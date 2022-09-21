@@ -11,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.nudt.player.R
 import org.nudt.player.databinding.HomeListItemVideoBinding
-import org.nudt.player.model.Video
+import org.nudt.player.data.model.Video
 import org.nudt.player.ui.player.OnlinePlayerActivity
 import org.nudt.player.ui.VideoViewModel
+import org.nudt.player.utils.SpUtils
 
 class VideoPagingAdapter(private val context: Context, private val videoViewModel: VideoViewModel) :
     PagingDataAdapter<Video, VideoPagingAdapter.BindingViewHolder>(object : DiffUtil.ItemCallback<Video>() {
         override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.vod_id == newItem.vod_id
         }
 
         override fun areContentsTheSame(oldItem: Video, newItem: Video): Boolean {
@@ -30,9 +31,9 @@ class VideoPagingAdapter(private val context: Context, private val videoViewMode
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         val video: Video? = getItem(position)
         video?.let {
-            holder.binding.tvTitle.text = video.title
+            holder.binding.tvTitle.text = video.vod_name
             // dontAnimate() 搭配placeholder确保还未加载时，保持页面布局，减少抖动
-            Glide.with(context).load(video.pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            Glide.with(context).load(SpUtils.basePicUrl + video.vod_pic).placeholder(R.drawable.default_pic).into(holder.binding.ivVideoPic)
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
                 intent.putExtra("video", video)

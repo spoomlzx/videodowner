@@ -1,6 +1,9 @@
 package org.nudt.player
 
 import android.app.Application
+import com.elvishew.xlog.LogConfiguration
+import com.elvishew.xlog.LogLevel
+import com.elvishew.xlog.XLog
 import com.google.gson.Gson
 import com.jeffmony.downloader.VideoDownloadManager
 import com.jeffmony.downloader.common.DownloadConstants
@@ -22,6 +25,11 @@ class BaseApplication : Application() {
         initKoin()
         initMMKV()
         initDownloader()
+
+        val config: LogConfiguration = LogConfiguration.Builder().logLevel(LogLevel.DEBUG)
+            .tag("VideoDowner").enableBorder().build()
+
+        XLog.init(config)
     }
 
     companion object Instance {

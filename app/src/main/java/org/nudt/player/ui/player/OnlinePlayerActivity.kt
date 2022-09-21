@@ -14,10 +14,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.R
 import org.nudt.player.component.JzvdStdAutoOrizental
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
-import org.nudt.player.model.Video
-import org.nudt.player.model.VideoSource
+import org.nudt.player.data.model.Video
+import org.nudt.player.data.model.VideoSource
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
+import org.nudt.player.utils.SpUtils
 
 
 class OnlinePlayerActivity : AppCompatActivity() {
@@ -39,26 +40,15 @@ class OnlinePlayerActivity : AppCompatActivity() {
         val video = intent.getParcelableExtra<Video>("video")
         video?.apply {
             currentVideo = video
-            Glide.with(this@OnlinePlayerActivity).load(pic).into(player.posterImageView)
-            binding.tvDescription.text = title
+            Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
+            binding.tvDescription.text = vod_name
             binding.ivFavor.isSelected = favor
 
-            binding.tvFileSource.text = if (source == VideoSource.V2048) "2048" else "MALL9"
+            binding.tvFileSource.text = vod_class
 
-            binding.btnShare.setOnClickListener {
-                val intentShare = Intent(Intent.ACTION_VIEW, Uri.parse(currentVideo.video_url))
-                startActivity(intentShare)
-            }
-            // 监听m3u8视频地址变化，显示在页面，设置视频播放器
-            videoViewModel.videoUrl.observe(this@OnlinePlayerActivity) { videoUrl ->
-                if (videoUrl != "") {
-                    binding.tvVideoUrlM3u8.text = videoUrl
-                    player.setUp(videoUrl, title)
-                    currentVideo.video_url = videoUrl
-                }
-            }
+            binding.tvVideoContent.text = vod_content
 
-            videoViewModel.getUrl(video)
+            player.setUp(vod_play_url, vod_name)
         }
 
         //fetchVideo()
@@ -77,17 +67,18 @@ class OnlinePlayerActivity : AppCompatActivity() {
         binding.btnFavor.setOnClickListener {
             val favorState = binding.ivFavor.isSelected
             binding.ivFavor.isSelected = !favorState
-            videoViewModel.setFavor(!favorState, currentVideo.id)
+            videoViewModel.setFavor(!favorState, currentVideo.vod_id)
         }
 
         binding.btnDownload.setOnClickListener {
-            if (CommonUtil.isVideoUrl(currentVideo.video_url)) {
+            if (CommonUtil.isVideoUrl(currentVideo.vod_play_url)) {
                 // Use the Builder class for convenient dialog construction
                 val dialog = AlertDialog.Builder(this@OnlinePlayerActivity, R.style.AlertDialog)
                     .setMessage("下载视频")
                     .setPositiveButton("开始下载") { dialog, id ->
-                        val downloadItem = VideoTaskItem(currentVideo.video_url, currentVideo.pic, currentVideo.title, "group-1")
+                        val downloadItem = VideoTaskItem(currentVideo.vod_play_url, currentVideo.vod_pic, currentVideo.vod_name, "group-1")
                         VideoDownloadManager.getInstance().startDownload(downloadItem)
+                        VideoDownloadManager.getInstance().fetchDownloadItems();
                         //todo 添加提示框，显示开始下载视频，点击导航到下载页面
                     }
                     .setNegativeButton("取消") { dialog, id ->

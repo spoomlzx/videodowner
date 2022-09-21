@@ -3,8 +3,8 @@ package org.nudt.player.adapter
 import android.app.Application
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import org.nudt.player.db.VideoDb
-import org.nudt.player.model.Video
+import org.nudt.player.data.db.VideoDb
+import org.nudt.player.data.model.Video
 import org.nudt.player.utils.SLog
 
 class VideoSearchPagingSource(val app: Application, private val db: VideoDb, private val keyword: String) :
