@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import cn.jzvd.Jzvd
-import com.bumptech.glide.Glide
 import com.jeffmony.downloader.VideoDownloadManager
 import com.jeffmony.downloader.model.VideoTaskItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.R
-import org.nudt.player.component.JzvdStdAutoOrizental
-import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.data.model.Video
+import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
-import org.nudt.player.utils.SpUtils
+import org.nudt.videoplayer.VideoPlayer
 
 
 class OnlinePlayerActivity : AppCompatActivity() {
@@ -23,7 +20,7 @@ class OnlinePlayerActivity : AppCompatActivity() {
     private val videoViewModel: VideoViewModel by viewModel()
     private val binding by lazy { ActivityOnlinePlayerBinding.inflate(layoutInflater) }
 
-    private lateinit var player: JzvdStdAutoOrizental
+    private lateinit var player: VideoPlayer
 
     // 当前的视频
     private lateinit var currentVideo: Video
@@ -32,20 +29,22 @@ class OnlinePlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-        player = binding.jzVideo
+        player = binding.videoPlayer
 
         val video = intent.getParcelableExtra<Video>("video")
         video?.apply {
             currentVideo = video
-            Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
+            //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
             binding.tvDescription.text = vod_name
             binding.ivFavor.isSelected = favor
-
             binding.tvFileSource.text = vod_class
-
             binding.tvVideoContent.text = vod_content
+            player.setTitle(vod_name)
 
-            player.setUp(vod_play_url, vod_name)
+            player.setDataSource("https://v7.dious.cc/20220920/czNXGsv0/index.m3u8")
+            //player.setDataSource("http://192.168.136.43/upload/v/dy/a.mp4")
+            player.prepareAsync()
+
         }
 
         //fetchVideo()
@@ -87,22 +86,5 @@ class OnlinePlayerActivity : AppCompatActivity() {
                 Toast.makeText(this@OnlinePlayerActivity, "视频地址还未加载", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onBackPressed() {
-        if (Jzvd.backPress()) {
-            return
-        }
-        super.onBackPressed()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Jzvd.goOnPlayOnPause()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Jzvd.releaseAllVideos()
     }
 }

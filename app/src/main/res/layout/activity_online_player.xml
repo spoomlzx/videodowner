@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context=".ui.player.OnlinePlayerActivity">
 
-    <org.nudt.player.component.JzvdStdAutoOrizental
-        android:id="@+id/jz_video"
+    <org.nudt.videoplayer.VideoPlayer
+        android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="210dp" />
 
@@ -28,7 +28,7 @@
                 android:layout_marginBottom="@dimen/default_general_margin"
                 android:paddingStart="@dimen/default_grower_margin"
                 android:paddingEnd="@dimen/default_general_margin"
-                android:textColor="@color/text_alpha_90"
+                android:textColor="@color/text_gray"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -177,7 +177,7 @@
                 android:paddingStart="@dimen/default_grower_margin"
                 android:paddingEnd="@dimen/default_general_margin"
                 android:text="简介:"
-                android:textColor="@color/text_alpha_90"
+                android:textColor="@color/text_gray"
                 android:textSize="16sp" />
 
             <TextView
@@ -191,7 +191,7 @@
                 android:longClickable="true"
                 android:paddingStart="@dimen/default_grower_margin"
                 android:paddingEnd="@dimen/default_general_margin"
-                android:textColor="@color/text_alpha_90"
+                android:textColor="@color/text_gray"
                 android:textIsSelectable="true"
                 android:textSize="16sp" />
 

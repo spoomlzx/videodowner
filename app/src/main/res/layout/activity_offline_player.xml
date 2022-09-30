@@ -6,8 +6,8 @@
     android:orientation="vertical"
     tools:context=".ui.player.OnlinePlayerActivity">
 
-    <org.nudt.videoplayer.AGVideo
-        android:id="@+id/jz_video"
+    <org.nudt.videoplayer.VideoPlayer
+        android:id="@+id/video_player"
         android:layout_width="match_parent"
         android:layout_height="210dp" />
 
