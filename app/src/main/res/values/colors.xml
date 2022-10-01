@@ -17,6 +17,7 @@
     <color name="text_search_bar">#8B8A8A</color>
     <color name="text_gray">#555555</color>
     <color name="text_color">#ff333333</color>
+    <color name="text_gold">#FFC107</color>
     <color name="text_black_alpha">#181818</color>
 
     <color name="icon_gray">#616868</color>

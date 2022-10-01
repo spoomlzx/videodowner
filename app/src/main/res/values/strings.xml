@@ -66,7 +66,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_simple_player">SimplePlayerActivity</string>
     <string name="image">video</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="desc">简介</string>
 
 </resources>

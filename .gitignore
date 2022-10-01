@@ -16,3 +16,4 @@ local.properties
 *.db
 /release
 /.idea/inspectionProfiles/Project_Default.xml
+/iplayer/

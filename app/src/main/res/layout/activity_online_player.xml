@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,61 +21,71 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_description"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/default_grower_margin"
-                android:layout_marginBottom="@dimen/default_general_margin"
-                android:paddingStart="@dimen/default_grower_margin"
-                android:paddingEnd="@dimen/default_general_margin"
-                android:textColor="@color/text_gray"
-                android:textSize="16sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/default_general_margin"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/default_normal_margin"
                 android:paddingStart="@dimen/default_grower_margin"
                 android:paddingEnd="@dimen/default_general_margin">
 
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:src="@drawable/ic_video_play_time" />
-
                 <TextView
-                    android:id="@+id/tv_play_time"
+                    android:id="@+id/tv_vod_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="1:01:05"
-                    android:textColor="@color/text_gray"
-                    android:textSize="@dimen/text_size_smaller" />
-
-                <ImageView
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_video_size" />
+                    android:maxEms="15"
+                    android:maxLines="1"
+                    android:text="纸牌屋第4季"
+                    android:textColor="@color/text_black_alpha"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
 
                 <TextView
-                    android:id="@+id/tv_file_source"
+                    android:id="@+id/tv_vod_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_general_margin"
+                    android:text="8.2分"
+                    android:textColor="@color/text_gold"
+                    android:textSize="@dimen/text_size_medium"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/tv_vod_name"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_vod_desc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginStart="5dp"
-                    android:text="2048"
+                    android:text="@string/desc"
                     android:textColor="@color/text_gray"
-                    android:textSize="@dimen/text_size_smaller" />
-            </LinearLayout>
+                    android:textSize="@dimen/text_size_normal"
+                    app:drawableRightCompat="@drawable/ic_gengduo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:paddingStart="@dimen/default_grower_margin"
+                android:id="@+id/tv_remarks"
+                tools:text="更新至09集"
+                android:textSize="12sp"
+                android:layout_height="wrap_content"/>
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="@dimen/default_normal_margin"
                 android:padding="@dimen/default_general_margin">
 
                 <LinearLayout
@@ -180,20 +191,20 @@
                 android:textColor="@color/text_gray"
                 android:textSize="16sp" />
 
-            <TextView
-                android:id="@+id/tv_video_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/default_general_margin"
-                android:layout_marginBottom="@dimen/default_general_margin"
-                android:enabled="true"
-                android:focusable="true"
-                android:longClickable="true"
-                android:paddingStart="@dimen/default_grower_margin"
-                android:paddingEnd="@dimen/default_general_margin"
-                android:textColor="@color/text_gray"
-                android:textIsSelectable="true"
-                android:textSize="16sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/tv_video_content"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/default_general_margin"-->
+<!--                android:layout_marginBottom="@dimen/default_general_margin"-->
+<!--                android:enabled="true"-->
+<!--                android:focusable="true"-->
+<!--                android:longClickable="true"-->
+<!--                android:paddingStart="@dimen/default_grower_margin"-->
+<!--                android:paddingEnd="@dimen/default_general_margin"-->
+<!--                android:textColor="@color/text_gray"-->
+<!--                android:textIsSelectable="true"-->
+<!--                android:textSize="16sp" />-->
 
         </LinearLayout>
 

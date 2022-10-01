@@ -20,4 +20,5 @@ dependencyResolutionManagement {
 rootProject.name = "videodowner"
 include ':app'
 include ':videoplayer'
+include ':iplayer'
 include ':downloader'

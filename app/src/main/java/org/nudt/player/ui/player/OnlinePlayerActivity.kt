@@ -35,14 +35,20 @@ class OnlinePlayerActivity : AppCompatActivity() {
         video?.apply {
             currentVideo = video
             //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
-            binding.tvDescription.text = vod_name
-            binding.ivFavor.isSelected = favor
-            binding.tvFileSource.text = vod_class
-            binding.tvVideoContent.text = vod_content
-            player.setTitle(vod_name)
+            binding.tvVodName.text = vod_name
+            binding.tvVodScore.text = vod_score + "分"
 
-            player.setDataSource("https://v7.dious.cc/20220920/czNXGsv0/index.m3u8")
-            //player.setDataSource("http://192.168.136.43/upload/v/dy/a.mp4")
+            binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
+
+
+            binding.ivFavor.isSelected = favor
+            //binding.tvVideoContent.text = vod_content
+
+
+            // 设置播放器
+            player.setTitle(vod_name)
+            //player.setDataSource("https://v7.dious.cc/20220920/czNXGsv0/index.m3u8")
+            player.setDataSource("http://192.168.48.1/upload/v/dy/a.mp4")
             player.prepareAsync()
 
         }
