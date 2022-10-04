@@ -3,7 +3,7 @@ package org.nudt.player.ui.player
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.jeffmony.downloader.VideoDownloadManager
 import com.jeffmony.downloader.model.VideoTaskItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -12,49 +12,62 @@ import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
-import org.nudt.videoplayer.VideoPlayer
+import org.nudt.player.utils.SLog
 
 
-class OnlinePlayerActivity : AppCompatActivity() {
+class OnlinePlayerActivity : BasePlayerActivity() {
 
     private val videoViewModel: VideoViewModel by viewModel()
     private val binding by lazy { ActivityOnlinePlayerBinding.inflate(layoutInflater) }
 
-    private lateinit var player: VideoPlayer
-
     // 当前的视频
     private lateinit var currentVideo: Video
+
+    private lateinit var playUrlList: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(binding.root)
-        player = binding.videoPlayer
+        initPlayer(binding.videoPlayer)
 
         val video = intent.getParcelableExtra<Video>("video")
-        video?.apply {
-            currentVideo = video
-            //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
-            binding.tvVodName.text = vod_name
-            binding.tvVodScore.text = vod_score + "分"
-
-            binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
-
-
-            binding.ivFavor.isSelected = favor
-            //binding.tvVideoContent.text = vod_content
-
-
-            // 设置播放器
-            player.setTitle(vod_name)
-            //player.setDataSource("https://v7.dious.cc/20220920/czNXGsv0/index.m3u8")
-            player.setDataSource("http://192.168.48.1/upload/v/dy/a.mp4")
-            player.prepareAsync()
-
+        if (video == null) {
+            Toast.makeText(this@OnlinePlayerActivity, "视频数据错误", Toast.LENGTH_SHORT).show()
+            return
         }
+        currentVideo = video
+
+        initPlayerPage()
+
 
         //fetchVideo()
         initClickListener()
+    }
+
+    /**
+     * 加载播放器页面信息
+     */
+    private fun initPlayerPage() {
+        currentVideo.apply {
+            //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
+            binding.tvVodName.text = vod_name
+            binding.tvVodScore.text = vod_score + "分"
+            binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
+            binding.btnFavor.isSelected = favor
+            //binding.tvVideoContent.text = vod_content
+
+            val playUrlList = CommonUtil.convertPlayUrlList(vod_play_url)
+            val gson = Gson()
+            SLog.json(gson.toJson(playUrlList), "play url list")
+
+            // 设置播放器
+            player.setTitle(vod_name)
+            //player.setDataSource("http://192.168.250.43/20220220/oqb9jc6d/index.m3u8")
+            player.setDataSource(playUrlList[0].url)
+            player.prepareAsync()
+
+        }
     }
 
     /**
@@ -63,12 +76,12 @@ class OnlinePlayerActivity : AppCompatActivity() {
     private fun initClickListener() {
         // 点赞图标变换状态
         binding.btnLike.setOnClickListener {
-            binding.ivLike.isSelected = !binding.ivLike.isSelected
+            binding.btnLike.isSelected = !binding.btnLike.isSelected
         }
         // 收藏图标变换状态
         binding.btnFavor.setOnClickListener {
-            val favorState = binding.ivFavor.isSelected
-            binding.ivFavor.isSelected = !favorState
+            val favorState = binding.btnFavor.isSelected
+            binding.btnFavor.isSelected = !favorState
             videoViewModel.setFavor(!favorState, currentVideo.vod_id)
         }
 

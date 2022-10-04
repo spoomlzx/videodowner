@@ -1,9 +1,9 @@
 <resources>
 
     <string-array name="sections">
-<!--        <item>@string/section_movie</item>-->
-<!--        <item>@string/section_tv</item>-->
-<!--        <item>@string/section_comic</item>-->
+        <!--        <item>@string/section_movie</item>-->
+        <!--        <item>@string/section_tv</item>-->
+        <!--        <item>@string/section_comic</item>-->
         <item>@string/section_variety</item>
     </string-array>
 
@@ -70,5 +70,7 @@
 
 
     <string name="desc">简介</string>
+
+    <string name="video_all">查看全部</string>
 
 </resources>

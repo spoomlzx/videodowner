@@ -65,131 +65,131 @@
                     android:text="@string/desc"
                     android:textColor="@color/text_gray"
                     android:textSize="@dimen/text_size_normal"
-                    app:drawableRightCompat="@drawable/ic_gengduo"
+                    app:drawableRightCompat="@drawable/ic_more"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:paddingStart="@dimen/default_grower_margin"
                 android:id="@+id/tv_remarks"
-                tools:text="更新至09集"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/default_grower_margin"
+                android:textColor="@color/text_gray"
                 android:textSize="12sp"
-                android:layout_height="wrap_content"/>
-
-
+                tools:text="更新至09集"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/default_general_margin"
+                android:layout_marginBottom="@dimen/default_general_margin"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/default_normal_margin"
                 android:padding="@dimen/default_general_margin">
 
-                <LinearLayout
+                <TextView
                     android:id="@+id/btn_like"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:drawablePadding="@dimen/default_normal_margin"
+                    android:padding="@dimen/default_tiny_margin"
+                    android:text="@string/icon_text_like"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_size_smaller"
+                    app:drawableTopCompat="@drawable/selector_like" />
 
-                    <ImageView
-                        android:id="@+id/iv_like"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/selector_like" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_tiny_margin"
-                        android:text="@string/icon_text_like"
-                        android:textColor="@color/text_gray"
-                        android:textSize="@dimen/text_size_smaller" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:id="@+id/btn_favor"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:drawablePadding="@dimen/default_normal_margin"
+                    android:padding="@dimen/default_tiny_margin"
+                    android:text="@string/icon_text_favorite"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_size_smaller"
+                    app:drawableTopCompat="@drawable/selector_favor" />
 
-                    <ImageView
-                        android:id="@+id/iv_favor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/selector_favor" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_tiny_margin"
-                        android:text="@string/icon_text_favorite"
-                        android:textColor="@color/text_gray"
-                        android:textSize="@dimen/text_size_smaller" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:id="@+id/btn_download"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:drawablePadding="@dimen/default_normal_margin"
+                    android:padding="@dimen/default_tiny_margin"
+                    android:text="@string/icon_text_download"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_size_smaller"
+                    app:drawableTopCompat="@drawable/ic_download" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_download" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_tiny_margin"
-                        android:text="@string/icon_text_download"
-                        android:textColor="@color/text_gray"
-                        android:textSize="@dimen/text_size_smaller" />
-                </LinearLayout>
-
-                <LinearLayout
+                <TextView
                     android:id="@+id/btn_share"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_share" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/default_tiny_margin"
-                        android:text="@string/icon_text_share"
-                        android:textColor="@color/text_gray"
-                        android:textSize="@dimen/text_size_smaller" />
-                </LinearLayout>
-
-
+                    android:drawablePadding="@dimen/default_normal_margin"
+                    android:padding="@dimen/default_tiny_margin"
+                    android:text="@string/icon_text_share"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_gray"
+                    android:textSize="@dimen/text_size_smaller"
+                    app:drawableTopCompat="@drawable/ic_share" />
             </LinearLayout>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/default_grower_margin"
+            android:paddingEnd="@dimen/default_general_margin">
             <TextView
-                android:id="@+id/tv_video_content_title"
-                android:layout_width="match_parent"
+                android:id="@+id/seri_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/default_grower_margin"
-                android:paddingEnd="@dimen/default_general_margin"
-                android:text="简介:"
+                android:text="选集"
+                android:textColor="@color/text_black_alpha"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/rv_vod_list"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_vod_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:text="@string/video_all"
                 android:textColor="@color/text_gray"
-                android:textSize="16sp" />
+                android:textSize="@dimen/text_size_normal"
+                app:drawableRightCompat="@drawable/ic_more"
+                app:layout_constraintBottom_toTopOf="@+id/rv_vod_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_vod_list"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_video_content_title"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:paddingStart="@dimen/default_grower_margin"-->
+<!--                android:paddingEnd="@dimen/default_general_margin"-->
+<!--                android:text="简介:"-->
+<!--                android:textColor="@color/text_gray"-->
+<!--                android:textSize="16sp" />-->
 
 <!--            <TextView-->
 <!--                android:id="@+id/tv_video_content"-->

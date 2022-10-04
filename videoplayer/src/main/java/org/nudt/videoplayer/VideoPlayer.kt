@@ -57,6 +57,7 @@ class VideoPlayer : BasePlayer {
             }
         })
 
+        //setMobileNetwork(true)
 
         setLoop(false) //是否循环播放
         setZoomModel(IMediaPlayer.MODE_ZOOM_TO_FIT) //设置视频画面渲染模式为：全屏裁剪缩放模式

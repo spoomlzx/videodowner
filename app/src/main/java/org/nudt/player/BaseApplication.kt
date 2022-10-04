@@ -25,8 +25,6 @@ class BaseApplication : Application() {
         initKoin()
         initMMKV()
         initDownloader()
-
-        initXLog()
     }
 
 
@@ -140,13 +138,5 @@ class BaseApplication : Application() {
             androidContext(this@BaseApplication)
             modules(modulePlayer)
         }
-    }
-
-
-    private fun initXLog() {
-        val config: LogConfiguration = LogConfiguration.Builder().logLevel(LogLevel.DEBUG)
-            .tag("VideoDowner").enableBorder().build()
-
-        XLog.init(config)
     }
 }

@@ -26,7 +26,6 @@ class PageKeyedRemoteMediator(
 
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Video>): MediatorResult {
         try {
-            XLog.d("loadType: $loadType")
             val pageKey = when (loadType) {
                 // 首次访问 或者调用 PagingDataAdapter.refresh()
                 LoadType.REFRESH -> null
