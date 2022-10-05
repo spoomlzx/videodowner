@@ -53,10 +53,13 @@ dependencies {
     def coroutinesVersion = "1.6.1"
     def paging_version = "3.1.1"
     def nav_version = "2.3.5"
+    def lottieVersion = "5.2.0"
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     implementation project(':videoplayer')
     implementation project(':downloader')
+
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
     implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.3.0'
     implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'

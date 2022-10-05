@@ -3,16 +3,16 @@ package org.nudt.player.ui.player
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.google.gson.Gson
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jeffmony.downloader.VideoDownloadManager
 import com.jeffmony.downloader.model.VideoTaskItem
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.R
+import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
-import org.nudt.player.utils.SLog
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -57,9 +57,23 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             binding.btnFavor.isSelected = favor
             //binding.tvVideoContent.text = vod_content
 
+
             val playUrlList = CommonUtil.convertPlayUrlList(vod_play_url)
-            val gson = Gson()
-            SLog.json(gson.toJson(playUrlList), "play url list")
+            val linearLayoutManager = LinearLayoutManager(baseContext)
+            linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+            binding.rvVodList.layoutManager = linearLayoutManager
+            val adapter = PlayUrlAdapter()
+            adapter.setPlayUrlList(playUrlList)
+            adapter.setPlayUrlClickListener(object : PlayUrlAdapter.OnPlayUrlClickListener() {
+                override fun onUrlClicked(url: String) {
+                    player.onReset()
+                    player.setProgressCallBackSpaceMilliss(300)
+                    player.setDataSource(url)
+                    player.startPlay()
+                }
+            })
+
+            binding.rvVodList.adapter = adapter
 
             // 设置播放器
             player.setTitle(vod_name)

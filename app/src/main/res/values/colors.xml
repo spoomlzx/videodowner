@@ -2,7 +2,7 @@
 <resources>
     <color name="white">#ffffffff</color>
     <color name="black">#FF000000</color>
-    <color name="windows_background">#F6F7F9</color>
+    <color name="windows_background">#FFFFFF</color>
     <color name="Ga5">#ff9499a0</color>
     <color name="colorPrimaryDark">#2C9EDF</color>
     <color name="colorPrimary">#ffff6699</color>
@@ -13,6 +13,7 @@
     <color name="tab_background">#FFFFFF</color>
 
     <color name="card_background">#F4F4F4</color>
+    <color name="item_background">#F8F8F8</color>
 
     <color name="text_search_bar">#8B8A8A</color>
     <color name="text_gray">#555555</color>
