@@ -1,5 +1,6 @@
 package org.nudt.player.utils
 
+import android.content.Context
 import org.nudt.player.data.model.PlayUrl
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -130,6 +131,17 @@ object CommonUtil {
             }
         }
         return urls
+    }
+
+
+    /**
+     * 将dp转换成px
+     * @param dipValue
+     * @return
+     */
+    fun dpToPxInt(context: Context, dipValue: Float): Int {
+        val scale: Float = context.resources.displayMetrics.density
+        return (dipValue * scale + 0.5f).toInt()
     }
 
 }

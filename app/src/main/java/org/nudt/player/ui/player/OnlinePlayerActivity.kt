@@ -2,17 +2,14 @@ package org.nudt.player.ui.player
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.jeffmony.downloader.VideoDownloadManager
-import com.jeffmony.downloader.model.VideoTaskItem
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.player.R
-import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.CommonUtil
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -20,10 +17,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     private val videoViewModel: VideoViewModel by viewModel()
     private val binding by lazy { ActivityOnlinePlayerBinding.inflate(layoutInflater) }
 
-    // 当前的视频
-    private lateinit var currentVideo: Video
-
-    private lateinit var playUrlList: List<String>
+    private val tabTitles = arrayOf("剧集", "评论")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,88 +30,37 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             Toast.makeText(this@OnlinePlayerActivity, "视频数据错误", Toast.LENGTH_SHORT).show()
             return
         }
-        currentVideo = video
 
-        initPlayerPage()
+        val viewPager: ViewPager2 = binding.viewPager
+        viewPager.isUserInputEnabled = false
+        viewPager.adapter = object : FragmentStateAdapter(this@OnlinePlayerActivity) {
+            override fun getItemCount(): Int {
+                return 2
+            }
 
+            override fun createFragment(position: Int): Fragment {
+                return when (position) {
+                    0 -> VideoDetailFragment(video, object : VideoDetailFragment.OnDetailListener() {
+                        override fun switchPlayUrl(url: String) {
+                            player.onReset()
+                            player.setProgressCallBackSpaceMilliss(300)
+                            player.setDataSource(url)
+                            player.startPlay()
+                        }
 
-        //fetchVideo()
-        initClickListener()
-    }
-
-    /**
-     * 加载播放器页面信息
-     */
-    private fun initPlayerPage() {
-        currentVideo.apply {
-            //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
-            binding.tvVodName.text = vod_name
-            binding.tvVodScore.text = vod_score + "分"
-            binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
-            binding.btnFavor.isSelected = favor
-            //binding.tvVideoContent.text = vod_content
-
-
-            val playUrlList = CommonUtil.convertPlayUrlList(vod_play_url)
-            val linearLayoutManager = LinearLayoutManager(baseContext)
-            linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-            binding.rvVodList.layoutManager = linearLayoutManager
-            val adapter = PlayUrlAdapter()
-            adapter.setPlayUrlList(playUrlList)
-            adapter.setPlayUrlClickListener(object : PlayUrlAdapter.OnPlayUrlClickListener() {
-                override fun onUrlClicked(url: String) {
-                    player.onReset()
-                    player.setProgressCallBackSpaceMilliss(300)
-                    player.setDataSource(url)
-                    player.startPlay()
+                        override fun playVideo(title: String, url: String) {
+                            player.setTitle(title)
+                            player.setDataSource(url)
+                            player.prepareAsync()
+                        }
+                    })
+                    else -> CommentFragment.newInstance(video.vod_id, video.vod_content)
                 }
-            })
-
-            binding.rvVodList.adapter = adapter
-
-            // 设置播放器
-            player.setTitle(vod_name)
-            //player.setDataSource("http://192.168.250.43/20220220/oqb9jc6d/index.m3u8")
-            player.setDataSource(playUrlList[0].url)
-            player.prepareAsync()
-
-        }
-    }
-
-    /**
-     * 添加点赞等按钮的监听
-     */
-    private fun initClickListener() {
-        // 点赞图标变换状态
-        binding.btnLike.setOnClickListener {
-            binding.btnLike.isSelected = !binding.btnLike.isSelected
-        }
-        // 收藏图标变换状态
-        binding.btnFavor.setOnClickListener {
-            val favorState = binding.btnFavor.isSelected
-            binding.btnFavor.isSelected = !favorState
-            videoViewModel.setFavor(!favorState, currentVideo.vod_id)
-        }
-
-        binding.btnDownload.setOnClickListener {
-            if (CommonUtil.isVideoUrl(currentVideo.vod_play_url)) {
-                // Use the Builder class for convenient dialog construction
-                val dialog = AlertDialog.Builder(this@OnlinePlayerActivity, R.style.AlertDialog)
-                    .setMessage("下载视频")
-                    .setPositiveButton("开始下载") { dialog, id ->
-                        val downloadItem = VideoTaskItem(currentVideo.vod_play_url, currentVideo.vod_pic, currentVideo.vod_name, "group-1")
-                        VideoDownloadManager.getInstance().startDownload(downloadItem)
-                        VideoDownloadManager.getInstance().fetchDownloadItems();
-                        //todo 添加提示框，显示开始下载视频，点击导航到下载页面
-                    }
-                    .setNegativeButton("取消") { dialog, id ->
-                        // User cancelled the dialog
-                    }
-                    .create()
-                dialog.show()
-            } else {
-                Toast.makeText(this@OnlinePlayerActivity, "视频地址还未加载", Toast.LENGTH_SHORT).show()
             }
         }
+
+        TabLayoutMediator(binding.tabs, binding.viewPager, true, true) { tab, position ->
+            tab.text = tabTitles[position]
+        }.attach()
     }
 }

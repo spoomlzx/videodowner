@@ -6,10 +6,6 @@
     android:orientation="vertical"
     tools:context=".ui.history.HistoryFragment">
 
-    <include
-        android:id="@+id/tb_common"
-        layout="@layout/tool_bar_layout" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"
         android:layout_width="match_parent"
