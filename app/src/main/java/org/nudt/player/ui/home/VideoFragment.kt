@@ -44,18 +44,14 @@ class VideoFragment : Fragment() {
         type = requireArguments().getInt(TYPE_PARAM)
 
         lifecycleScope.launchWhenCreated {
-            launch {
-                // 更新页面数据
-                videoViewModel.bindHomePage(type).collectLatest {
-                    adapter.submitData(it)
-                }
-
+            // 更新页面数据
+            videoViewModel.bindHomePage(type).collectLatest {
+                adapter.submitData(it)
             }
-            launch {
-                adapter.loadStateFlow.collect {
-                    //根据刷新状态来通知swiprefreshLayout是否刷新完毕
-                    binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
-                }
+
+            adapter.loadStateFlow.collect {
+                //根据刷新状态来通知swiprefreshLayout是否刷新完毕
+                binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
             }
         }
     }
@@ -68,7 +64,8 @@ class VideoFragment : Fragment() {
          * @param type Parameter 1.
          * @return A new instance of fragment VideoFragment.
          */
-        @JvmStatic fun newInstance(type: Int) = VideoFragment().apply {
+        @JvmStatic
+        fun newInstance(type: Int) = VideoFragment().apply {
             arguments = Bundle().apply {
                 putInt(TYPE_PARAM, type)
             }

@@ -27,7 +27,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
         favoriteList.let {
             val video = it[position]
             holder.binding.tvTitle.text = video.vod_name
-            Glide.with(context).load(SpUtils.basePicUrl+video.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            Glide.with(context).load(SpUtils.basePicUrl + video.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
@@ -37,7 +37,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
 
             holder.binding.cvVideo.setOnLongClickListener {
                 val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
-                    videoViewModel.setFavor(false, video.vod_id)
+                    videoViewModel.changeFavor()
                 }.setNegativeButton("取消") { _, _ ->
                     // User cancelled the dialog
                 }.create()

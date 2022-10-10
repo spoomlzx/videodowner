@@ -1,6 +1,7 @@
 package org.nudt.player.ui
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
@@ -12,7 +13,9 @@ import kotlinx.coroutines.launch
 import org.nudt.player.adapter.VideoSearchPagingSource
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.db.VideoDb
+import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.data.model.Video
+import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.data.repository.PageKeyedRemoteMediator
 import org.nudt.player.utils.SpUtils
 import java.util.concurrent.TimeUnit
@@ -21,12 +24,64 @@ import java.util.regex.Pattern
 
 class VideoViewModel(private val app: Application, private val db: VideoDb, private val videoApi: VideoApi) : ViewModel() {
 
-    /**
-     * 网站基本地址
-     */
-    private val baseUrlMall9 = SpUtils.baseUrl
 
-    private val patternHLS: Pattern = Pattern.compile("(?<=setVideoHLS\\(')(.+?)(?='\\);)")
+    val vodInfo = MutableLiveData<VodInfoModel>()
+    val currentPlayUrl = MutableLiveData<PlayUrl>()
+    private val favor = MutableLiveData<Boolean>()
+
+    fun setVodInfo(vod: VodInfoModel) {
+        vodInfo.postValue(vod)
+    }
+
+    fun setPlayUrl(playUrl: PlayUrl) {
+        currentPlayUrl.value = playUrl
+    }
+
+    fun setFavor(favor: Boolean) {
+        this.favor.value = favor
+    }
+
+    fun getFavor(): MutableLiveData<Boolean> {
+        return favor
+    }
+
+    @OptIn(ExperimentalPagingApi::class)
+    fun bindHomePage(type: Int) = Pager(config = pagingConfig, remoteMediator = PageKeyedRemoteMediator(db, videoApi, type)) {
+        db.videoDao().getVideoList(type)
+    }.flow.cachedIn(viewModelScope)
+
+    fun bindSearchPage(keyWord: String) = Pager(config = PagingConfig(
+        initialLoadSize = VideoSearchPagingSource.pageSize,
+        pageSize = VideoSearchPagingSource.pageSize,
+        enablePlaceholders = false
+    ), pagingSourceFactory = {
+        VideoSearchPagingSource(app, db, keyWord)
+    }).flow.cachedIn(viewModelScope)
+
+
+    /**
+     * 修改收藏状态
+     */
+    fun changeFavor() {
+        viewModelScope.launch {
+            val result = !favor.value!!
+            vodInfo.value?.let { db.videoDao().updateFavor(result, it.vod_id) }
+            favor.value = result
+        }
+    }
+
+    fun removeVideo(video: Video) {
+        viewModelScope.launch {
+            db.videoDao().removeVideo(video)
+        }
+    }
+
+    /**
+     * 获取收藏的video list
+     */
+    fun getFavoriteVideos(): Flow<MutableList<Video>> {
+        return db.videoDao().getFavoriteVideos()
+    }
 
     private val pagingConfig = PagingConfig(
         // 每页显示的数据的大小
@@ -47,41 +102,4 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
          */
         initialLoadSize = 10
     )
-
-    @OptIn(ExperimentalPagingApi::class)
-    fun bindHomePage(type: Int) = Pager(config = pagingConfig, remoteMediator = PageKeyedRemoteMediator(db, videoApi, type)) {
-        db.videoDao().getVideoList(type)
-    }.flow.cachedIn(viewModelScope)
-
-    fun bindSearchPage(keyWord: String) = Pager(config = PagingConfig(
-        initialLoadSize = VideoSearchPagingSource.pageSize,
-        pageSize = VideoSearchPagingSource.pageSize,
-        enablePlaceholders = false
-    ), pagingSourceFactory = {
-        VideoSearchPagingSource(app, db, keyWord)
-    }).flow.cachedIn(viewModelScope)
-
-
-    /**
-     * 修改收藏状态
-     * @param changedFavorState 修改后的favor状态
-     */
-    fun setFavor(changedFavorState: Boolean, id: Int) {
-        viewModelScope.launch {
-            db.videoDao().updateFavor(changedFavorState, id)
-        }
-    }
-
-    fun removeVideo(video: Video) {
-        viewModelScope.launch {
-            db.videoDao().removeVideo(video)
-        }
-    }
-
-    /**
-     * 获取收藏的video list
-     */
-    fun getFavoriteVideos(): Flow<MutableList<Video>> {
-        return db.videoDao().getFavoriteVideos()
-    }
 }

@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.databinding.PlayUrlListItemBinding
+import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.SLog
 
-class PlayUrlAdapter : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() {
+class PlayUrlAdapter(private val videoViewModel: VideoViewModel) : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() {
 
     private var playUrlList: List<PlayUrl> = ArrayList<PlayUrl>()
 
     private var currentPosition: Int = 0
-    private var playUrlClickListener: OnPlayUrlClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayUrlViewHolder {
         return PlayUrlViewHolder(PlayUrlListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -26,17 +26,13 @@ class PlayUrlAdapter : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() 
         // 当前选中项
         val isCurrent = currentPosition == position
         holder.binding.playUrlIndex.isSelected = isCurrent
-        holder.binding.hamAnimaImg.visibility = if (isCurrent) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        holder.binding.hamAnimaImg.visibility = if (isCurrent) View.VISIBLE else View.GONE
 
         holder.binding.playUrlIndex.setOnClickListener {
             currentPosition = holder.bindingAdapterPosition
             SLog.d("current index: $currentPosition && play url: $playUrl")
             notifyDataSetChanged();
-            playUrlClickListener?.onUrlClicked(playUrl.url)
+            videoViewModel.setPlayUrl(playUrl)
         }
     }
 
@@ -49,14 +45,5 @@ class PlayUrlAdapter : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() 
         notifyDataSetChanged()
     }
 
-    fun setPlayUrlClickListener(playUrlClickListener: OnPlayUrlClickListener) {
-        this.playUrlClickListener = playUrlClickListener
-    }
-
-
     class PlayUrlViewHolder(val binding: PlayUrlListItemBinding) : RecyclerView.ViewHolder(binding.root)
-
-    abstract class OnPlayUrlClickListener {
-        open fun onUrlClicked(url: String) {}
-    }
 }

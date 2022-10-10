@@ -17,39 +17,45 @@ import org.nudt.player.R
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.data.model.Video
+import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
+import org.nudt.player.utils.SLog
 
-class VideoDetailFragment(val video: Video, val onDetailListener: OnDetailListener) : Fragment() {
-    private val videoViewModel: VideoViewModel by viewModel()
+class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
+
     private val binding by lazy { FragmentVideoDetailBinding.inflate(layoutInflater) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        initVideoDetail()
-        val playUrlList = CommonUtil.convertPlayUrlList(video.vod_play_url)
-        // auto play first video
-        onDetailListener.playVideo(video.vod_name, playUrlList[0].url)
-
-        initPlayUrlList(playUrlList)
-
-        parentFragmentManager.commit {
-
-        }
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initClickListener()
+        // 监听viewModel中的vidInfoModel，更新详情信息
+        viewModel.vodInfo.observe(viewLifecycleOwner) {
+            SLog.d("vodInfo: in detail " + it.vod_name)
+            initVideoDetail(it)
+            initPlayUrlList(it.playUrlList)
+        }
+
+        viewModel.getFavor().observe(viewLifecycleOwner) {
+            binding.btnFavor.isSelected = it
+        }
+    }
 
     /**
      * 加载播放器页面信息
      */
-    private fun initVideoDetail() {
-        video.apply {
+    private fun initVideoDetail(vodInfoModel: VodInfoModel) {
+        vodInfoModel.apply {
             //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
             binding.tvVodName.text = vod_name
             binding.tvVodScore.text = vod_score + "分"
             binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
-            binding.btnFavor.isSelected = favor
             //binding.tvVideoContent.text = vod_content
         }
     }
@@ -62,14 +68,8 @@ class VideoDetailFragment(val video: Video, val onDetailListener: OnDetailListen
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvVodList.layoutManager = linearLayoutManager
-        val adapter = PlayUrlAdapter()
+        val adapter = PlayUrlAdapter(viewModel)
         adapter.setPlayUrlList(playUrlList)
-        // change video url when click play url item
-        adapter.setPlayUrlClickListener(object : PlayUrlAdapter.OnPlayUrlClickListener() {
-            override fun onUrlClicked(url: String) {
-                onDetailListener.switchPlayUrl(url)
-            }
-        })
 
         binding.rvVodList.adapter = adapter
 
@@ -97,31 +97,30 @@ class VideoDetailFragment(val video: Video, val onDetailListener: OnDetailListen
         }
         // 收藏图标变换状态
         binding.btnFavor.setOnClickListener {
-            val favorState = binding.btnFavor.isSelected
-            binding.btnFavor.isSelected = !favorState
-            videoViewModel.setFavor(!favorState, video.vod_id)
+            viewModel.changeFavor()
         }
 
-        binding.btnDownload.setOnClickListener {
-            if (CommonUtil.isVideoUrl(video.vod_play_url)) {
-                // Use the Builder class for convenient dialog construction
-                val dialog = AlertDialog.Builder(requireContext(), R.style.AlertDialog)
-                    .setMessage("下载视频")
-                    .setPositiveButton("开始下载") { dialog, id ->
-                        val downloadItem = VideoTaskItem(video.vod_play_url, video.vod_pic, video.vod_name, "group-1")
-                        VideoDownloadManager.getInstance().startDownload(downloadItem)
-                        VideoDownloadManager.getInstance().fetchDownloadItems();
-                        //todo 添加提示框，显示开始下载视频，点击导航到下载页面
-                    }
-                    .setNegativeButton("取消") { dialog, id ->
-                        // User cancelled the dialog
-                    }
-                    .create()
-                dialog.show()
-            } else {
-                Toast.makeText(requireContext(), "视频地址还未加载", Toast.LENGTH_SHORT).show()
-            }
-        }
+        //todo 对应多地址的下载进行修改
+//        binding.btnDownload.setOnClickListener {
+//            if (CommonUtil.isVideoUrl(video.vod_play_url)) {
+//                // Use the Builder class for convenient dialog construction
+//                val dialog = AlertDialog.Builder(requireContext(), R.style.AlertDialog)
+//                    .setMessage("下载视频")
+//                    .setPositiveButton("开始下载") { dialog, id ->
+//                        val downloadItem = VideoTaskItem(video.vod_play_url, video.vod_pic, video.vod_name, "group-1")
+//                        VideoDownloadManager.getInstance().startDownload(downloadItem)
+//                        VideoDownloadManager.getInstance().fetchDownloadItems();
+//                        //todo 添加提示框，显示开始下载视频，点击导航到下载页面
+//                    }
+//                    .setNegativeButton("取消") { dialog, id ->
+//                        // User cancelled the dialog
+//                    }
+//                    .create()
+//                dialog.show()
+//            } else {
+//                Toast.makeText(requireContext(), "视频地址还未加载", Toast.LENGTH_SHORT).show()
+//            }
+//        }
     }
 
     abstract class OnDetailListener {
