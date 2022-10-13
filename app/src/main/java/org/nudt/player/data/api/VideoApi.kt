@@ -31,7 +31,7 @@ interface VideoApi {
     companion object {
         private val BASE_URL = SpUtils.baseUrl
         fun create(): VideoApi {
-            val logger = HttpLoggingInterceptor(HttpLoggingInterceptor.Logger { Log.d("API", it) })
+            val logger = HttpLoggingInterceptor { Log.d("API", it) }
             logger.level = HttpLoggingInterceptor.Level.BASIC
 
             val client = OkHttpClient.Builder()

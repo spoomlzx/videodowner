@@ -67,11 +67,14 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
                 }
             }
 
+            binding.tvContent.text = vod_content
+            binding.tvDirector.text = "导演：$vod_director"
+            binding.tvActor.text = "演员：$vod_actor"
+            binding.tvYear.text = "年份：$vod_year"
 
-
-
-
-            binding.tvDescription.text = vod_content
+            binding.ivDescriptionClose.setOnClickListener {
+                bottomSheetDescription.setState(BottomSheetBehavior.STATE_HIDDEN)
+            }
         }
     }
 

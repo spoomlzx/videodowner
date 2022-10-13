@@ -40,7 +40,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             player.prepareAsync()
 
             val vod = VodInfoModel(
-                video.vod_id, video.type_id, video.type_pid, video.vod_name, video.vod_actor, video.vod_pic, video.vod_remarks, video.vod_class,
+                video.vod_id, video.type_id, video.type_pid, video.vod_name, video.vod_actor, video.vod_director, video.vod_pic, video.vod_remarks, video.vod_class,
                 video.vod_content, video.vod_area, video.vod_year, video.vod_score, playUrlList
             )
             // 更新viewModel中的vidInfoModel
