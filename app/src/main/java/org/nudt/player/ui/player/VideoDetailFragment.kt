@@ -1,22 +1,15 @@
 package org.nudt.player.ui.player
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.commit
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.jeffmony.downloader.VideoDownloadManager
-import com.jeffmony.downloader.model.VideoTaskItem
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.player.R
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.PlayUrl
-import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
@@ -53,10 +46,32 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
     private fun initVideoDetail(vodInfoModel: VodInfoModel) {
         vodInfoModel.apply {
             //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
+
+
             binding.tvVodName.text = vod_name
             binding.tvVodScore.text = vod_score + "分"
             binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
             //binding.tvVideoContent.text = vod_content
+
+            val bottomSheetDescription: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetDescription)
+            //设置默认先隐藏
+            bottomSheetDescription.state = BottomSheetBehavior.STATE_HIDDEN
+            val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 251f)
+            bottomSheetDescription.maxHeight = height
+            bottomSheetDescription.peekHeight = height
+            binding.tvVodDesc.setOnClickListener {
+                if (bottomSheetDescription.state == BottomSheetBehavior.STATE_HIDDEN) {
+                    bottomSheetDescription.setState(BottomSheetBehavior.STATE_COLLAPSED)
+                } else if (bottomSheetDescription.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                    bottomSheetDescription.state = BottomSheetBehavior.STATE_HIDDEN
+                }
+            }
+
+
+
+
+
+            binding.tvDescription.text = vod_content
         }
     }
 
@@ -68,23 +83,44 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvVodList.layoutManager = linearLayoutManager
+
         val adapter = PlayUrlAdapter(viewModel)
         adapter.setPlayUrlList(playUrlList)
 
         binding.rvVodList.adapter = adapter
 
-        binding.tvVodAll.setOnClickListener {
-            val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.BottomSheetDialogBg)
-            bottomSheetDialog.setContentView(R.layout.dialog_play_url_all)
 
-            // videoPlayer->210dp,tabLayout->40dp,divider->1dp
-            bottomSheetDialog.behavior.peekHeight = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 251f);
-            bottomSheetDialog.behavior.isDraggable = false
-            bottomSheetDialog.setCanceledOnTouchOutside(false)
-            bottomSheetDialog.show()
+        initPlayUrlList()
+
+        val gridLayoutManager = GridLayoutManager(context, 6)
+        binding.rvVodListAll.layoutManager = gridLayoutManager
+        //binding.rvVodListAll.addItemDecoration(GridItemDecoration())
+        binding.rvVodListAll.adapter = adapter
+        binding.tvSerialTitle.text = "选集(${playUrlList.size})"
+        binding.tvVodAllTitle.text = "分集(${playUrlList.size})"
+    }
+
+    /**
+     * 设置选集区块
+     */
+    private fun initPlayUrlList() {
+        val bottomSheetPlayUrlList: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetAllVod)
+        //设置默认先隐藏
+        bottomSheetPlayUrlList.state = BottomSheetBehavior.STATE_HIDDEN
+        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 251f)
+        bottomSheetPlayUrlList.maxHeight = height
+        bottomSheetPlayUrlList.peekHeight = height
+        binding.tvVodAll.setOnClickListener {
+            if (bottomSheetPlayUrlList.state == BottomSheetBehavior.STATE_HIDDEN) {
+                bottomSheetPlayUrlList.setState(BottomSheetBehavior.STATE_COLLAPSED)
+            } else if (bottomSheetPlayUrlList.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetPlayUrlList.state = BottomSheetBehavior.STATE_HIDDEN
+            }
         }
 
-
+        binding.tvVodAllClose.setOnClickListener {
+            bottomSheetPlayUrlList.setState(BottomSheetBehavior.STATE_HIDDEN)
+        }
     }
 
     /**

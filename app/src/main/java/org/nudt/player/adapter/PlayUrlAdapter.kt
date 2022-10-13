@@ -22,13 +22,13 @@ class PlayUrlAdapter(private val videoViewModel: VideoViewModel) : RecyclerView.
     override fun onBindViewHolder(holder: PlayUrlViewHolder, position: Int) {
         val playUrl = playUrlList[position]
         // 显示第几集
-        holder.binding.playUrlIndex.text = (position + 1).toString()
+        holder.binding.tvPlayUrlIndex.text = (position + 1).toString()
         // 当前选中项
         val isCurrent = currentPosition == position
-        holder.binding.playUrlIndex.isSelected = isCurrent
+        holder.binding.tvPlayUrlIndex.isSelected = isCurrent
         holder.binding.hamAnimaImg.visibility = if (isCurrent) View.VISIBLE else View.GONE
 
-        holder.binding.playUrlIndex.setOnClickListener {
+        holder.binding.tvPlayUrlIndex.setOnClickListener {
             currentPosition = holder.bindingAdapterPosition
             SLog.d("current index: $currentPosition && play url: $playUrl")
             notifyDataSetChanged();
