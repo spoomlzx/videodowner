@@ -1,7 +1,9 @@
 package org.nudt.videoplayer
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
+import android.widget.Toast
 import com.android.iplayer.base.AbstractMediaPlayer
 import com.android.iplayer.base.BasePlayer
 import com.android.iplayer.controller.VideoController
@@ -9,19 +11,26 @@ import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.listener.OnPlayerEventListener
 import com.android.iplayer.media.IMediaPlayer
 import com.elvishew.xlog.XLog
+import com.lxj.xpopup.XPopup
 import org.nudt.videoplayer.controls.*
 import org.nudt.videoplayer.media.ExoPlayerFactory
+import org.nudt.videoplayer.view.DlanListPopupView
 
-class VideoPlayer : BasePlayer {
-    constructor(context: Context?) : super(context) {}
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs) {}
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {}
+class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : BasePlayer(context, attrs, defStyleAttr) {
+    constructor(context: Context?) : this(context, null) {}
+    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0) {}
 
     private lateinit var controller: VideoController
     private lateinit var toolBarView: ControlToolBarView
 
+    private lateinit var title: String
+    private lateinit var url: String
+
     override fun initViews() {
         controller = VideoController(context)
+
+
+
         setController(controller)
         //给播放器控制器绑定自定义UI交互组件，也可调用initControlComponents()一键使用SDK内部提供的所有UI交互组件
         toolBarView = ControlToolBarView(context) //标题栏，返回按钮、视频标题、功能按钮、系统时间、电池电量等组件
@@ -30,7 +39,15 @@ class VideoPlayer : BasePlayer {
         //监听标题栏的功能事件
         toolBarView.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener() {
             override fun onTv() {
-                XLog.d("tv pressed")
+                if (TextUtils.isEmpty(url)) {
+                    Toast.makeText(context, "投屏功能暂不可用", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                // 如果是播放地址，则弹出设备列表框
+                if (url.startsWith("https://") || url.startsWith("http://")) {
+                    val dlanListPop = DlanListPopupView(context, url, title)
+                    XPopup.Builder(context).asCustom(dlanListPop).show()
+                }
             }
 
             override fun onWindow() {
@@ -70,5 +87,11 @@ class VideoPlayer : BasePlayer {
 
     fun setTitle(title: String) {
         toolBarView.setTitle(title)
+        this.title = title
+    }
+
+    fun setPlayUrl(url: String) {
+        setDataSource(url)
+        this.url = url
     }
 }

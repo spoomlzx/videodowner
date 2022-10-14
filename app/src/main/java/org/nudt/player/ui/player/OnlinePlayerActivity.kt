@@ -36,7 +36,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             val playUrlList = CommonUtil.convertPlayUrlList(video.vod_play_url)
             // 直接播放第一集
             player.setTitle(video.vod_name)
-            player.setDataSource(playUrlList[0].url)
+            player.setPlayUrl(playUrlList[0].url)
             player.prepareAsync()
 
             val vod = VodInfoModel(
@@ -53,7 +53,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         videoViewModel.currentPlayUrl.observe(this) {
             player.onReset()
             player.setProgressCallBackSpaceMilliss(300)
-            player.setDataSource(it.url)
+            player.setPlayUrl(it.url)
             player.startPlay()
         }
 

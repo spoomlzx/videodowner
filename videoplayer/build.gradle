@@ -48,6 +48,14 @@ dependencies {
     api "com.google.android.exoplayer:exoplayer-hls:2.18.1"
     api "com.google.android.exoplayer:exoplayer-rtsp:2.18.1"
 
+    implementation 'com.github.li-xiaojun:XPopup:2.9.2'
+
+    implementation project(':clinglibrary')
+
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+
     // test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
