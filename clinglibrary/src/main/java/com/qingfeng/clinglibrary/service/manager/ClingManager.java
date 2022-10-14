@@ -1,8 +1,8 @@
 package com.qingfeng.clinglibrary.service.manager;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 
+import androidx.annotation.Nullable;
 
 import com.qingfeng.clinglibrary.entity.ClingControlPoint;
 import com.qingfeng.clinglibrary.entity.ClingDevice;

@@ -1,6 +1,6 @@
 package com.qingfeng.clinglibrary.control;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.qingfeng.clinglibrary.control.callback.ControlCallback;
 import com.qingfeng.clinglibrary.control.callback.ControlReceiveCallback;

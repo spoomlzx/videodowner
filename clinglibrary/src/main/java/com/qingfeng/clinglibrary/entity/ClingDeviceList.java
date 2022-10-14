@@ -1,7 +1,6 @@
 package com.qingfeng.clinglibrary.entity;
 
-import android.support.annotation.Nullable;
-
+import androidx.annotation.Nullable;
 
 import com.qingfeng.clinglibrary.util.Utils;
 
