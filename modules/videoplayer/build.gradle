@@ -35,10 +35,10 @@ dependencies {
 
     implementation 'com.elvishew:xlog:1.10.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    api 'com.github.hty527.iPlayer:iplayer:2.1.1'
+    //api 'com.github.hty527.iPlayer:iplayer:2.1.1'
 
     // 临时引入包，修改BasePlayer 方便布局预览
-    //api project(':iplayer')
+    api project(':modules:iplayer')
 
     //EXO解码器
     api 'com.google.android.exoplayer:exoplayer:2.18.1'
@@ -50,7 +50,7 @@ dependencies {
 
     implementation 'com.github.li-xiaojun:XPopup:2.9.2'
 
-    implementation project(':clinglibrary')
+    implementation project(':modules:clinglibrary')
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'com.google.android.material:material:1.6.1'
