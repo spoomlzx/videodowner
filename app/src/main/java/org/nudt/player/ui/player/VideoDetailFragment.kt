@@ -14,7 +14,7 @@ import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.utils.CommonUtil
-import org.nudt.player.utils.SLog
+import org.nudt.common.SLog
 
 class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
 

@@ -5,7 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.model.Video
-import org.nudt.player.utils.SLog
+import org.nudt.common.SLog
 
 class VideoSearchPagingSource(val app: Application, private val db: VideoDb, private val keyword: String) :
     PagingSource<Int, Video>() {

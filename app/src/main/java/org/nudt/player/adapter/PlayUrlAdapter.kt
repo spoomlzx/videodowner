@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.databinding.PlayUrlListItemBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.SLog
+import org.nudt.common.SLog
 
 class PlayUrlAdapter(private val videoViewModel: VideoViewModel) : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() {
 

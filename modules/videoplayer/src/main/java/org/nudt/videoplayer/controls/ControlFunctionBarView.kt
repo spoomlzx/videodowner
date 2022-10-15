@@ -13,7 +13,6 @@ import com.android.iplayer.media.IMediaPlayer
 import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
 import com.android.iplayer.utils.PlayerUtils
-import com.elvishew.xlog.XLog
 import org.nudt.videoplayer.BaseControlWidget
 import org.nudt.videoplayer.R
 import org.nudt.videoplayer.databinding.PlayerControlFunctionbarBinding
@@ -140,10 +139,10 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
                 reStartDelayedRunnable()
             }
             binding.controllerCurrentSpeed -> {
-                XLog.d("speed press")
+                //XLog.d("speed press")
             }
             binding.controllerTotalList -> {
-                XLog.d("list press")
+                //XLog.d("list press")
             }
         }
     }

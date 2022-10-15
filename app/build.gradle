@@ -58,6 +58,7 @@ dependencies {
 
     implementation project(':modules:videoplayer')
     implementation project(':modules:downloader')
+    implementation project(':modules:common')
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
@@ -124,8 +125,6 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
     testImplementation "androidx.paging:paging-common:$paging_version"
     implementation "androidx.paging:paging-rxjava3:$paging_version"
-
-    implementation 'com.elvishew:xlog:1.10.1'
 
     // test
     testImplementation 'junit:junit:4.13.2'

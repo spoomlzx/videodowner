@@ -12,9 +12,6 @@ import com.android.iplayer.controller.ControlWrapper;
 import com.android.iplayer.interfaces.IControllerView;
 import com.android.iplayer.interfaces.IVideoController;
 import com.android.iplayer.model.PlayerState;
-import com.elvishew.xlog.LogConfiguration;
-import com.elvishew.xlog.LogLevel;
-import com.elvishew.xlog.XLog;
 
 /**
  * created by hty
@@ -44,9 +41,6 @@ public abstract class BaseControlWidget extends FrameLayout implements IControll
         super(context, attrs, defStyleAttr);
         initBinding();
         initViews();
-
-
-        XLog.init(new LogConfiguration.Builder().logLevel(LogLevel.DEBUG).tag("widgetLog").build());
     }
 
     public abstract void initBinding();

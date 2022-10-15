@@ -10,7 +10,6 @@ import com.android.iplayer.controller.VideoController
 import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.listener.OnPlayerEventListener
 import com.android.iplayer.media.IMediaPlayer
-import com.elvishew.xlog.XLog
 import com.lxj.xpopup.XPopup
 import org.nudt.videoplayer.controls.*
 import org.nudt.videoplayer.media.ExoPlayerFactory
@@ -51,11 +50,11 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
             }
 
             override fun onWindow() {
-                XLog.d("onWindow")
+                //XLog.d("onWindow")
             }
 
             override fun onMenu() {
-                XLog.d("onMenu")
+                //XLog.d("onMenu")
             }
         })
 

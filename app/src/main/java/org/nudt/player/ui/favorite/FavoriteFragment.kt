@@ -14,7 +14,6 @@ import org.nudt.player.R
 import org.nudt.player.adapter.FavoriteAdapter
 import org.nudt.player.databinding.FragmentFavoriteBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.SLog
 
 class FavoriteFragment : Fragment() {
 

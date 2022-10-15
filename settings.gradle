@@ -20,6 +20,6 @@ dependencyResolutionManagement {
 rootProject.name = "videodowner"
 include ':app'
 include 'modules:videoplayer'
-include 'modules:iplayer'
 include 'modules:downloader'
 include 'modules:clinglibrary'
+include ':modules:common'

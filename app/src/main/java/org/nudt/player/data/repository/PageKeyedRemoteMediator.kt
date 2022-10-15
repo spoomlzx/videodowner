@@ -5,7 +5,6 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import com.elvishew.xlog.XLog
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.db.VideoDao
 import org.nudt.player.data.db.VideoDb

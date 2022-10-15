@@ -2,7 +2,7 @@ package org.nudt.player.ui.player
 
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import org.nudt.player.utils.SLog
+import org.nudt.common.SLog
 import org.nudt.videoplayer.VideoPlayer
 
 open class BasePlayerActivity : AppCompatActivity() {

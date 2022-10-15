@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import org.nudt.player.R
 import org.nudt.player.adapter.DownloadedAdapter
 import org.nudt.player.databinding.FragmentDownloadBinding
-import org.nudt.player.utils.SLog
+import org.nudt.common.SLog
 
 class DownloadFragment : Fragment() {
     private val binding by lazy { FragmentDownloadBinding.inflate(layoutInflater) }

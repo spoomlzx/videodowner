@@ -5,12 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.player.R
-import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.databinding.FragmentCommentBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.SLog
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"

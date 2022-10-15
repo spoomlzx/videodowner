@@ -1,5 +1,7 @@
 package org.nudt.player.utils
 
+import org.nudt.common.Preference
+
 object SpUtils {
     private const val API_BASE_URL = "API_BASE_URL"
     private const val PIC_BASE_URL = "PIC_BASE_URL"

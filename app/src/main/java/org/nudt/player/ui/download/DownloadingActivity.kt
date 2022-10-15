@@ -5,17 +5,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.gson.Gson
 import com.jeffmony.downloader.VideoDownloadManager
 import com.jeffmony.downloader.listener.DownloadListener
 import com.jeffmony.downloader.listener.IDownloadInfosCallback
 import com.jeffmony.downloader.model.VideoTaskItem
 import kotlinx.coroutines.launch
+import org.nudt.common.SLog
 import org.nudt.player.BaseApplication
 import org.nudt.player.R
 import org.nudt.player.adapter.DownloadingAdapter
 import org.nudt.player.databinding.ActivityDownloadingBinding
-import org.nudt.player.utils.SLog
 
 class DownloadingActivity : AppCompatActivity() {
     private val binding by lazy { ActivityDownloadingBinding.inflate(layoutInflater) }
