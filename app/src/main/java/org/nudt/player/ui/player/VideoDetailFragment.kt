@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.nudt.common.CommonUtil
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.CommonUtil
 import org.nudt.common.SLog
 
 class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {

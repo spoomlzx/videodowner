@@ -50,7 +50,7 @@ dependencies {
     def koin_version = "3.2.0"
     def lifecycle_version = "2.4.1"
     def room_version = "2.5.0-alpha02"
-    def coroutinesVersion = "1.6.1"
+    def coroutinesVersion = "1.6.4"
     def paging_version = "3.1.1"
     def nav_version = "2.3.5"
     def lottieVersion = "5.2.0"
@@ -65,48 +65,14 @@ dependencies {
     implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.3.0'
     implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
 
-    implementation 'com.tencent:mmkv:1.2.13'
-
     implementation "io.insert-koin:koin-android:$koin_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
 
-    // base dependency
-    implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'com.google.android.material:material:1.6.1'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
-    implementation "androidx.activity:activity:1.4.0"
-    implementation "androidx.fragment:fragment-ktx:1.4.1"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation "androidx.cardview:cardview:1.0.0"
-    implementation "androidx.viewpager2:viewpager2:1.0.0"
-    implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    implementation "androidx.drawerlayout:drawerlayout:1.1.1"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-
-    // request permission
-    implementation 'com.github.tbruyelle:rxpermissions:0.12'
-
-
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.13.1'
     kapt 'com.github.bumptech.glide:compiler:4.13.1'
-
-    //RxJava
-    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
-    implementation 'io.reactivex.rxjava3:rxjava:3.1.4'
-
-    // Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
@@ -122,8 +88,8 @@ dependencies {
     implementation "androidx.room:room-paging:$room_version"
 
     // paging
-    implementation "androidx.paging:paging-runtime:$paging_version"
-    testImplementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
     implementation "androidx.paging:paging-rxjava3:$paging_version"
 
     // test

@@ -11,8 +11,7 @@ import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.CommonUtil
-import org.nudt.common.SLog
+import org.nudt.player.utils.VideoUtil
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -33,7 +32,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             Toast.makeText(this@OnlinePlayerActivity, "视频数据错误", Toast.LENGTH_SHORT).show()
             return
         } else {
-            val playUrlList = CommonUtil.convertPlayUrlList(video.vod_play_url)
+            val playUrlList = VideoUtil.convertPlayUrlList(video.vod_play_url)
             // 直接播放第一集
             player.setTitle(video.vod_name)
             player.setPlayUrl(playUrlList[0].url)
