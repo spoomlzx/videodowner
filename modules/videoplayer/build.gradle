@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 26
+        minSdk 25
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -33,7 +33,8 @@ android {
 
 dependencies {
     implementation project(':modules:common')
-    implementation project(':modules:clinglibrary')
+    //implementation project(':modules:clinglibrary')
+    implementation 'com.gitee.spoomlan.talentmov-master:clinglibrary:1.0.1'
 
     //api 'com.github.hty527.iPlayer:iplayer:2.1.1'
     // 临时引入包，修改BasePlayer 方便布局预览
