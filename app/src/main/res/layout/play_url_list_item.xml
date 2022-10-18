@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/playing" />
+        app:lottie_rawRes="@raw/video_playing" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

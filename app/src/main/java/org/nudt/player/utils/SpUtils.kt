@@ -9,7 +9,7 @@ object SpUtils {
 
     private const val isDebug = true
 
-    private var Ip = if (isDebug) "192.168.48.1" else "192.168.3.74:81"
+    private var Ip = if (isDebug) "192.168.3.8" else "192.168.3.74:81"
 
     var baseUrl by Preference(API_BASE_URL, "http://$Ip/app/public/")
 
