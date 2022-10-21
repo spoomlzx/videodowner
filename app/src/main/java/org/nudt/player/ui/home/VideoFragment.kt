@@ -46,15 +46,16 @@ class VideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         type = requireArguments().getInt(TYPE_PARAM)
         lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collect { loadStates ->
+                //根据刷新状态来通知swipeRefreshLayout是否刷新完毕
+                binding.swipeRefreshLayout.isRefreshing = loadStates.mediator?.refresh is LoadState.Loading
+            }
+        }
+
+        lifecycleScope.launchWhenCreated {
             // 更新页面数据
             videoViewModel.bindHomePage(type).collectLatest {
                 adapter.submitData(it)
-            }
-
-            adapter.loadStateFlow.collect {
-                SLog.d("refresh state: ${it.refresh}")
-                //根据刷新状态来通知swipeRefreshLayout是否刷新完毕
-                binding.swipeRefreshLayout.isRefreshing = it.mediator?.refresh is LoadState.Loading
             }
         }
 
