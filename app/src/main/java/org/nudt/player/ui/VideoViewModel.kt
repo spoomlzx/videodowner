@@ -24,26 +24,7 @@ import java.util.regex.Pattern
 
 class VideoViewModel(private val app: Application, private val db: VideoDb, private val videoApi: VideoApi) : ViewModel() {
 
-
-    val vodInfo = MutableLiveData<VodInfoModel>()
-    val currentPlayUrl = MutableLiveData<PlayUrl>()
     private val favor = MutableLiveData<Boolean>()
-
-    fun setVodInfo(vod: VodInfoModel) {
-        vodInfo.postValue(vod)
-    }
-
-    fun setPlayUrl(playUrl: PlayUrl) {
-        currentPlayUrl.value = playUrl
-    }
-
-    fun setFavor(favor: Boolean) {
-        this.favor.value = favor
-    }
-
-    fun getFavor(): MutableLiveData<Boolean> {
-        return favor
-    }
 
     @OptIn(ExperimentalPagingApi::class)
     fun bindHomePage(type: Int) = Pager(config = pagingConfig, remoteMediator = PageKeyedRemoteMediator(db, videoApi, type)) {
@@ -59,14 +40,24 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
     }).flow.cachedIn(viewModelScope)
 
 
+    fun setFavor(favor: Boolean) {
+        this.favor.value = favor
+    }
+
+    fun getFavor(): MutableLiveData<Boolean> {
+        return favor
+    }
+
     /**
      * 修改收藏状态
+     * todo 修改收藏的实现方式，单独一个表保存收藏的视频信息
      */
     fun changeFavor() {
         viewModelScope.launch {
-            val result = !favor.value!!
-            vodInfo.value?.let { db.videoDao().updateFavor(result, it.vod_id) }
-            favor.value = result
+//            val result = if (favor.value != null) !favor.value!! else true
+//
+//            vodInfo.value?.let { db.videoDao().updateFavor(result, it.vod_id) }
+//            favor.value = result
         }
     }
 

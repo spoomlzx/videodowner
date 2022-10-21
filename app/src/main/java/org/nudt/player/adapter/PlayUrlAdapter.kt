@@ -3,16 +3,15 @@ package org.nudt.player.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import org.nudt.common.SLog
 import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.databinding.PlayUrlListItemBinding
-import org.nudt.player.ui.VideoViewModel
-import org.nudt.common.SLog
+import org.nudt.player.ui.player.PlayerViewModel
 
-class PlayUrlAdapter(private val videoViewModel: VideoViewModel) : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() {
+class PlayUrlAdapter(private val playerViewModel: PlayerViewModel) : RecyclerView.Adapter<PlayUrlAdapter.PlayUrlViewHolder>() {
 
-    private var playUrlList: List<PlayUrl> = ArrayList<PlayUrl>()
+    private var playUrlList: List<PlayUrl> = ArrayList()
 
     private var currentPosition: Int = 0
 
@@ -32,8 +31,8 @@ class PlayUrlAdapter(private val videoViewModel: VideoViewModel) : RecyclerView.
         holder.binding.tvPlayUrlIndex.setOnClickListener {
             currentPosition = holder.bindingAdapterPosition
             SLog.d("current index: $currentPosition && play url: $playUrl")
-            notifyDataSetChanged();
-            videoViewModel.setPlayUrl(playUrl)
+            notifyDataSetChanged()
+            playerViewModel.setPlayUrl(playUrl)
         }
     }
 

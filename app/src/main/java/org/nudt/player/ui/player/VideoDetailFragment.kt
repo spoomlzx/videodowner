@@ -1,5 +1,6 @@
 package org.nudt.player.ui.player
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.PlayUrl
@@ -15,10 +17,13 @@ import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.common.SLog
+import org.nudt.player.data.model.Video
 
-class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
+class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragment() {
 
     private val binding by lazy { FragmentVideoDetailBinding.inflate(layoutInflater) }
+
+    private val videoViewModel: VideoViewModel by viewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return binding.root
@@ -29,13 +34,13 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
 
         initClickListener()
         // 监听viewModel中的vidInfoModel，更新详情信息
-        viewModel.vodInfo.observe(viewLifecycleOwner) {
+        playerViewModel.vodInfo.observe(viewLifecycleOwner) {
             SLog.d("vodInfo: in detail " + it.vod_name)
             initVideoDetail(it)
             initPlayUrlList(it.playUrlList)
         }
 
-        viewModel.getFavor().observe(viewLifecycleOwner) {
+        videoViewModel.getFavor().observe(viewLifecycleOwner) {
             binding.btnFavor.isSelected = it
         }
     }
@@ -87,7 +92,7 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvVodList.layoutManager = linearLayoutManager
 
-        val adapter = PlayUrlAdapter(viewModel)
+        val adapter = PlayUrlAdapter(playerViewModel)
         adapter.setPlayUrlList(playUrlList)
 
         binding.rvVodList.adapter = adapter
@@ -136,7 +141,11 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
         }
         // 收藏图标变换状态
         binding.btnFavor.setOnClickListener {
-            viewModel.changeFavor()
+            videoViewModel.changeFavor()
+        }
+
+        binding.btnShare.setOnClickListener {
+
         }
 
         //todo 对应多地址的下载进行修改

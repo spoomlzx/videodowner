@@ -40,15 +40,16 @@ class VideoPagingAdapter(private val context: Context, private val videoViewMode
                 context.startActivity(intent)
             }
 
-            holder.binding.cvVideo.setOnLongClickListener {
-                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("删除视频").setPositiveButton("删除") { dialog, id ->
-                    videoViewModel.removeVideo(video)
-                }.setNegativeButton("取消") { _, _ ->
-                    // User cancelled the dialog
-                }.create()
-                dialog.show()
-                true
-            }
+            // 客户端关闭删除功能，仅用于测试
+//            holder.binding.cvVideo.setOnLongClickListener {
+//                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("删除视频").setPositiveButton("删除") { dialog, id ->
+//                    videoViewModel.removeVideo(video)
+//                }.setNegativeButton("取消") { _, _ ->
+//                    // User cancelled the dialog
+//                }.create()
+//                dialog.show()
+//                true
+//            }
         }
 
     }
