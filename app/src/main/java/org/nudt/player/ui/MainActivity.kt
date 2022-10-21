@@ -14,17 +14,18 @@ import org.nudt.player.ui.download.DownloadFragment
 import org.nudt.player.ui.favorite.FavoriteFragment
 import org.nudt.player.ui.history.HistoryFragment
 import org.nudt.player.ui.home.HomeFragment
+import org.nudt.player.ui.mine.MineFragment
 
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val fragments: ArrayList<Fragment> = arrayListOf()
-    private val tabText = arrayOf("首页", "收藏", "下载", "拉取")
+    private val tabText = arrayOf("首页", "发现", "我的")
     private val normalIcon =
-        intArrayOf(R.drawable.vector_home_n, R.drawable.vector_favorite_n, R.drawable.vector_download_n, R.drawable.vector_history_n)
+        intArrayOf(R.drawable.ic_vector_tab_bar_home_default, R.drawable.ic_vector_tab_bar_moments_default, R.drawable.ic_vector_tab_bar_mine_default)
     private val selectedIcon =
-        intArrayOf(R.drawable.vector_home, R.drawable.vector_favorite, R.drawable.vector_download, R.drawable.vector_history)
+        intArrayOf(R.drawable.ic_vector_tab_bar_home_selected, R.drawable.ic_vector_tab_bar_moments_selected, R.drawable.ic_vector_tab_bar_mine_selected)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +44,7 @@ class MainActivity : AppCompatActivity() {
     private fun initNavigation() {
         fragments.add(HomeFragment())
         fragments.add(FavoriteFragment())
-        fragments.add(DownloadFragment())
-        fragments.add(HistoryFragment())
+        fragments.add(MineFragment())
 
         // 设置页面底部导航栏
         binding.enbMain.titleItems(tabText)

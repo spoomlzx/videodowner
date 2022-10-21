@@ -75,4 +75,9 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             tab.text = tabTitles[position]
         }.attach()
     }
+
+    override fun onDestroy() {
+
+        super.onDestroy()
+    }
 }

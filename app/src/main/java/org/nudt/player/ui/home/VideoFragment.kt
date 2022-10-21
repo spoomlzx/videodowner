@@ -9,8 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChangedBy
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.nudt.common.SLog
 import org.nudt.player.adapter.VideoPagingAdapter
 import org.nudt.player.databinding.FragmentVideoBinding
 import org.nudt.player.ui.VideoViewModel
@@ -43,6 +46,10 @@ class VideoFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         type = requireArguments().getInt(TYPE_PARAM)
 
+
+    }
+
+    override fun onResume() {
         lifecycleScope.launchWhenCreated {
             // 更新页面数据
             videoViewModel.bindHomePage(type).collectLatest {
@@ -50,10 +57,12 @@ class VideoFragment : Fragment() {
             }
 
             adapter.loadStateFlow.collect {
-                //根据刷新状态来通知swiprefreshLayout是否刷新完毕
-                binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
+                SLog.d("refresh state: ${it.refresh}")
+                //根据刷新状态来通知swipeRefreshLayout是否刷新完毕
+                binding.swipeRefreshLayout.isRefreshing = it.mediator?.refresh is LoadState.Loading
             }
         }
+        super.onResume()
     }
 
     companion object {

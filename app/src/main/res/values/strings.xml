@@ -1,9 +1,9 @@
 <resources>
 
     <string-array name="sections">
-        <!--        <item>@string/section_movie</item>-->
-        <!--        <item>@string/section_tv</item>-->
-        <!--        <item>@string/section_comic</item>-->
+        <item>@string/section_movie</item>
+        <item>@string/section_tv</item>
+        <item>@string/section_comic</item>
         <item>@string/section_variety</item>
     </string-array>
 
@@ -17,12 +17,17 @@
     <string name="section_face">露脸</string>
     <string name="section_cn">中文</string>
 
-    <!--    drawer navigation title-->
-    <string name="main_nav_home">首页</string>
-    <string name="main_nav_history">历史记录</string>
+    <!--    mine page-->
+    <string name="mine_nav_history">观看历史</string>
+    <string name="mine_nav_download">离线缓存</string>
     <string name="main_nav_download">下载管理</string>
     <string name="main_nav_favorite">我的收藏</string>
     <string name="main_nav_replay">稍后再看</string>
+
+
+    <!--    drawer navigation title-->
+    <string name="main_nav_home">首页</string>
+
     <string name="main_nav_theme">主题</string>
     <string name="main_nav_upload">上传</string>
     <string name="main_nav_config">设置</string>

@@ -161,16 +161,4 @@ class VideoDetailFragment(val viewModel: VideoViewModel) : Fragment() {
 //            }
 //        }
     }
-
-    abstract class OnDetailListener {
-        /**
-         * 切换视频
-         */
-        open fun switchPlayUrl(url: String) {}
-
-        /**
-         * 播放指定视频
-         */
-        open fun playVideo(title: String, url: String) {}
-    }
 }

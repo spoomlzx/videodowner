@@ -58,8 +58,9 @@
     <dimen name="video_cover_width">120dp</dimen>
     <dimen name="video_cover_height">72dp</dimen>
 
-
+    <dimen name="icon_smaller">12dp</dimen>
     <dimen name="icon_small">16dp</dimen>
+    <dimen name="icon_normal">18dp</dimen>
 
     <dimen name="divider_height">1dp</dimen>
 </resources>
