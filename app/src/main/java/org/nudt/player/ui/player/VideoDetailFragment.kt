@@ -61,7 +61,7 @@ class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragme
             val bottomSheetDescription: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetDescription)
             //设置默认先隐藏
             bottomSheetDescription.state = BottomSheetBehavior.STATE_HIDDEN
-            val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 251f)
+            val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 240f)
             bottomSheetDescription.maxHeight = height
             bottomSheetDescription.peekHeight = height
             binding.tvVodDesc.setOnClickListener {
@@ -115,7 +115,7 @@ class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragme
         val bottomSheetPlayUrlList: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetAllVod)
         //设置默认先隐藏
         bottomSheetPlayUrlList.state = BottomSheetBehavior.STATE_HIDDEN
-        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 251f)
+        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 240f)
         bottomSheetPlayUrlList.maxHeight = height
         bottomSheetPlayUrlList.peekHeight = height
         binding.tvVodAll.setOnClickListener {

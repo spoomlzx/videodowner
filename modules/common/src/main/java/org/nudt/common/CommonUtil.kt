@@ -40,4 +40,8 @@ object CommonUtil {
         return (dipValue * scale + 0.5f).toInt()
     }
 
+    fun pxToDpInt(context: Context, pxValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (pxValue / scale + 0.5f).toInt()
+    }
 }

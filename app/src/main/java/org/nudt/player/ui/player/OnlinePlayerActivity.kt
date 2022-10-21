@@ -1,12 +1,15 @@
 package org.nudt.player.ui.player
 
 import android.os.Bundle
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import org.nudt.common.CommonUtil
+import org.nudt.common.SLog
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
@@ -21,8 +24,13 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         val playerViewModel: PlayerViewModel = ViewModelProvider(this)[PlayerViewModel::class.java]
-
+        val width = resources.displayMetrics.widthPixels
+        val height = width * 1080 / 1920
+        // 设置video player 的比例为 1920:1080
+        val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
+        binding.videoPlayer.layoutParams = params
         initPlayer(binding.videoPlayer)
+        SLog.d("width: ${CommonUtil.pxToDpInt(this, width.toFloat())}   height: ${CommonUtil.pxToDpInt(this, height.toFloat())}")
 
         val video = intent.getParcelableExtra<Video>("video")
         if (video == null) {
