@@ -44,15 +44,20 @@ class PageKeyedRemoteMediator(
             }
             // 如果pagekey为空，则从第一页开始加载
             val page = pageKey ?: 1
-            val videos = videoApi.getVideoList(
+            val data = videoApi.getVideoList(
                 type, page, limit = when (loadType) {
                     LoadType.REFRESH -> state.config.initialLoadSize
                     else -> state.config.pageSize
                 }
             ).Data
 
+            val videos = data.items
+            val retPage = data.page
+            val retPageSize = data.pageSize
+            val retTotal = data.total
+
             // 如果未加载到数据或加载的数据不满一页，说明已经没有更多了
-            val endOfPaginationReached = videos.isEmpty() || videos.size < state.config.pageSize
+            val endOfPaginationReached = retPage * retPageSize >= retTotal
 
             db.withTransaction {
                 // 更新时删除所有数据和key

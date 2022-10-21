@@ -45,11 +45,6 @@ class VideoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         type = requireArguments().getInt(TYPE_PARAM)
-
-
-    }
-
-    override fun onResume() {
         lifecycleScope.launchWhenCreated {
             // 更新页面数据
             videoViewModel.bindHomePage(type).collectLatest {
@@ -62,7 +57,7 @@ class VideoFragment : Fragment() {
                 binding.swipeRefreshLayout.isRefreshing = it.mediator?.refresh is LoadState.Loading
             }
         }
-        super.onResume()
+
     }
 
     companion object {

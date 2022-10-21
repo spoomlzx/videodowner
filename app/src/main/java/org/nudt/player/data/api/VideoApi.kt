@@ -19,8 +19,14 @@ interface VideoApi {
         @Query("type") type: Int,
         @Query("page") page: Int,
         @Query("limit") limit: Int
-    ): ResponseData<List<Video>>
+    ): ResponseData<ListBean<Video>>
 
+    class ListBean<T>(
+        val total: Int,
+        val page: Int,
+        val pageSize: Int,
+        val items: List<T>
+    )
 
     class ResponseData<T>(
         val Msg: String,
