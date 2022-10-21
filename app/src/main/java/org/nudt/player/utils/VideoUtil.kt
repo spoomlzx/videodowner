@@ -1,9 +1,8 @@
 package org.nudt.player.utils
 
-import android.content.Context
-import org.nudt.player.data.model.PlayUrl
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+
+import org.nudt.player.data.model.VodInfoModel.PlayUrl
+
 
 object VideoUtil {
     /**

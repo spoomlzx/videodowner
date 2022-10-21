@@ -2,7 +2,7 @@ package org.nudt.player.ui.player
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.nudt.player.data.model.PlayUrl
+import org.nudt.player.data.model.VodInfoModel.PlayUrl
 import org.nudt.player.data.model.VodInfoModel
 
 class PlayerViewModel :ViewModel() {

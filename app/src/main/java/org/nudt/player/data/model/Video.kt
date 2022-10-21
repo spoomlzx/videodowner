@@ -23,8 +23,10 @@ data class Video(
     var vod_class: String,
     var vod_content: String?,
     var vod_area: String,
+    var vod_lang: String?,
     var vod_year: Int,
     var vod_score: String?,
+    var vod_time: Int,
+    var vod_time_add: Int,
     var vod_play_url: String,
-    var favor: Boolean = false,
 ) : Parcelable {}

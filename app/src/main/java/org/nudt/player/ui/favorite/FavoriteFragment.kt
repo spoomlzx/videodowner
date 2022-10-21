@@ -44,7 +44,7 @@ class FavoriteFragment : Fragment() {
 
     private fun observeData() {
         lifecycleScope.launch {
-            videoViewModel.getFavoriteVideos().collectLatest {
+            videoViewModel.getFavoriteVideos()?.collectLatest {
                 adapter.updateFavoriteList(it)
                 binding.swipeRefreshLayout.isRefreshing = false
             }

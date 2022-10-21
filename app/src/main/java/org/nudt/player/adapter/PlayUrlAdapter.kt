@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import org.nudt.common.SLog
-import org.nudt.player.data.model.PlayUrl
+import org.nudt.player.data.model.VodInfoModel.PlayUrl
 import org.nudt.player.databinding.PlayUrlListItemBinding
 import org.nudt.player.ui.player.PlayerViewModel
 

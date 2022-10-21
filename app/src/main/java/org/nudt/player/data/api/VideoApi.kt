@@ -21,6 +21,8 @@ interface VideoApi {
         @Query("limit") limit: Int
     ): ResponseData<ListBean<Video>>
 
+    suspend fun getVideoById(@Query("id") id: Int): ResponseData<Video>
+
     class ListBean<T>(
         val total: Int,
         val page: Int,

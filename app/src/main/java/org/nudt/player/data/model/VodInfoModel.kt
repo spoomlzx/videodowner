@@ -1,5 +1,7 @@
 package org.nudt.player.data.model
 
+import org.nudt.player.utils.VideoUtil
+
 data class VodInfoModel(
 
     var vod_id: Int,
@@ -13,8 +15,27 @@ data class VodInfoModel(
     var vod_class: String,
     var vod_content: String?,
     var vod_area: String,
+    var vod_lang: String?,
     var vod_year: Int,
     var vod_score: String?,
-
+    var vod_time: Int,
+    var vod_time_add: Int,
     var playUrlList: ArrayList<PlayUrl>
-)
+) {
+    data class PlayUrl(
+        var name: String,
+        var url: String
+    )
+
+    companion object {
+        fun fromVideo(video: Video): VodInfoModel {
+            return video.run {
+                val playUrlList = VideoUtil.convertPlayUrlList(vod_play_url)
+                VodInfoModel(
+                    vod_id, type_id, type_pid, vod_name, vod_actor, vod_director, vod_pic, vod_remarks, vod_class,
+                    vod_content, vod_area, vod_lang, vod_year, vod_score, vod_time, vod_time_add, playUrlList
+                )
+            }
+        }
+    }
+}

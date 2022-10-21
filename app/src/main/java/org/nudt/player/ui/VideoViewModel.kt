@@ -13,13 +13,8 @@ import kotlinx.coroutines.launch
 import org.nudt.player.adapter.VideoSearchPagingSource
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.db.VideoDb
-import org.nudt.player.data.model.PlayUrl
 import org.nudt.player.data.model.Video
-import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.data.repository.PageKeyedRemoteMediator
-import org.nudt.player.utils.SpUtils
-import java.util.concurrent.TimeUnit
-import java.util.regex.Pattern
 
 
 class VideoViewModel(private val app: Application, private val db: VideoDb, private val videoApi: VideoApi) : ViewModel() {
@@ -70,8 +65,9 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
     /**
      * 获取收藏的video list
      */
-    fun getFavoriteVideos(): Flow<MutableList<Video>> {
-        return db.videoDao().getFavoriteVideos()
+    fun getFavoriteVideos(): Flow<MutableList<Video>>? {
+        //return db.videoDao().getFavoriteVideos()
+        return null
     }
 
     private val pagingConfig = PagingConfig(
