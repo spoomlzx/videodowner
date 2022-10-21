@@ -11,24 +11,24 @@ import org.nudt.player.databinding.FragmentCommentBinding
 
 private const val ARG_PARAM1 = "param1"
 
-class CommentFragment(val playerViewModel: PlayerViewModel) : Fragment() {
-    private var param1: Video? = null
+class CommentFragment : Fragment() {
+    private var param1: Int = 0
 
     private val binding by lazy { FragmentCommentBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getParcelable(ARG_PARAM1)
+            param1 = it.getInt(ARG_PARAM1)
         }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding.tvContent.text = param1?.vod_name ?: ""
+        binding.tvContent.text = param1.toString()
 
         binding.button.setOnClickListener {
             val intent = Intent(context, OnlinePlayerActivity::class.java)
-            intent.putExtra("video", param1)
+            intent.putExtra("vodId", param1)
             context?.startActivity(intent)
         }
 
@@ -37,10 +37,10 @@ class CommentFragment(val playerViewModel: PlayerViewModel) : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(viewModel: PlayerViewModel, video: Video) =
-            CommentFragment(viewModel).apply {
+        fun newInstance(vodId: Int) =
+            CommentFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, video)
+                    putInt(ARG_PARAM1, vodId)
                 }
             }
     }

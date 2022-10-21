@@ -12,11 +12,20 @@ interface VideoDao {
     @Query("SELECT * FROM video WHERE type_pid = :type")
     fun getVideoList(type: Int): PagingSource<Int, Video>
 
+    @Query("select * from video where vod_id = :vodId")
+    fun getVideoById(vodId: Int): Video?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(videos: List<Video>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(video: Video)
+
     @Query("DELETE FROM video WHERE type_pid = :type")
     suspend fun deleteByType(type: Int)
+
+    @Delete
+    suspend fun removeVideo(video: Video)
 
     /**
      * 搜索视频
@@ -33,6 +42,4 @@ interface VideoDao {
     @Query("select count(*) from video where vod_name like '%' || :keyWord || '%'")
     suspend fun getSearchTotal(keyWord: String): Int
 
-    @Delete
-    suspend fun removeVideo(video: Video)
 }

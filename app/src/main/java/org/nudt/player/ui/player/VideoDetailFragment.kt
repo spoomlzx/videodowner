@@ -1,6 +1,5 @@
 package org.nudt.player.ui.player
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,21 +8,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
+import org.nudt.common.SLog
 import org.nudt.player.adapter.PlayUrlAdapter
-import org.nudt.player.data.model.VodInfoModel.PlayUrl
 import org.nudt.player.data.model.VodInfoModel
+import org.nudt.player.data.model.VodInfoModel.PlayUrl
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
-import org.nudt.common.SLog
-import org.nudt.player.data.model.Video
 
-class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragment() {
+class VideoDetailFragment : Fragment() {
 
     private val binding by lazy { FragmentVideoDetailBinding.inflate(layoutInflater) }
 
     private val videoViewModel: VideoViewModel by viewModel()
+    private val playerViewModel: PlayerViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return binding.root
@@ -40,9 +40,6 @@ class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragme
             initPlayUrlList(it.playUrlList)
         }
 
-        videoViewModel.getFavor().observe(viewLifecycleOwner) {
-            binding.btnFavor.isSelected = it
-        }
     }
 
     /**
@@ -141,7 +138,7 @@ class VideoDetailFragment(private val playerViewModel: PlayerViewModel) : Fragme
         }
         // 收藏图标变换状态
         binding.btnFavor.setOnClickListener {
-            videoViewModel.changeFavor()
+
         }
 
         binding.btnShare.setOnClickListener {

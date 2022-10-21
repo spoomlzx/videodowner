@@ -37,7 +37,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
 
             holder.binding.cvVideo.setOnLongClickListener {
                 val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
-                    videoViewModel.changeFavor()
+                    //videoViewModel.changeFavor()
                 }.setNegativeButton("取消") { _, _ ->
                     // User cancelled the dialog
                 }.create()

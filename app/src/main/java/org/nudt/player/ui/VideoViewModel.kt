@@ -3,23 +3,26 @@ package org.nudt.player.ui
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.nudt.player.adapter.VideoSearchPagingSource
 import org.nudt.player.data.api.VideoApi
+import org.nudt.player.data.api.doSuccess
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.model.Video
+import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.data.repository.PageKeyedRemoteMediator
+import org.nudt.player.data.repository.VideoRepository
 
 
 class VideoViewModel(private val app: Application, private val db: VideoDb, private val videoApi: VideoApi) : ViewModel() {
-
-    private val favor = MutableLiveData<Boolean>()
 
     @OptIn(ExperimentalPagingApi::class)
     fun bindHomePage(type: Int) = Pager(config = pagingConfig, remoteMediator = PageKeyedRemoteMediator(db, videoApi, type)) {
@@ -33,28 +36,6 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
     ), pagingSourceFactory = {
         VideoSearchPagingSource(app, db, keyWord)
     }).flow.cachedIn(viewModelScope)
-
-
-    fun setFavor(favor: Boolean) {
-        this.favor.value = favor
-    }
-
-    fun getFavor(): MutableLiveData<Boolean> {
-        return favor
-    }
-
-    /**
-     * 修改收藏状态
-     * todo 修改收藏的实现方式，单独一个表保存收藏的视频信息
-     */
-    fun changeFavor() {
-        viewModelScope.launch {
-//            val result = if (favor.value != null) !favor.value!! else true
-//
-//            vodInfo.value?.let { db.videoDao().updateFavor(result, it.vod_id) }
-//            favor.value = result
-        }
-    }
 
     fun removeVideo(video: Video) {
         viewModelScope.launch {

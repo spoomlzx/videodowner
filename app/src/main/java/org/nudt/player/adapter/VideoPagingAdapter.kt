@@ -36,7 +36,7 @@ class VideoPagingAdapter(private val context: Context, private val videoViewMode
             Glide.with(context).load(SpUtils.basePicUrl + video.vod_pic).placeholder(R.drawable.default_pic).into(holder.binding.ivVideoPic)
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
-                intent.putExtra("video", video)
+                intent.putExtra("vodId", video.vod_id)
                 context.startActivity(intent)
             }
 
