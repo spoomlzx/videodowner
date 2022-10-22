@@ -8,7 +8,6 @@ import kotlinx.parcelize.Parcelize
 /**
  * 视频基本信息
  */
-@Parcelize
 @Entity(tableName = "video")
 data class Video(
 
@@ -29,4 +28,4 @@ data class Video(
     var vod_time: Int,
     var vod_time_add: Int,
     var vod_play_url: String,
-) : Parcelable {}
+)

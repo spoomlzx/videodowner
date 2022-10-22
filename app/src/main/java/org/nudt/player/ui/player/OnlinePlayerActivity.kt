@@ -86,7 +86,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     }
 
     override fun onDestroy() {
-
+        playerViewModel.savePlayHistory(player.duration, player.currentPosition)
         super.onDestroy()
     }
 }

@@ -21,8 +21,8 @@ val modulePlayer = module {
         VideoRepository(get(), get())
     }
 
-    viewModel{
-        PlayerViewModel(get())
+    viewModel {
+        PlayerViewModel(get(), get())
     }
 
     viewModel {

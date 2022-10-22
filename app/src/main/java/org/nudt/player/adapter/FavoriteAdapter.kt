@@ -31,7 +31,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
 
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
-                intent.putExtra("video", video)
+                intent.putExtra("vodId", video.vod_id)
                 context.startActivity(intent)
             }
 

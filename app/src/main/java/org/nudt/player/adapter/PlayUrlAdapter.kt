@@ -32,7 +32,7 @@ class PlayUrlAdapter(private val playerViewModel: PlayerViewModel) : RecyclerVie
             currentPosition = holder.bindingAdapterPosition
             SLog.d("current index: $currentPosition && play url: $playUrl")
             notifyDataSetChanged()
-            playerViewModel.setPlayUrl(playUrl)
+            playerViewModel.setCurrent(currentPosition, playUrl)
         }
     }
 
