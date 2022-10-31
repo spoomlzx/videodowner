@@ -4,4 +4,6 @@
 
 
 todo:
-1.swipeRefreshLayout的下拉刷新功能，待完善
+1.下载
+2.投屏
+3.

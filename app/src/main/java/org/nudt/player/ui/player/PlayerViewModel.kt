@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.supervisorScope
 import org.nudt.common.SLog
 import org.nudt.player.data.api.doFailure
 import org.nudt.player.data.api.doSuccess
@@ -40,6 +38,7 @@ class PlayerViewModel(private val videoRepository: VideoRepository, private val 
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     fun savePlayHistory(duration: Long, progress: Long) {
         val playHistoryDao = db.playHistoryDao()
         vodInfo.value?.apply {
@@ -47,7 +46,10 @@ class PlayerViewModel(private val videoRepository: VideoRepository, private val 
                 vod_id = vod_id, vod_name = vod_name, vod_pic = vod_pic, vod_remarks = vod_remarks,
                 vod_index = currentIndex.value ?: 0, progress_time = progress, total_duration = duration, last_play_time = System.currentTimeMillis()
             )
-            playHistoryDao.insertHistory(history)
+            GlobalScope.launch {
+                playHistoryDao.insert(history)
+            }
+            //playHistoryDao.insertHistory(history)
         }
     }
 }

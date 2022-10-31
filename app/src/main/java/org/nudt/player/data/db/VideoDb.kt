@@ -4,13 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VideoRemoteKey
 
 @Database(
-    entities = [Video::class, VideoRemoteKey::class, PlayHistory::class],
-    version = 2,
+    entities = [Video::class, VideoRemoteKey::class, PlayHistory::class, FavoriteVideo::class],
+    version = 3,
     exportSchema = false
 )
 abstract class VideoDb : RoomDatabase() {
@@ -33,4 +34,5 @@ abstract class VideoDb : RoomDatabase() {
     abstract fun videoDao(): VideoDao
     abstract fun videoRemoteKeyDao(): VideoRemoteKeyDao
     abstract fun playHistoryDao(): PlayHistoryDao
+    abstract fun favoriteVideoDao(): FavoriteVideoDao
 }
