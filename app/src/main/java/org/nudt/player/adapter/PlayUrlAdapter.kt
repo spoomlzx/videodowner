@@ -13,7 +13,7 @@ class PlayUrlAdapter(private val playerViewModel: PlayerViewModel) : RecyclerVie
 
     private var playUrlList: List<PlayUrl> = ArrayList()
 
-    private var currentPosition: Int = 0
+    private var currentPosition: Int = playerViewModel.currentIndex.value ?: 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayUrlViewHolder {
         return PlayUrlViewHolder(PlayUrlListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -32,7 +32,7 @@ class PlayUrlAdapter(private val playerViewModel: PlayerViewModel) : RecyclerVie
             currentPosition = holder.bindingAdapterPosition
             SLog.d("current index: $currentPosition && play url: $playUrl")
             notifyDataSetChanged()
-            playerViewModel.setCurrent(currentPosition, playUrl)
+            playerViewModel.setCurrent(currentPosition)
         }
     }
 

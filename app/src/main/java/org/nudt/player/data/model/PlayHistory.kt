@@ -1,9 +1,12 @@
 package org.nudt.player.data.model
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "play_history")
+@Entity(tableName = "play_history",
+    indices = [Index(value = ["vod_id", ], unique = true)]
+)
 data class PlayHistory(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,

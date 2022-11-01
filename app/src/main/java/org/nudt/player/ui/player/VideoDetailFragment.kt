@@ -51,7 +51,7 @@ class VideoDetailFragment : Fragment() {
 
 
             binding.tvVodName.text = vod_name
-            binding.tvVodScore.text = vod_score + "分"
+            //tvVodScore.text = vod_score + "分"
             binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
             //binding.tvVideoContent.text = vod_content
 
@@ -94,11 +94,16 @@ class VideoDetailFragment : Fragment() {
 
         binding.rvVodList.adapter = adapter
 
-
         initPlayUrlList()
 
         val gridLayoutManager = GridLayoutManager(context, 6)
         binding.rvVodListAll.layoutManager = gridLayoutManager
+        // 按当前播放history 滚动到指定集数位置
+        playerViewModel.currentIndex.value?.let {
+            binding.rvVodList.smoothScrollToPosition(it)
+        }
+
+
         //binding.rvVodListAll.addItemDecoration(GridItemDecoration())
         binding.rvVodListAll.adapter = adapter
         binding.tvSerialTitle.text = "选集(${playUrlList.size})"

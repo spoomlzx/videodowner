@@ -17,12 +17,12 @@ import org.nudt.player.data.repository.VideoRepository
 
 class PlayerViewModel(private val videoRepository: VideoRepository, private val db: VideoDb) : ViewModel() {
     val vodInfo = MutableLiveData<VodInfoModel>()
-    val currentPlayUrl = MutableLiveData<PlayUrl>()
-    private val currentIndex = MutableLiveData<Int>()
+    val currentIndex = MutableLiveData(0)
 
-    fun setCurrent(newIndex: Int, playUrl: PlayUrl) {
+    val history = MutableLiveData<PlayHistory>()
+
+    fun setCurrent(newIndex: Int) {
         currentIndex.postValue(newIndex)
-        currentPlayUrl.postValue(playUrl)
     }
 
 
@@ -38,7 +38,19 @@ class PlayerViewModel(private val videoRepository: VideoRepository, private val 
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
+    /**
+     * 同步获取播放历史，会早于获取视频信息
+     */
+    fun fetchProgress(vodId: Int) {
+        val playHistoryDao = db.playHistoryDao()
+        val playHistory = playHistoryDao.getHistoryById(vodId)
+        if (playHistory != null) {
+            history.value = playHistory
+            currentIndex.value = playHistory.vod_index
+            SLog.d("get progress: $playHistory")
+        }
+    }
+
     fun savePlayHistory(duration: Long, progress: Long) {
         val playHistoryDao = db.playHistoryDao()
         vodInfo.value?.apply {
@@ -46,10 +58,14 @@ class PlayerViewModel(private val videoRepository: VideoRepository, private val 
                 vod_id = vod_id, vod_name = vod_name, vod_pic = vod_pic, vod_remarks = vod_remarks,
                 vod_index = currentIndex.value ?: 0, progress_time = progress, total_duration = duration, last_play_time = System.currentTimeMillis()
             )
-            GlobalScope.launch {
+//            GlobalScope.launch {
+//                playHistoryDao.insert(history)
+//            }
+            viewModelScope.launch {
+                //SLog.d("save history")
                 playHistoryDao.insert(history)
             }
-            //playHistoryDao.insertHistory(history)
+
         }
     }
 }

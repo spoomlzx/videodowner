@@ -9,19 +9,28 @@ object SpUtils {
 
     private const val isDebug = true
 
-    private var Ip = if (isDebug) "192.168.3.8" else "192.168.3.74:81"
+    //private var Ip = if (isDebug) "192.168.3.8" else "192.168.3.74:81"
 
-    var baseUrl by Preference(API_BASE_URL, "http://$Ip/app/public/")
+    var ip by Preference("IP", "192.168.54.43")
 
-    var basePicUrl by Preference(PIC_BASE_URL, "http://$Ip/")
+    //var baseUrl by Preference(API_BASE_URL, "http://$Ip/app/public/")
+    val baseUrl = "http://$ip/app/public/"
 
-    var baseVideoUrl by Preference(VIDEO_BASE_URL, "http://$Ip")
+    //var basePicUrl by Preference(PIC_BASE_URL, "http://$Ip/")
+    val basePicUrl = "http://$ip/"
+
+    //var baseVideoUrl by Preference(VIDEO_BASE_URL, "http://$Ip")
+    val baseVideoUrl = "http://$ip"
 
     fun removeByKey(key: String) {
         Preference(key, "").removeKey()
     }
 
-    fun removeByKey() {
+    fun removeALlKey() {
         Preference("", "").cleanAllMMKV()
+    }
+
+    fun setValue() {
+        baseUrl
     }
 }

@@ -2,23 +2,14 @@ package org.nudt.player.ui.player
 
 import android.os.Bundle
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
-import org.nudt.player.data.model.Video
-import org.nudt.player.data.model.VodInfoModel
-import org.nudt.player.data.repository.VideoRepository
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
-import org.nudt.player.ui.VideoViewModel
-import org.nudt.player.utils.VideoUtil
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -46,17 +37,28 @@ class OnlinePlayerActivity : BasePlayerActivity() {
 
         playerViewModel.fetchVideoInfo(vodId).observe(this) {
             player.setTitle(it.vod_name)
-            player.setPlayUrl(it.playUrlList[0].url)
+            player.setPlayUrl(it.playUrlList[playerViewModel.currentIndex.value!!].url)
             player.prepareAsync()
+            playerViewModel.history.value?.let { history ->
+                player.seekTo(history.progress_time)
+            }
+            //SLog.d("ready to play ${playerViewModel.progress}")
         }
 
-        // 监听当前play url变化，切换视频
-        playerViewModel.currentPlayUrl.observe(this) {
-            player.onReset()
-            player.setProgressCallBackSpaceMilliss(300)
-            player.setPlayUrl(it.url)
-            player.startPlay()
+
+        // 监听当前play index变化，切换视频
+        playerViewModel.currentIndex.observe(this) {
+            playerViewModel.vodInfo.value?.let { info ->
+                player.onReset()
+                player.setProgressCallBackSpaceMilliss(300)
+                player.setPlayUrl(info.playUrlList[it].url)
+                player.startPlay()
+            }
+
         }
+
+        // 获取当前视频播放历史
+        playerViewModel.fetchProgress(vodId)
 
         initTabLayout()
     }
@@ -85,8 +87,10 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         }.attach()
     }
 
-    override fun onDestroy() {
+    override fun onStop() {
+        SLog.e("stop player")
         playerViewModel.savePlayHistory(player.duration, player.currentPosition)
-        super.onDestroy()
+        super.onStop()
     }
+
 }
