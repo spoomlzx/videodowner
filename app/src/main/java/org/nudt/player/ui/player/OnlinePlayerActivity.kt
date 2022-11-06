@@ -37,6 +37,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
 
         playerViewModel.fetchVideoInfo(vodId).observe(this) {
             player.setTitle(it.vod_name)
+            // 根据history初始化的index进行播放，
             player.setPlayUrl(it.playUrlList[playerViewModel.currentIndex.value!!].url)
             player.prepareAsync()
             playerViewModel.history.value?.let { history ->
@@ -48,6 +49,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
 
         // 监听当前play index变化，切换视频
         playerViewModel.currentIndex.observe(this) {
+            // 获取到视频信息进行播放以后的切换选集操作
             playerViewModel.vodInfo.value?.let { info ->
                 player.onReset()
                 player.setProgressCallBackSpaceMilliss(300)

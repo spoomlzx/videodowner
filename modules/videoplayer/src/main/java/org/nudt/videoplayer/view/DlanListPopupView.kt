@@ -56,6 +56,9 @@ class DlanListPopupView(context: Context, val url: String, val title: String) : 
         val cancel = findViewById<TextView>(R.id.dlan_to_cancel)
         cancel.setOnClickListener {
             dismiss()
+            if (mUpnpServiceConnection != null) {
+                context.unbindService(mUpnpServiceConnection as ServiceConnection)
+            }
         }
 
 
@@ -104,9 +107,6 @@ class DlanListPopupView(context: Context, val url: String, val title: String) : 
 
     override fun dismiss() {
         super.dismiss()
-        if (mUpnpServiceConnection != null) {
-            context.unbindService(mUpnpServiceConnection as ServiceConnection)
-        }
     }
 
 }
