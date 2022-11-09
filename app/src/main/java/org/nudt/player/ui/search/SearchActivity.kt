@@ -88,11 +88,9 @@ class SearchActivity : AppCompatActivity() {
 
         val keyword = binding.etKeyword.text.toString()
         lifecycleScope.launchWhenCreated {
-            launch {
-                // 更新页面数据
-                videoViewModel.bindSearchPage(keyword).collectLatest {
-                    adapter.submitData(it)
-                }
+            // 更新页面数据
+            videoViewModel.bindSearchPage(keyword).collectLatest {
+                adapter.submitData(it)
             }
         }
     }

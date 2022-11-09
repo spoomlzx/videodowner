@@ -17,7 +17,8 @@ import org.nudt.player.ui.VideoViewModel
 
 private const val SOURCE_PARAM = "source_id"
 
-class VideoFragment : Fragment() {
+@Deprecated("暂时不适用")
+class SearchFragment : Fragment() {
     private var source: Int = 1
 
     private val binding by lazy { FragmentVideoBinding.inflate(layoutInflater) }
@@ -56,21 +57,6 @@ class VideoFragment : Fragment() {
                     //根据刷新状态来通知swiprefreshLayout是否刷新完毕
                     binding.swipeRefreshLayout.isRefreshing = it.refresh is LoadState.Loading
                 }
-            }
-        }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param keyWord Parameter 1.
-         * @return A new instance of fragment VideoFragment.
-         */
-        @JvmStatic fun newInstance(source: Int) = VideoFragment().apply {
-            arguments = Bundle().apply {
-                putInt(SOURCE_PARAM, source)
             }
         }
     }

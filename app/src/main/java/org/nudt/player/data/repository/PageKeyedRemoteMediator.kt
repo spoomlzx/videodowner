@@ -46,7 +46,7 @@ class PageKeyedRemoteMediator(
             val page = pageKey ?: 1
             val data = videoApi.getVideoList(
                 type, page, limit = when (loadType) {
-                    LoadType.REFRESH -> state.config.initialLoadSize
+                    LoadType.REFRESH -> state.config.pageSize
                     else -> state.config.pageSize
                 }
             ).Data

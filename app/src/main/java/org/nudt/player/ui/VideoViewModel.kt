@@ -29,12 +29,8 @@ class VideoViewModel(private val app: Application, private val db: VideoDb, priv
         db.videoDao().getVideoList(type)
     }.flow.cachedIn(viewModelScope)
 
-    fun bindSearchPage(keyWord: String) = Pager(config = PagingConfig(
-        initialLoadSize = VideoSearchPagingSource.pageSize,
-        pageSize = VideoSearchPagingSource.pageSize,
-        enablePlaceholders = false
-    ), pagingSourceFactory = {
-        VideoSearchPagingSource(app, db, keyWord)
+    fun bindSearchPage(keyWord: String) = Pager(pagingConfig, pagingSourceFactory = {
+        VideoSearchPagingSource(app, videoApi, keyWord)
     }).flow.cachedIn(viewModelScope)
 
     fun removeVideo(video: Video) {

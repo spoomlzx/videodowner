@@ -15,11 +15,14 @@ import retrofit2.http.Query
 interface VideoApi {
 
     @GET("?service=App.Video.GetVodList")
-    suspend fun getVideoList(
-        @Query("type") type: Int,
-        @Query("page") page: Int,
-        @Query("limit") limit: Int
-    ): ResponseData<ListBean<Video>>
+    suspend fun getVideoList(@Query("type") type: Int, @Query("page") page: Int, @Query("limit") limit: Int): ResponseData<ListBean<Video>>
+
+    /**
+     * 搜索视频api
+     * @param keyword 搜索关键词
+     */
+    @GET("?service=App.Video.SearchVod")
+    suspend fun searchVideoList(@Query("keyword") keyword: String, @Query("page") page: Int, @Query("limit") limit: Int): ResponseData<ListBean<Video>>
 
     @GET("?service=App.Video.getVodById")
     suspend fun getVideoById(@Query("vodId") vodId: Int): ResponseData<Video>
