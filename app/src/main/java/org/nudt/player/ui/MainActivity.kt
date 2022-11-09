@@ -10,9 +10,7 @@ import com.jeffmony.downloader.VideoDownloadManager
 import com.next.easynavigation.view.EasyNavigationBar.OnTabClickListener
 import org.nudt.player.R
 import org.nudt.player.databinding.ActivityMainBinding
-import org.nudt.player.ui.download.DownloadFragment
 import org.nudt.player.ui.favorite.FavoriteFragment
-import org.nudt.player.ui.history.HistoryFragment
 import org.nudt.player.ui.home.HomeFragment
 import org.nudt.player.ui.mine.MineFragment
 
@@ -69,6 +67,8 @@ class MainActivity : AppCompatActivity() {
             .fragmentList(fragments)
             .fragmentManager(supportFragmentManager)
             .navigationHeight(48)
+            .lineHeight(1).lineColor(Color.parseColor("#555555"))
+            .iconSize(22F)
             .tabTextSize(9)
             .build()
     }
