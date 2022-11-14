@@ -20,7 +20,8 @@ data class VodInfoModel(
     var vod_score: String?,
     var vod_time: Int,
     var vod_time_add: Int,
-    var playUrlList: ArrayList<PlayUrl>
+    var playUrlList: ArrayList<PlayUrl>,
+    var history: PlayHistory?
 ) {
     data class PlayUrl(
         var name: String,
@@ -28,12 +29,12 @@ data class VodInfoModel(
     )
 
     companion object {
-        fun fromVideo(video: Video): VodInfoModel {
+        fun fromVideo(video: Video, history: PlayHistory?): VodInfoModel {
             return video.run {
                 val playUrlList = VideoUtil.convertPlayUrlList(vod_play_url)
                 VodInfoModel(
                     vod_id, type_id, type_pid, vod_name, vod_actor, vod_director, vod_pic, vod_remarks, vod_class,
-                    vod_content, vod_area, vod_lang, vod_year, vod_score, vod_time, vod_time_add, playUrlList
+                    vod_content, vod_area, vod_lang, vod_year, vod_score, vod_time, vod_time_add, playUrlList, history
                 )
             }
         }

@@ -1,15 +1,12 @@
 package org.nudt.player.adapter
 
-import android.app.Application
-import androidx.paging.LoadType
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import org.nudt.player.data.db.VideoDb
-import org.nudt.player.data.model.Video
 import org.nudt.common.SLog
 import org.nudt.player.data.api.VideoApi
+import org.nudt.player.data.model.Video
 
-class VideoSearchPagingSource(val app: Application, private val videoApi: VideoApi, private val keyword: String) : PagingSource<Int, Video>() {
+class VideoSearchPagingSource(private val videoApi: VideoApi, private val keyword: String) : PagingSource<Int, Video>() {
     override fun getRefreshKey(state: PagingState<Int, Video>): Int? {
         return null
     }

@@ -38,11 +38,11 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         playerViewModel.fetchVideoInfo(vodId).observe(this) {
             player.setTitle(it.vod_name)
             // 根据history初始化的index进行播放，
-            player.setPlayUrl(it.playUrlList[playerViewModel.currentIndex.value!!].url)
+            var index = 0
+            it.history?.let { history -> index = history.vod_index }
+            player.setPlayUrl(it.playUrlList[index].url)
             player.prepareAsync()
-            playerViewModel.history.value?.let { history ->
-                player.seekTo(history.progress_time)
-            }
+            it.history?.let { history -> player.seekTo(history.progress_time) }
             //SLog.d("ready to play ${playerViewModel.progress}")
         }
 
@@ -58,9 +58,6 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             }
 
         }
-
-        // 获取当前视频播放历史
-        playerViewModel.fetchProgress(vodId)
 
         initTabLayout()
     }

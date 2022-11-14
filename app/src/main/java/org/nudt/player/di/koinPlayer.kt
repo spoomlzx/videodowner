@@ -22,11 +22,11 @@ val modulePlayer = module {
     }
 
     viewModel {
-        PlayerViewModel(get(), get())
+        PlayerViewModel(get())
     }
 
     viewModel {
-        VideoViewModel(get(), get(), get())
+        VideoViewModel(get())
     }
 
     viewModel {
