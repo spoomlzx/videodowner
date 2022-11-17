@@ -13,7 +13,7 @@ data class PlayHistory(
     var vod_id: Int,
     var vod_name: String,
     var vod_pic: String,
-    var vod_remarks: String,
+    var vod_remarks: String?,
     var vod_index: Int,
     var progress_time: Long,
     var total_duration: Long,

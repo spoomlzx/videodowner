@@ -56,7 +56,7 @@
     <string name="sample_long_text">在实际开发中，可能会存在需要先请求A接口，再去请求B接口的情况</string>
 
 
-    <string name="app_name">湘江影视</string>
+    <string name="app_name">长沙影视</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
