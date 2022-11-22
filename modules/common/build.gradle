@@ -46,7 +46,7 @@ dependencies {
     api "androidx.drawerlayout:drawerlayout:1.1.1"
     api "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-
+    api 'io.github.androidktx:android-ktx:1.0.0'
     api 'com.github.li-xiaojun:XPopup:2.9.2'
 
 

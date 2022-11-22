@@ -8,9 +8,12 @@ object VideoUtil {
     /**
      * 把数据库中请求到的playUrlList转化为List<PlayUrl>
      */
-    fun convertPlayUrlList(playServer: String, dbVodPlayUrls: String): ArrayList<PlayUrl> {
+    fun convertPlayUrlList(playServer: String?, dbVodPlayUrls: String?): ArrayList<PlayUrl> {
         //电影播放地址集合
         val urls: ArrayList<PlayUrl> = ArrayList()
+        if (playServer == null || dbVodPlayUrls == null) {
+            return urls
+        }
         //先通过$$$将播放组分出来
         val vodGroup = dbVodPlayUrls.split("$$$").toTypedArray()
         val vodPlayUrls = vodGroup[0]
@@ -105,6 +108,14 @@ object VideoUtil {
             }
         }
         return urls
+    }
+
+    fun getPicUrl(url: String?): String? {
+        return if (url == null || url.startsWith("http")) {
+            url
+        } else {
+            SpUtils.basePicUrl + url
+        }
     }
 
 }

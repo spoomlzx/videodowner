@@ -33,7 +33,7 @@ class VideoPagingAdapter(private val context: Context, private val videoViewMode
         video?.let {
             holder.binding.tvTitle.text = video.vod_name
             // dontAnimate() 搭配placeholder确保还未加载时，保持页面布局，减少抖动
-            Glide.with(context).load(SpUtils.basePicUrl + video.vod_pic).placeholder(R.drawable.default_pic).into(holder.binding.ivVideoPic)
+            Glide.with(context).load(video.vod_pic).placeholder(R.drawable.default_pic).into(holder.binding.ivVideoPic)
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
                 intent.putExtra("vodId", video.vod_id)

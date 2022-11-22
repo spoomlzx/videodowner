@@ -10,7 +10,9 @@ data class VodInfoModel(
     var vod_name: String,
     var vod_actor: String?,
     var vod_director: String?,
-    var vod_pic: String,
+    var vod_pic: String?,
+    var vod_pic_thumb: String?,
+    var vod_pic_slide: String?,
     var vod_remarks: String?,
     var vod_class: String?,
     var vod_content: String?,
@@ -33,7 +35,8 @@ data class VodInfoModel(
             return video.run {
                 val playUrlList = VideoUtil.convertPlayUrlList(play_server, vod_play_url)
                 VodInfoModel(
-                    vod_id, type_id, type_pid, vod_name, vod_actor, vod_director, vod_pic, vod_remarks, vod_class,
+                    vod_id, type_id, type_pid, vod_name, vod_actor, vod_director, VideoUtil.getPicUrl(vod_pic), VideoUtil.getPicUrl(vod_pic_thumb),
+                    VideoUtil.getPicUrl(vod_pic_slide), vod_remarks, vod_class,
                     vod_content, vod_area, vod_lang, vod_year, vod_score, vod_time, vod_time_add, playUrlList, history
                 )
             }

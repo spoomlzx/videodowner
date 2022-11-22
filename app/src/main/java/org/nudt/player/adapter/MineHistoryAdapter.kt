@@ -13,8 +13,7 @@ import org.nudt.player.databinding.HistoryMineListItemBinding
 import org.nudt.player.ui.player.OnlinePlayerActivity
 import org.nudt.player.utils.SpUtils
 
-class MineHistoryAdapter(private val context: Context) :
-    RecyclerView.Adapter<MineHistoryAdapter.FavorViewHolder>() {
+class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<MineHistoryAdapter.FavorViewHolder>() {
 
     private var historyList: List<PlayHistory> = listOf()
 
@@ -26,7 +25,7 @@ class MineHistoryAdapter(private val context: Context) :
         historyList.let {
             val playHistory = it[position]
             holder.binding.tvVideoName.text = playHistory.vod_name
-            Glide.with(context).load(SpUtils.basePicUrl + playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            Glide.with(context).load(playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.cvVideo.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)

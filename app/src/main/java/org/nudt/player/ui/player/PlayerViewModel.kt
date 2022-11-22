@@ -39,7 +39,7 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     fun savePlayHistory(duration: Long, progress: Long) {
         vodInfo.value?.apply {
             val history = PlayHistory(
-                vod_id = vod_id, vod_name = vod_name, vod_pic = vod_pic, vod_remarks = vod_remarks,
+                vod_id = vod_id, vod_name = vod_name, vod_pic = vod_pic, vod_pic_thumb = vod_pic_thumb, vod_pic_slide = vod_pic_slide, vod_remarks = vod_remarks,
                 vod_index = currentIndex.value ?: 0, progress_time = progress, total_duration = duration, last_play_time = System.currentTimeMillis()
             )
             viewModelScope.launch {

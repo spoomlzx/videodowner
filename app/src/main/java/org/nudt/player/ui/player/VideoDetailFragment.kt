@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.data.model.VodInfoModel
-import org.nudt.player.data.model.VodInfoModel.PlayUrl
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 import org.nudt.player.ui.VideoViewModel
 
@@ -37,7 +35,6 @@ class VideoDetailFragment : Fragment() {
         playerViewModel.vodInfo.observe(viewLifecycleOwner) {
             SLog.d("vodInfo: in detail " + it.vod_name)
             initVideoDetail(it)
-            initPlayUrlList(it.playUrlList)
         }
 
     }
@@ -47,89 +44,54 @@ class VideoDetailFragment : Fragment() {
      */
     private fun initVideoDetail(vodInfoModel: VodInfoModel) {
         vodInfoModel.apply {
-            //Glide.with(this@OnlinePlayerActivity).load(SpUtils.basePicUrl + vod_pic).into(player.posterImageView)
-
-
             binding.tvVodName.text = vod_name
             //tvVodScore.text = vod_score + "分"
             binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
-            //binding.tvVideoContent.text = vod_content
-
-            val bottomSheetDescription: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetDescription)
-            //设置默认先隐藏
-            bottomSheetDescription.state = BottomSheetBehavior.STATE_HIDDEN
-            val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 240f)
-            bottomSheetDescription.maxHeight = height
-            bottomSheetDescription.peekHeight = height
-            binding.tvVodDesc.setOnClickListener {
-                if (bottomSheetDescription.state == BottomSheetBehavior.STATE_HIDDEN) {
-                    bottomSheetDescription.setState(BottomSheetBehavior.STATE_COLLAPSED)
-                } else if (bottomSheetDescription.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                    bottomSheetDescription.state = BottomSheetBehavior.STATE_HIDDEN
-                }
-            }
-
-            binding.tvContent.text = vod_content
-            binding.tvDirector.text = "导演：$vod_director"
-            binding.tvActor.text = "演员：$vod_actor"
-            binding.tvYear.text = "年份：$vod_year"
-
-            binding.ivDescriptionClose.setOnClickListener {
-                bottomSheetDescription.setState(BottomSheetBehavior.STATE_HIDDEN)
-            }
+            //tvVideoContent.text = vod_content
         }
-    }
 
-    /**
-     * init play url list view
-     */
-    private fun initPlayUrlList(playUrlList: ArrayList<PlayUrl>) {
-        // use horizontal layout
+        //todo 如何根据视频窗口大小确定弹窗高度
+        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 235f)
+
+        // 点击出现视频详情弹窗
+        binding.tvVodDesc.setOnClickListener {
+            XPopup.Builder(context)
+                .hasShadowBg(false)
+                .moveUpToKeyboard(false) //如果不加这个，评论弹窗会移动到软键盘上面
+                //.isViewMode(true)
+                .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+//                        .isThreeDrag(true) //是否开启三阶拖拽，如果设置enableDrag(false)则无效
+                .asCustom(VideoDetailPopup(context!!).initPopup(vodInfoModel, height))
+                .show();
+        }
+
+        // init play url list view
         val linearLayoutManager = LinearLayoutManager(context)
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvVodList.layoutManager = linearLayoutManager
 
         val adapter = PlayUrlAdapter(playerViewModel)
-        adapter.setPlayUrlList(playUrlList)
+        adapter.setPlayUrlList(vodInfoModel.playUrlList)
 
         binding.rvVodList.adapter = adapter
 
-        initPlayUrlList()
-
-        val gridLayoutManager = GridLayoutManager(context, 6)
-        binding.rvVodListAll.layoutManager = gridLayoutManager
         // 按当前播放history 滚动到指定集数位置
         playerViewModel.currentIndex.value?.let {
             binding.rvVodList.smoothScrollToPosition(it)
         }
 
+        binding.tvSerialTitle.text = "选集(${vodInfoModel.playUrlList.size})"
 
-        //binding.rvVodListAll.addItemDecoration(GridItemDecoration())
-        binding.rvVodListAll.adapter = adapter
-        binding.tvSerialTitle.text = "选集(${playUrlList.size})"
-        binding.tvVodAllTitle.text = "分集(${playUrlList.size})"
-    }
-
-    /**
-     * 设置选集区块
-     */
-    private fun initPlayUrlList() {
-        val bottomSheetPlayUrlList: BottomSheetBehavior<*> = BottomSheetBehavior.from(binding.bottomSheetAllVod)
-        //设置默认先隐藏
-        bottomSheetPlayUrlList.state = BottomSheetBehavior.STATE_HIDDEN
-        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 240f)
-        bottomSheetPlayUrlList.maxHeight = height
-        bottomSheetPlayUrlList.peekHeight = height
+        // 点击出现所有选集弹窗
         binding.tvVodAll.setOnClickListener {
-            if (bottomSheetPlayUrlList.state == BottomSheetBehavior.STATE_HIDDEN) {
-                bottomSheetPlayUrlList.setState(BottomSheetBehavior.STATE_COLLAPSED)
-            } else if (bottomSheetPlayUrlList.state == BottomSheetBehavior.STATE_COLLAPSED) {
-                bottomSheetPlayUrlList.state = BottomSheetBehavior.STATE_HIDDEN
-            }
-        }
-
-        binding.tvVodAllClose.setOnClickListener {
-            bottomSheetPlayUrlList.setState(BottomSheetBehavior.STATE_HIDDEN)
+            XPopup.Builder(context)
+                .hasShadowBg(false)
+                .moveUpToKeyboard(false) //如果不加这个，评论弹窗会移动到软键盘上面
+                //.isViewMode(true)
+                .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
+//                        .isThreeDrag(true) //是否开启三阶拖拽，如果设置enableDrag(false)则无效
+                .asCustom(VideoPlayUrlListPopup(context!!).initPopup(vodInfoModel, adapter, height))
+                .show();
         }
     }
 
