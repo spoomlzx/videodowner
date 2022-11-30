@@ -28,10 +28,7 @@ class DownloadingActivity : AppCompatActivity() {
         binding.tbCommon.tvTitle.text = getString(R.string.main_menu_offline_downloading)
         binding.tbCommon.ivBack.setOnClickListener { finish() }
 
-        BaseApplication.addListener(mListener)
         initRecyclerView()
-        // 异步获取所有下载任务
-        VideoDownloadManager.getInstance().fetchDownloadItems(mDownloadInfosCallback);
     }
 
     private fun initRecyclerView() {
@@ -44,72 +41,7 @@ class DownloadingActivity : AppCompatActivity() {
 
     }
 
-    private var mLastProgressTimeStamp: Long = 0
-
-    private val mListener: DownloadListener = object : DownloadListener() {
-        override fun onDownloadDefault(item: VideoTaskItem) {
-            SLog.d("onDownloadDefault: $item.url")
-            updateVideoTaskItem(item)
-        }
-
-        override fun onDownloadPending(item: VideoTaskItem) {
-            SLog.d("onDownloadPending: $item.url")
-            updateVideoTaskItem(item)
-        }
-
-        override fun onDownloadPrepare(item: VideoTaskItem) {
-            updateVideoTaskItem(item)
-        }
-
-        override fun onDownloadStart(item: VideoTaskItem) {
-            updateVideoTaskItem(item)
-        }
-
-        /**
-         * 1秒更新一次进度
-         */
-        override fun onDownloadProgress(item: VideoTaskItem) {
-            val currentTimeStamp = System.currentTimeMillis()
-            if (currentTimeStamp - mLastProgressTimeStamp > 100) {
-                // notifyChanged(item)
-                updateVideoTaskItem(item)
-                mLastProgressTimeStamp = currentTimeStamp
-            }
-        }
-
-        override fun onDownloadPause(item: VideoTaskItem) {
-            updateVideoTaskItem(item)
-        }
-
-        override fun onDownloadError(item: VideoTaskItem) {
-            updateVideoTaskItem(item)
-        }
-
-        override fun onDownloadSuccess(item: VideoTaskItem) {
-            updateVideoTaskItem(item)
-        }
-    }
-
-    private fun updateVideoTaskItem(item: VideoTaskItem) {
-        lifecycleScope.launch {
-            adapter.updateTaskItem(item)
-        }
-    }
-
-    private val mDownloadInfosCallback = IDownloadInfosCallback { items: List<VideoTaskItem> ->
-        val downloadingTaskItems = mutableListOf<VideoTaskItem>()
-        for (item in items) {
-            if (!item.isSuccessState) downloadingTaskItems.add(item)
-        }
-        lifecycleScope.launch {
-            adapter.setData(downloadingTaskItems)
-        }
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        BaseApplication.removeListener(mListener)
-        VideoDownloadManager.getInstance().fetchDownloadItems()
-        VideoDownloadManager.getInstance().removeDownloadInfosCallback(mDownloadInfosCallback)
     }
 }

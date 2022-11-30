@@ -8,24 +8,24 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.nudt.player.R
 import org.nudt.player.data.model.PlayHistory
-import org.nudt.player.databinding.HistoryMineListItemBinding
+import org.nudt.player.databinding.HistoryListItemBinding
 import org.nudt.player.ui.player.OnlinePlayerActivity
-import org.nudt.player.utils.VideoUtil.buildProgressText
+import org.nudt.player.utils.VideoUtil
 
-class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<MineHistoryAdapter.MineHistoryViewHolder>() {
+class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private var historyList: List<PlayHistory> = listOf()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MineHistoryViewHolder {
-        return MineHistoryViewHolder(HistoryMineListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+        return HistoryViewHolder(HistoryListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: MineHistoryViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
         historyList.let {
             val playHistory = it[position]
             holder.binding.tvVideoName.text = playHistory.vod_name
 
-            val progress = buildProgressText(playHistory)
+            val progress = VideoUtil.buildProgressText(playHistory)
             holder.binding.tvVideoProgress.text = progress
             Glide.with(context).load(playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
@@ -57,5 +57,5 @@ class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Mi
     }
 
 
-    class MineHistoryViewHolder(val binding: HistoryMineListItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class HistoryViewHolder(val binding: HistoryListItemBinding) : RecyclerView.ViewHolder(binding.root)
 }

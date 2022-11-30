@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/MainActivityColorTranslucentTheme"
         android:usesCleartextTraffic="true">
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -31,10 +32,10 @@
         </activity>
         <activity
             android:name=".ui.player.OnlinePlayerActivity"
-            android:theme="@style/VideoPlayer"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/VideoPlayer" />
         <activity
             android:name=".ui.player.OfflinePlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -43,18 +44,30 @@
         <activity
             android:name=".ui.search.SearchActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.download.DownloadingActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.history.PlayHistoryActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.download.VideoDownloadListActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.download.DownloadingActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.setting.SettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="portrait" />
     </application>
 

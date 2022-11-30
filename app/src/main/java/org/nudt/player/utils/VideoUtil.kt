@@ -1,7 +1,10 @@
 package org.nudt.player.utils
 
 
+import org.nudt.common.SLog
+import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.VodInfoModel.PlayUrl
+import kotlin.math.withSign
 
 
 object VideoUtil {
@@ -118,6 +121,15 @@ object VideoUtil {
             url
         } else {
             SpUtils.basePicUrl + url
+        }
+    }
+
+    fun buildProgressText(playHistory: PlayHistory): String {
+        return if (playHistory.total_video_num > 1) {
+            "看至第${playHistory.vod_index + 1}集"
+        } else {
+            val percent = 100f * playHistory.progress_time / playHistory.total_duration
+            "观看至${percent}%"
         }
     }
 

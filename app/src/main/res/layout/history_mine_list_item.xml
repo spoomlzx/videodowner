@@ -39,7 +39,8 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="50.0%"
-            android:textSize="@dimen/text_size_small" />
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller" />
 
     </LinearLayout>
 

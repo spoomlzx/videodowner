@@ -21,4 +21,7 @@ interface PlayHistoryDao {
 
     @Query("select * from play_history order by last_play_time desc limit 10")
     fun getHistoryTop(): Flow<List<PlayHistory>>
+
+    @Query("select * from play_history order by last_play_time desc")
+    fun getHistory(): Flow<List<PlayHistory>>
 }

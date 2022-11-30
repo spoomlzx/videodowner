@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onTabSelectEvent(view: View, position: Int): Boolean {
                     //Tab点击事件  return true 页面不会切换
                     if (position == 2) {
-                        VideoDownloadManager.getInstance().fetchDownloadItems()
+
                     }
                     return false
                 }

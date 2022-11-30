@@ -25,6 +25,8 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
 
     val historyTop: LiveData<List<PlayHistory>> = videoRepository.getHistoryTop().asLiveData()
 
+    val history: LiveData<List<PlayHistory>> = videoRepository.getHistory().asLiveData()
+
 
     /**
      * 获取收藏的video list

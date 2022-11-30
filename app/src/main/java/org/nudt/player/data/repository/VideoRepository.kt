@@ -78,6 +78,8 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
      */
     fun getHistoryTop() = db.playHistoryDao().getHistoryTop()
 
+    fun getHistory() = db.playHistoryDao().getHistory()
+
 
     private val pagingConfig = PagingConfig(
         // 每页显示的数据的大小
