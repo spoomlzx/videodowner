@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.jeffmony.downloader.VideoDownloadManager
 import com.next.easynavigation.view.EasyNavigationBar.OnTabClickListener
 import org.nudt.player.R
 import org.nudt.player.databinding.ActivityMainBinding
@@ -85,7 +84,6 @@ class MainActivity : AppCompatActivity() {
             mExitTime = System.currentTimeMillis()
         } else {
             // 退出app前暂停所有下载任务
-            VideoDownloadManager.getInstance().pauseAllDownloadTasks()
             super.onBackPressed()
         }
     }
