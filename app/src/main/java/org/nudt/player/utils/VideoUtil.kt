@@ -110,6 +110,9 @@ object VideoUtil {
         return urls
     }
 
+    /**
+     * 根据后台获取的图片url，进行服务地址拼接
+     */
     fun getPicUrl(url: String?): String? {
         return if (url == null || url.startsWith("http")) {
             url

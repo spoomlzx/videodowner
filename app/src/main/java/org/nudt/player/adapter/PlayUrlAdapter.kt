@@ -22,7 +22,7 @@ class PlayUrlAdapter(private val playerViewModel: PlayerViewModel) : RecyclerVie
     override fun onBindViewHolder(holder: PlayUrlViewHolder, position: Int) {
         val playUrl = playUrlList[position]
         // 显示第几集
-        holder.binding.tvPlayUrlIndex.text = (position + 1).toString()
+        holder.binding.tvPlayUrlIndex.text = playUrl.name
         // 当前选中项
         val isCurrent = currentPosition == position
         holder.binding.tvPlayUrlIndex.isSelected = isCurrent

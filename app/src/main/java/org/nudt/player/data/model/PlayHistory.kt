@@ -18,6 +18,7 @@ data class PlayHistory(
     var vod_pic_slide: String?,
     var vod_remarks: String?,
     var vod_index: Int,
+    var total_video_num: Int,
     var progress_time: Long,
     var total_duration: Long,
     var last_play_time: Long,

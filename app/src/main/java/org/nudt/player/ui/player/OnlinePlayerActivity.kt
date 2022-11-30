@@ -3,13 +3,17 @@ package org.nudt.player.ui.player
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
+import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
+import org.nudt.player.ui.AppViewModel
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -17,6 +21,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     private val tabTitles = arrayOf("剧集", "评论")
 
     private val playerViewModel: PlayerViewModel by viewModel()
+    private val appViewModel: AppViewModel by viewModel()
 
     private var vodId = 0
 
@@ -40,8 +45,11 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             // 根据history初始化的index进行播放，
             var index = 0
             it.history?.let { history -> index = history.vod_index }
-            player.setPlayUrl(it.playUrlList[index].url)
-            player.prepareAsync()
+            if (it.playUrlList.size > 0) {
+                player.setPlayUrl(it.playUrlList[index].url)
+                player.prepareAsync()
+            }
+
             it.history?.let { history -> player.seekTo(history.progress_time) }
             //SLog.d("ready to play ${playerViewModel.progress}")
         }
@@ -87,9 +95,29 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     }
 
     override fun onStop() {
-        SLog.e("stop player")
-        playerViewModel.savePlayHistory(player.duration, player.currentPosition)
+
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        SLog.e("destroy player")
+        playerViewModel.vodInfo.value?.apply {
+            val history = PlayHistory(
+                vod_id = vod_id,
+                vod_name = vod_name,
+                vod_pic = vod_pic,
+                vod_pic_thumb = vod_pic_thumb,
+                vod_pic_slide = vod_pic_slide,
+                vod_remarks = vod_remarks,
+                vod_index = playerViewModel.currentIndex.value ?: 0,
+                total_video_num = playUrlList.size,
+                progress_time = player.currentPosition,
+                total_duration = player.duration,
+                last_play_time = System.currentTimeMillis()
+            )
+            appViewModel.savePlayHistory(history)
+        }
+        super.onDestroy()
     }
 
 }

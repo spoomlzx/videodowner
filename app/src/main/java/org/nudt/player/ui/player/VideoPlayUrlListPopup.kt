@@ -28,7 +28,7 @@ class VideoPlayUrlListPopup(context: Context) : BottomPopupView(context) {
 
             // 选择分集按钮列表
             val rvVodListAll = findViewById<RecyclerView>(R.id.rv_vod_list_all)
-            val gridLayoutManager = GridLayoutManager(context, 6)
+            val gridLayoutManager = GridLayoutManager(context, 5)
             rvVodListAll.layoutManager = gridLayoutManager
             //binding.rvVodListAll.addItemDecoration(GridItemDecoration())
             rvVodListAll.adapter = playUrlAdapter

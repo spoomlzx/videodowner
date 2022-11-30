@@ -19,6 +19,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "videodowner"
 include ':app'
-include 'modules:videoplayer'
-include 'modules:downloader'
+include ':modules:videoplayer'
+include ':modules:downloader'
 include ':modules:common'

@@ -8,12 +8,13 @@
 
     <TextView
         android:id="@+id/tv_play_url_index"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="42dp"
         android:background="@drawable/play_url_bg"
         android:gravity="center"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
+        android:textSize="@dimen/text_size_small"
+        android:paddingLeft="@dimen/default_general_margin"
+        android:paddingRight="@dimen/default_general_margin"
         android:textColor="@color/item_text_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

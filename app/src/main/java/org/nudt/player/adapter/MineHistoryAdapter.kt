@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.HistoryMineListItemBinding
@@ -25,15 +26,25 @@ class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Mi
         historyList.let {
             val playHistory = it[position]
             holder.binding.tvVideoName.text = playHistory.vod_name
+
+            val progress = if (playHistory.total_video_num > 1) {
+                "看至第${playHistory.vod_index + 1}集"
+            } else {
+                val percent = 100f * playHistory.progress_time / playHistory.total_duration
+                SLog.d("progress time: ${playHistory.progress_time.toFloat()}")
+                SLog.d("total_duration: ${playHistory.total_duration.toFloat()}")
+                "观看至${percent}%"
+            }
+            holder.binding.tvVideoProgress.text = progress
             Glide.with(context).load(playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
-            holder.binding.cvVideo.setOnClickListener {
+            holder.binding.cvHistoryItem.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
                 intent.putExtra("vodId", playHistory.vod_id)
                 context.startActivity(intent)
             }
 
-            holder.binding.cvVideo.setOnLongClickListener {
+            holder.binding.cvHistoryItem.setOnLongClickListener {
                 val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
                     //videoViewModel.changeFavor()
                 }.setNegativeButton("取消") { _, _ ->

@@ -2,8 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cv_video"
-    android:layout_width="@dimen/video_cover_width"
+    android:id="@+id/cv_history_item"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@color/windows_background"
     app:cardElevation="0dp">
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@string/app_name" />
 
         <TextView
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="@string/app_name"
+            android:text="50.0%"
             android:textSize="@dimen/text_size_small" />
 
     </LinearLayout>
