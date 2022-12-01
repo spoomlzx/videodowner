@@ -16,6 +16,7 @@ class VideoDownloadListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.tbCommon.tvTitle.text = getString(R.string.main_menu_offline_download)
+        // 左上角返回按钮
         binding.tbCommon.ivBack.setOnClickListener { finish() }
 
         requestPermission()

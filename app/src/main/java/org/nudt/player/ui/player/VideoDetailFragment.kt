@@ -50,8 +50,13 @@ class VideoDetailFragment : Fragment() {
             //tvVideoContent.text = vod_content
         }
 
-        //todo 如何根据视频窗口大小确定弹窗高度
-        val height = resources.displayMetrics.heightPixels - CommonUtil.dpToPxInt(requireContext(), 235f)
+        val width = resources.displayMetrics.widthPixels
+        val playerHeight = width * 1080 / 1920
+
+        //根据视频窗口大小确定弹窗高度,3f是留出视频进度条的高度
+        val height = resources.displayMetrics.heightPixels - playerHeight - CommonUtil.dpToPxInt(requireContext(), 3f)
+        SLog.d("fragment popup height: $height")
+
 
         // 点击出现视频详情弹窗
         binding.tvVodDesc.setOnClickListener {

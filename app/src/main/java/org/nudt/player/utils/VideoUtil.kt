@@ -117,7 +117,7 @@ object VideoUtil {
      * 根据后台获取的图片url，进行服务地址拼接
      */
     fun getPicUrl(url: String?): String? {
-        return if (url == null || url.startsWith("http")) {
+        return if (url == null || url == "" || url.startsWith("http")) {
             url
         } else {
             SpUtils.basePicUrl + url

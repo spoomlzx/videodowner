@@ -9,7 +9,7 @@ import org.nudt.player.data.model.Video
 interface VideoDao {
 
 
-    @Query("SELECT * FROM video WHERE type_pid = :type")
+    @Query("SELECT * FROM video WHERE type_pid = :type order by vod_id desc")
     fun getVideoList(type: Int): PagingSource<Int, Video>
 
     @Query("select * from video where vod_id = :vodId")

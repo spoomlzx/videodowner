@@ -1,9 +1,6 @@
 package org.nudt.player.data.db
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import org.nudt.player.data.model.PlayHistory
 
@@ -24,4 +21,7 @@ interface PlayHistoryDao {
 
     @Query("select * from play_history order by last_play_time desc")
     fun getHistory(): Flow<List<PlayHistory>>
+
+    @Delete
+    suspend fun deleteHistory(history: PlayHistory): Int
 }

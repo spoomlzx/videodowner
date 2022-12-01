@@ -78,7 +78,12 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
      */
     fun getHistoryTop() = db.playHistoryDao().getHistoryTop()
 
+    /**
+     * 获取所有播放记录
+     */
     fun getHistory() = db.playHistoryDao().getHistory()
+
+    suspend fun deleteHistory(history: PlayHistory) = db.playHistoryDao().deleteHistory(history)
 
 
     private val pagingConfig = PagingConfig(

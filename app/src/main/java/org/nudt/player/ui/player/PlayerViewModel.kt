@@ -19,6 +19,8 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     val vodInfo = MutableLiveData<VodInfoModel>()
     val currentIndex = MutableLiveData(0)
 
+    val videoPlayerHeight = MutableLiveData(235f)
+
     fun setCurrent(newIndex: Int) {
         currentIndex.postValue(newIndex)
     }

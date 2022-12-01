@@ -6,15 +6,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.lxj.xpopup.XPopup
 import org.nudt.player.R
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.HistoryListItemBinding
+import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.player.OnlinePlayerActivity
+import org.nudt.player.ui.player.PlayerViewModel
 import org.nudt.player.utils.VideoUtil
 
-class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+class HistoryAdapter(private val context: Context, private val videoViewModel: VideoViewModel) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
-    private var historyList: List<PlayHistory> = listOf()
+    private var historyList: ArrayList<PlayHistory> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         return HistoryViewHolder(HistoryListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -27,7 +30,9 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
 
             val progress = VideoUtil.buildProgressText(playHistory)
             holder.binding.tvVideoProgress.text = progress
-            Glide.with(context).load(playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            val pic = if (playHistory.vod_pic_thumb?.startsWith("http") == true) playHistory.vod_pic_thumb else playHistory.vod_pic
+
+            Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.cvHistoryItem.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)
@@ -35,15 +40,20 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
                 context.startActivity(intent)
             }
 
-//            holder.binding.cvHistoryItem.setOnLongClickListener {
+            holder.binding.cvHistoryItem.setOnLongClickListener {
 //                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
 //                    //videoViewModel.changeFavor()
 //                }.setNegativeButton("取消") { _, _ ->
 //                    // User cancelled the dialog
 //                }.create()
 //                dialog.show()
-//                true
-//            }
+                XPopup.Builder(context).asConfirm("提示", "确认删除本条记录？") {
+                    videoViewModel.deleteHistory(playHistory)
+                    historyList.remove(playHistory)
+                    notifyItemRemoved(position)
+                }.show()
+                true
+            }
         }
     }
 
@@ -52,7 +62,7 @@ class HistoryAdapter(private val context: Context) : RecyclerView.Adapter<Histor
     }
 
     fun updateFavoriteList(list: List<PlayHistory>) {
-        historyList = list
+        historyList = ArrayList(list)
         notifyDataSetChanged()
     }
 

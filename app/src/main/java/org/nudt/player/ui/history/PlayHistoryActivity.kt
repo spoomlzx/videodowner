@@ -18,6 +18,8 @@ class PlayHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         binding.tbCommon.tvTitle.text = "历史记录"
+        // 左上角返回按钮
+        binding.tbCommon.ivBack.setOnClickListener { finish() }
 
         initHistoryView()
     }
@@ -27,7 +29,7 @@ class PlayHistoryActivity : AppCompatActivity() {
         linearLayoutManager.orientation = LinearLayoutManager.VERTICAL
         binding.rvVideoHistory.layoutManager = linearLayoutManager
 
-        historyAdapter = HistoryAdapter(this@PlayHistoryActivity)
+        historyAdapter = HistoryAdapter(this@PlayHistoryActivity, videoViewModel)
         binding.rvVideoHistory.adapter = historyAdapter
 
         videoViewModel.history.observe(this) {

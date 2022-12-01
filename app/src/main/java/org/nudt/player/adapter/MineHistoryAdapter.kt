@@ -27,7 +27,9 @@ class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Mi
 
             val progress = buildProgressText(playHistory)
             holder.binding.tvVideoProgress.text = progress
-            Glide.with(context).load(playHistory.vod_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            val pic = if (playHistory.vod_pic_thumb?.startsWith("http") == true) playHistory.vod_pic_thumb else playHistory.vod_pic
+
+            Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.cvHistoryItem.setOnClickListener {
                 val intent = Intent(context, OnlinePlayerActivity::class.java)

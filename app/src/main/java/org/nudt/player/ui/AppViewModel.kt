@@ -7,6 +7,9 @@ import kotlinx.coroutines.launch
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.repository.VideoRepository
 
+/**
+ * 用于activity销毁时的数据操作
+ */
 class AppViewModel(private val videoRepository: VideoRepository, application: Application) : AndroidViewModel(application) {
 
 

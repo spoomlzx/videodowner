@@ -6,6 +6,7 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.repository.VideoRepository
@@ -27,6 +28,11 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
 
     val history: LiveData<List<PlayHistory>> = videoRepository.getHistory().asLiveData()
 
+    fun deleteHistory(history: PlayHistory) {
+        viewModelScope.launch {
+            videoRepository.deleteHistory(history)
+        }
+    }
 
     /**
      * 获取收藏的video list
