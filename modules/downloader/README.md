@@ -1,196 +1,242 @@
-# AwesomeDownloader
+![](usage.png)
 
-#### 介绍
-**_AwesomeDownloader 是基于OkHttp和kotlin协程实现的下载器，它能在后台进行下载任务并轻松地让您在下载文件时获取进度，它能随时停止、恢复、取消任务，还可以方便地查询下载的任务和已完成的任务的信息。_**
+# DownloadX
 
-#### 功能&特性
+[![](https://jitpack.io/v/ssseasonnn/DownloadX.svg)](https://jitpack.io/#ssseasonnn/DownloadX)
 
+基于协程打造的下载工具, 支持多线程下载和断点续传
 
-:star: **下载文件**
+*Read this in other languages: [中文](README.ch.md), [English](README.md), [Changelog](CHANGELOG.md)*
 
-:star: **监听下载**
+## Prepare
 
-:star: **断点续传**
+- 添加仓库:
 
-:star: **随时控制下载**
-
-:star: **查询下载任务 (支持返回LiveData)**
-
-:star: **可通过通知栏显示下载情况**
-
-:star: **下载多媒体文件加入多媒体库**
-
-:star: **自动/手动清除缓存文件**
-
-:star: **支持链式调用**
-
-
-#### 使用说明
-
-1.申请读写权限，网络权限
-
-2.初始化下载器，传入Application的context
-
-kotlin：
-```kotlin
-    //默认模式启动（与页面绑定，页面销毁时，下载器也会结束生命）传入FragmentActivity或Fragment
-    AwesomeDownloader.initWithDefaultMode(requireActivity())
-
-    //前台服务模式启动（独立启动，直至服务被kill或关闭）传入能创建服务的ContextWrapper
-    AwesomeDownloader.initWithServiceMode(this)
+```gradle
+maven { url 'https://jitpack.io' }
 ```
 
-3.下载文件
+- 添加依赖:
 
-kotlin:
- ```kotlin
-	 	val url = "https://images.gitee.com/uploads/images/2020/0919/155031_538a3406_5577115.png"
-        //获取应用私有照片储存路径
-        val filePath = PathSelector(applicationContext).getPicturesDirPath()
-        //加入下载队列
-        AwesomeDownloader.enqueue(url,filePath,"test.png")
- ```
-
-4.下载控制
-
-kotlin:
-```kotlin
-        //停止全部
-        AwesomeDownloader.stopAll()
-        //恢复下载
-        AwesomeDownloader.resume()
-        //取消当前
-        AwesomeDownloader.cancel()
-        //取消全部
-        AwesomeDownloader.cancelAll()
+```gradle
+implementation "com.github.ssseasonnn:DownloadX:1.0.4"
 ```
 
-5.添加监听&移除监听
+## Basic Usage
 
-kotlin:
 ```kotlin
-        //添加监听
-        AwesomeDownloader.addOnProgressChangeListener{ progress ->
-            //do something...
-        }.addOnStopListener{ downloadBytes, totalBytes ->
-            //do something...
-        }.addOnFinishedListener{ filePath, fileName ->
-            //do something...
-        }.addOnErrorListener{ exception ->
-            //do something...
-        }
+// 创建下载任务
+val downloadTask = coroutineScope.download("url")
+
+// 监听下载进度
+downloadTask.progress()
+    .onEach { binding.button.setProgress(it)  }
+    .launchIn(lifecycleScope)
+
+// 或者监听下载状态
+downloadTask.state()
+    .onEach { binding.button.setState(it)  }
+    .launchIn(lifecycleScope)
+
+// 开始下载
+downloadTask.start()
+```
+
+## 创建任务
+
+- 指定CoroutineScope
+
+如果下载任务仅限于Activity或Fragment的生命周期内，那么可以直接使用Activity或Fragment的**lifecycleScope**，即可保证在Activity或Fragment销毁的时候自动结束下载任务
+
+> lifecycleScope是androidX中的扩展，需要添加以下依赖：
+> implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.2.0'
+
+```kotlin
+class DemoActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         
-         //移除全部进度监听
-         AwesomeDownloader.removeAllOnProgressChangeListener()
-         
-         //移除最后一个进度监听
-         AwesomeDownloader.onDownloadProgressChange.removeLast()
-         
-         //移除最前的进度监听
-         AwesomeDownloader.onDownloadProgressChange.removeFirst()
+        //activity销毁时，该下载任务自动停止
+        val downloadTask = lifecycleScope.download("url")
+        downloadTask.start()
+    }
+}
 ```
 
-6.设置自定义通知栏
+如果下载任务需要在多个Activity之间共享，或者进行后台下载，那么直接使用**GlobalScope**即可
 
-（默认显示的通知栏）
-
-![默认显示的通知栏](https://images.gitee.com/uploads/images/2020/0919/155031_538a3406_5577115.png)
-
-设置中确保showNotification为true
 ```kotlin
- AwesomeDownloader.option.showNotification = true
+class DemoActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        //activity销毁时，该下载任务仍然继续下载
+        val downloadTask = GlobalScope.download("url")
+        downloadTask.start()
+    }
+}
 ```
-调用setNotificationSender()
 
-override 抽象类NotificationSender 的三个方法
+- 设置保存文件名和保存路径
 
-kotlin:
+直接传给download方法:
+
 ```kotlin
- AwesomeDownloader.setNotificationSender(object : NotificationSender(applicationContext) {
-                //创建显示任务下载进度的Notification
-                override fun buildDownloadProgressNotification(
-                    progress: Int,
-                    fileName: String
-                ): Notification {
-                    return NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_baseline_adb_24)
-                        .setContentTitle("$fileName 下载中")
-                        .setContentText("$progress%")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .build()
-                }
-
-                //创建显示任务下载停止的Notification
-                override fun buildDownloadStopNotification(fileName: String): Notification {
-                    return NotificationCompat.Builder(context, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_baseline_adb_24)
-                        .setContentTitle("$fileName Stop")
-                        .setContentText("Stop")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .build()
-                }
-
-                //创建显示任务下载完成的Notification
-                override fun buildDownloadDoneNotification(
-                    filePath: String,
-                    fileName: String
-                ): Notification {
-                    Log.d(TAG, "buildDownloadDoneNotification: start")
-                    return if (isImageFile(fileName)) {
-                        val bitmap =
-                            BitmapFactory.decodeFile("$filePath/$fileName")
-                        Log.d(TAG, "buildDownloadDoneNotification: done")
-                        NotificationCompat.Builder(context, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_baseline_adb_24)
-                            .setContentTitle("$fileName Done")
-                            .setContentText("Done")
-                            .setStyle(
-                                NotificationCompat.BigPictureStyle()
-                                    .bigPicture(bitmap)
-                                    .bigLargeIcon(null)
-                            )
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .build()
-
-                    } else {
-                        NotificationCompat.Builder(context, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_baseline_adb_24)
-                            .setContentTitle("$fileName Done")
-                            .setContentText("Done")
-                            .setPriority(NotificationCompat.PRIORITY_HIGH)
-                            .build()
-                    }
-                }
-            })
+val downloadTask = GlobalScope.download("url", "saveName", "savePath")
 ```
 
-_(通过setNotificationSender()设置的通知栏)_
+创建自定义DownloadParam:
 
-![自定义显示的通知栏](https://images.gitee.com/uploads/images/2020/0919/153803_33f283b0_5577115.png)
-
-_(通知栏效果可能因为Android版本不同和手机厂商不同而效果不一致)_
-
-
-
-7.查询下载任务
-
-kotlin:
 ```kotlin
-        lifecycleScope.launch(Dispatchers.IO) {
-            //获取全部任务信息
-            AwesomeDownloader.queryAllTaskInfo()
-            //获取完成的任务信息
-            AwesomeDownloader.queryFinishedTaskInfo()
-            //获取完成的任务信息
-            AwesomeDownloader.queryUnfinishedTaskInfo()
-          	//根据id删除数据库中的任务记录
-            AwesomeDownloader.deleteById(id)
-        }
-
-		//获取当前下载中的任务
-		AwesomeDownloader.getDownloadingTask()
-
-		//获取队列中的任务
-		AwesomeDownloader.getDownloadQueueArray()
-
+val downloadParam = DownloadParam("url", "saveName", "savePath")
+val downloadTask = lifecycleScope.download(downloadParam)
 ```
+
+默认情况下，我们使用**url**作为**DownloadTask**的唯一标示，当需要改变这一默认行为时，可以自定义自己的**DownloadParam**：
+
+```kotlin
+class CustomDownloadParam(url: String, saveName: String, savePath: String) : DownloadParam(url, saveName, savePath) {
+    override fun tag(): String {
+        // 使用文件路径作为唯一标示
+        return savePath + saveName
+    }
+}
+
+val customDownloadParam = CustomDownloadParam("url", "saveName", "savePath")
+val downloadTask = lifecycleScope.download(customDownloadParam)
+```
+
+在多个页面使用同样的标识（例如相同的url）创建下载任务时，将会返回同一个DownloadTask，例如：
+
+```kotlin
+// 同一个url
+val url = "xxxx"
+
+class DemoActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //创建下载任务
+        val downloadTask = GlobalScope.download(url)
+
+        downloadTask.progress()
+            .onEach { progress ->  /* 更新进度 */ }
+            .launchIn(lifecycleScope)
+
+        downloadTask.start()
+    }
+}
+
+class OtherActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        //以相同的url创建下载任务，即可获取上一个页面创建的下载任务
+        val downloadTask = GlobalScope.download(url)
+
+        downloadTask.progress()
+            .onEach { progress ->  /* 更新进度 */ }
+            .launchIn(lifecycleScope)
+
+        downloadTask.start()
+    }
+}
+```
+
+基于此，可以在任意多个页面中共享同一个下载进度和下载状态
+
+## 进度和状态
+
+- 只监听进度
+
+在某些场景只需要下载的进度时，可使用这种方式
+
+```kotlin
+// 创建任务
+val downloadTask = lifecycleScope.download("url")
+
+downloadTask.progress()
+    .onEach { progress ->  /* 更新进度 */ }
+    .launchIn(lifecycleScope) // 使用lifecycleScope
+
+//开始下载
+downloadTask.start()
+```
+
+> 利用**lifecycleScope**可确保在Activity或Fragment销毁的时候自动解除监听
+
+
+可以为progress()方法设置更新间隔，默认是200ms更新一次，如：
+
+```kotlin
+downloadTask.progress(500) // 设置为500ms更新一次进度
+    .onEach { progress ->  
+        // 更新进度
+        setProgress(progress)
+    }
+    .launchIn(lifecycleScope)
+```
+
+- 监听下载状态和进度
+
+当需要下载状态和下载进度的时候，使用这种方式获取
+
+```kotlin
+// 创建任务
+val downloadTask = lifecycleScope.download("url")
+
+downloadTask.state()
+    .onEach { state ->  
+        // 更新状态
+        setState(state)
+        // 更新进度
+        setProgress(state.progress)
+    }
+    .launchIn(lifecycleScope)
+
+//开始下载
+downloadTask.start()
+```
+
+> state有以下值：**None,Waiting,Downloading,Stopped,Failed,Succeed**
+
+同样的，可以为state()方法设置进度更新间隔
+
+
+## 启动和停止
+
+- 开始下载
+
+```kotlin
+downloadTask.start()
+```
+
+- 停止下载
+
+```kotlin
+downloadTask.stop()
+```
+
+- 删除下载
+
+```kotlin
+downloadTask.remove()
+```
+
+## License
+
+> ```
+> Copyright 2021 Season.Zlc
+>
+> Licensed under the Apache License, Version 2.0 (the "License");
+> you may not use this file except in compliance with the License.
+> You may obtain a copy of the License at
+>
+>    http://www.apache.org/licenses/LICENSE-2.0
+>
+> Unless required by applicable law or agreed to in writing, software
+> distributed under the License is distributed on an "AS IS" BASIS,
+> WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+> See the License for the specific language governing permissions and
+> limitations under the License.
+> ```

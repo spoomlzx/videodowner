@@ -19,7 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/MainActivityColorTranslucentTheme"
         android:usesCleartextTraffic="true">
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -46,19 +45,16 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.history.PlayHistoryActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.download.VideoDownloadListActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.download.DownloadingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -66,6 +62,12 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.setting.SettingActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.mine.ConfigActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
