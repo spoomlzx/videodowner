@@ -1,6 +1,5 @@
 package zlc.season.downloadx.core
 
-import android.util.Log
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import zlc.season.downloadx.Progress
@@ -65,7 +64,7 @@ open class DownloadTask(
             notifyWaiting()
             try {
                 val task = this@DownloadTask
-                Log.d("download", "enqueue task ${task.param.tag()}")
+                "enqueue task ${task.param.tag()}".log()
                 config.queue.enqueue(this@DownloadTask)
             } catch (e: Exception) {
                 if (e !is CancellationException) {

@@ -1,8 +1,9 @@
 package zlc.season.downloadx.core
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import zlc.season.downloadx.helper.Default.MAX_TASK_NUMBER
 import java.util.concurrent.ConcurrentHashMap
 
@@ -33,6 +34,7 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
     private val tempMap = ConcurrentHashMap<String, DownloadTask>()
 
     init {
+        // 按并发数maxTask 建立3个channel，监听发送进来的task
         GlobalScope.launch {
             repeat(maxTask) {
                 launch {
@@ -49,6 +51,7 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
 
     override suspend fun enqueue(task: DownloadTask) {
         tempMap[task.param.tag()] = task
+        // send to channel to suspendStart task
         channel.send(task)
     }
 

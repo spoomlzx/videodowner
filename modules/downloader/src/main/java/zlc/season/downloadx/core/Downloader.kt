@@ -1,7 +1,6 @@
 package zlc.season.downloadx.core
 
 import kotlinx.coroutines.*
-import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.channels.actor
 import okhttp3.ResponseBody

@@ -21,35 +21,33 @@ class ConfigActivity : AppCompatActivity() {
         setContentView(binding.root)
         var downloadTask: DownloadTask? = null
 
-        binding.btnNew.setOnClickListener {
-            downloadTask = lifecycleScope.download("http://192.168.3.4/01.mp4")
-            downloadTask!!.state().onEach {
-                when (it) {
-                    is State.None -> {
-                        binding.btnState.text = "下载"
-                    }
-                    is State.Waiting -> {
-                        binding.btnState.text = "等待中"
-                    }
-                    is State.Downloading -> {
-                        binding.btnState.text = it.progress.percentStr()
-                    }
-                    is State.Failed -> {
-                        binding.btnState.text = "重试"
-                    }
-                    is State.Stopped -> {
-                        binding.btnState.text = "继续"
-                    }
-                    is State.Succeed -> {
-                        binding.btnState.text = "安装"
-                    }
+        downloadTask = lifecycleScope.download("http://192.168.3.4/01.mp4")
+        downloadTask.state().onEach {
+            when (it) {
+                is State.None -> {
+                    binding.btnState.text = "下载"
                 }
-            }.launchIn(lifecycleScope)
-        }
+                is State.Waiting -> {
+                    binding.btnState.text = "等待中"
+                }
+                is State.Downloading -> {
+                    binding.btnState.text = it.progress.percentStr()
+                }
+                is State.Failed -> {
+                    binding.btnState.text = "重试"
+                }
+                is State.Stopped -> {
+                    binding.btnState.text = "继续"
+                }
+                is State.Succeed -> {
+                    binding.btnState.text = "安装"
+                }
+            }
+        }.launchIn(lifecycleScope)
 
 
         binding.btnStart.setOnClickListener {
-            downloadTask?.let {
+            downloadTask.let {
                 when {
                     it.isStarted() -> it.stop()
                     else -> it.start()
@@ -58,11 +56,11 @@ class ConfigActivity : AppCompatActivity() {
         }
 
         binding.btnResume.setOnClickListener {
-            downloadTask?.resume()
+            downloadTask.config.taskManager
         }
 
         binding.btnRemove.setOnClickListener {
-            downloadTask?.remove()
+            downloadTask.remove()
         }
     }
 }
