@@ -4,6 +4,7 @@ package org.nudt.player.utils
 import org.nudt.common.SLog
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.VodInfoModel.PlayUrl
+import zlc.season.downloadx.utils.ratio
 import kotlin.math.withSign
 
 
@@ -128,7 +129,7 @@ object VideoUtil {
         return if (playHistory.total_video_num > 1) {
             "看至第${playHistory.vod_index + 1}集"
         } else {
-            val percent = 100f * playHistory.progress_time / playHistory.total_duration
+            val percent = playHistory.progress_time ratio playHistory.total_duration
             "观看至${percent}%"
         }
     }

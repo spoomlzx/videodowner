@@ -15,7 +15,11 @@ fun CoroutineScope.download(
 ): DownloadTask {
     val downloadParam = DownloadParam(url, saveName, savePath)
     "$savePath  and  $saveName".log("start to download")
-    val task = DownloadTask(this, downloadParam, downloadConfig)
+    val stateHolder = DownloadTask.StateHolder()
+    stateHolder.updateState(stateHolder.downloading, Progress(1200, 2344))
+
+
+    val task = DownloadTask(this, downloadParam, downloadConfig, stateHolder)
     return downloadConfig.taskManager.add(task)
 }
 

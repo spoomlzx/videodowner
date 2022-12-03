@@ -15,15 +15,16 @@ import java.io.File
 open class DownloadTask(
     val coroutineScope: CoroutineScope,
     val param: DownloadParam,
-    val config: DownloadConfig
+    val config: DownloadConfig,
+    private val stateHolder: StateHolder = StateHolder()
 ) {
-    private val stateHolder by lazy { StateHolder() }
+    //private val stateHolder by lazy { StateHolder() }
 
     private var downloadJob: Job? = null
     private var downloader: Downloader? = null
 
     private val downloadProgressFlow = MutableStateFlow(0)
-    private val downloadStateFlow = MutableStateFlow<State>(stateHolder.none)
+    private val downloadStateFlow = MutableStateFlow<State>(stateHolder.currentState)
 
     fun isStarted(): Boolean {
         return stateHolder.isStarted()
@@ -188,7 +189,7 @@ open class DownloadTask(
     }
 
     suspend fun getProgress(): Progress {
-        return downloader?.queryProgress() ?: Progress()
+        return downloader?.queryProgress() ?: stateHolder.currentState.progress
     }
 
     fun getState() = stateHolder.currentState

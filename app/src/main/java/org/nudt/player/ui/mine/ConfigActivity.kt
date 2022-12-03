@@ -7,8 +7,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import org.koin.core.component.getScopeName
 import org.nudt.common.SLog
 import org.nudt.player.databinding.ActivityConfigBinding
+import zlc.season.downloadx.Downloader
 import zlc.season.downloadx.State
 import zlc.season.downloadx.core.DownloadTask
 import zlc.season.downloadx.download
@@ -19,9 +21,8 @@ class ConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        var downloadTask: DownloadTask? = null
 
-        downloadTask = lifecycleScope.download("http://192.168.3.4/01.mp4")
+        val downloadTask = Downloader.download("http://192.168.3.4/01.mp4")
         downloadTask.state().onEach {
             when (it) {
                 is State.None -> {

@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.nudt.common.SLog
 import org.nudt.player.di.modulePlayer
+import zlc.season.downloadx.Downloader
 
 
 class BaseApplication : Application() {
@@ -15,6 +16,8 @@ class BaseApplication : Application() {
         super.onCreate()
         initKoin()
         initMMKV()
+
+        Downloader.initWithServiceMode(this)
     }
 
     /**
