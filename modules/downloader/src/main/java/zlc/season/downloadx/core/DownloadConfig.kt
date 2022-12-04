@@ -2,23 +2,20 @@ package zlc.season.downloadx.core
 
 import okhttp3.ResponseBody
 import retrofit2.Response
+import zlc.season.downloadx.database.DownloadTaskManager
 import zlc.season.downloadx.helper.Default.DEFAULT_RANGE_CURRENCY
 import zlc.season.downloadx.helper.Default.DEFAULT_RANGE_SIZE
 import zlc.season.downloadx.helper.apiCreator
 
 class DownloadConfig(
     /**
+     * 下载管理
+     */
+    val taskManager: DownloadTaskManager,
+    /**
      * 禁用断点续传
      */
     val disableRangeDownload: Boolean = false,
-    /**
-     * 下载管理
-     */
-    val taskManager: TaskManager = DefaultTaskManager,
-    /**
-     * 下载队列
-     */
-    val queue: DownloadQueue = DefaultDownloadQueue.get(),
 
     /**
      * 自定义header

@@ -4,7 +4,27 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import java.math.BigDecimal
+import java.math.BigInteger
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 import java.util.concurrent.atomic.AtomicInteger
+
+/**
+ * 获取String的md5值
+ */
+fun String.getMd5(): String {
+    if (isEmpty()) {
+        return ""
+    }
+    try {
+        val md: MessageDigest = MessageDigest.getInstance("MD5")
+        md.update(toByteArray())
+        return BigInteger(1, md.digest()).toString(16)
+    } catch (e: NoSuchAlgorithmException) {
+        e.toString().log()
+    }
+    return ""
+}
 
 fun String.toLongOrDefault(defaultValue: Long): Long {
     return try {

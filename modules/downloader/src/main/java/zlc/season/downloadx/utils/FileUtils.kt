@@ -1,5 +1,8 @@
 package zlc.season.downloadx.utils
 
+import android.content.Context
+import android.os.Environment
+import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.MappedByteBuffer
@@ -46,4 +49,12 @@ fun File.clear() {
     shadow.delete()
     tmp.delete()
     delete()
+}
+
+/**
+ * 返回手机外部储存的应用下载文件路径 (/storage/emulated/0/Android/data/{packageName}/files/Download)
+ * @return String
+ */
+fun Context.getDownloadsDirPath(): String {
+    return getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)?.absolutePath!!
 }

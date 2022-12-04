@@ -1,10 +1,6 @@
 package zlc.season.downloadx.helper
 
 object Default {
-    /**
-     * 默认的保存路径
-     */
-    val DEFAULT_SAVE_PATH = "/storage/emulated/0/Android/data/org.nudt.videodowner/files/Download"
 
     /**
      * 默认的分片大小
@@ -19,7 +15,7 @@ object Default {
     /**
      * 同时下载的任务数量
      */
-    const val MAX_TASK_NUMBER = 3
+    const val MAX_TASK_NUMBER = 2
 
     /**
      * 默认的Header

@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.adapter.MineHistoryAdapter
@@ -14,7 +13,6 @@ import org.nudt.player.databinding.FragmentMineBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.download.VideoDownloadListActivity
 import org.nudt.player.ui.history.PlayHistoryActivity
-import zlc.season.downloadx.download
 
 class MineFragment : Fragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }

@@ -1,17 +1,19 @@
 package zlc.season.downloadx.core
 
+import zlc.season.downloadx.utils.getMd5
+
 
 open class DownloadParam(
     var url: String,
+    var savePath: String,
     var saveName: String = "",
-    var savePath: String = "",
     var extra: String = ""
 ) {
 
     /**
      * Each task with unique tag.
      */
-    open fun tag() = url
+    open fun tag() = url.getMd5()
 
 
     override fun equals(other: Any?): Boolean {

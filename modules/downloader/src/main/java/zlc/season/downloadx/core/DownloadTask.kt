@@ -4,8 +4,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import zlc.season.downloadx.Progress
 import zlc.season.downloadx.State
+import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.helper.Default
-import zlc.season.downloadx.utils.clear
 import zlc.season.downloadx.utils.closeQuietly
 import zlc.season.downloadx.utils.fileName
 import zlc.season.downloadx.utils.log
@@ -16,11 +16,11 @@ open class DownloadTask(
     val coroutineScope: CoroutineScope,
     val param: DownloadParam,
     val config: DownloadConfig,
-    private val stateHolder: StateHolder = StateHolder()
+    val stateHolder: StateHolder = StateHolder()
 ) {
     //private val stateHolder by lazy { StateHolder() }
 
-    private var downloadJob: Job? = null
+    var downloadJob: Job? = null
     private var downloader: Downloader? = null
 
     private val downloadProgressFlow = MutableStateFlow(0)
@@ -42,7 +42,7 @@ open class DownloadTask(
         return stateHolder.canStart()
     }
 
-    private fun checkJob() = downloadJob?.isActive == true
+    fun checkJob() = downloadJob?.isActive == true
 
     /**
      * 获取下载文件
@@ -52,27 +52,6 @@ open class DownloadTask(
             File(param.savePath, param.saveName)
         } else {
             null
-        }
-    }
-
-    /**
-     * 开始下载，添加到下载队列
-     */
-    fun start() {
-        coroutineScope.launch {
-            if (checkJob()) return@launch
-
-            notifyWaiting()
-            try {
-                val task = this@DownloadTask
-                "enqueue task ${task.param.tag()}".log()
-                config.queue.enqueue(this@DownloadTask)
-            } catch (e: Exception) {
-                if (e !is CancellationException) {
-                    notifyFailed()
-                }
-                e.log()
-            }
         }
     }
 
@@ -101,9 +80,6 @@ open class DownloadTask(
                 if (param.saveName.isEmpty()) {
                     param.saveName = response.fileName()
                 }
-                if (param.savePath.isEmpty()) {
-                    param.savePath = Default.DEFAULT_SAVE_PATH
-                }
 
                 if (downloader == null) {
                     downloader = config.dispatcher.dispatch(this@DownloadTask, response)
@@ -125,30 +101,6 @@ open class DownloadTask(
             }
         }
         downloadJob?.join()
-    }
-
-    /**
-     * 停止下载
-     */
-    fun stop() {
-        coroutineScope.launch {
-            if (isStarted()) {
-                config.queue.dequeue(this@DownloadTask)
-                downloadJob?.cancel()
-                notifyStopped()
-            }
-        }
-    }
-
-    /**
-     * 移除任务
-     */
-    fun remove(deleteFile: Boolean = true) {
-        stop()
-        config.taskManager.remove(this)
-        if (deleteFile) {
-            file()?.clear()
-        }
     }
 
     /**
@@ -194,9 +146,10 @@ open class DownloadTask(
 
     fun getState() = stateHolder.currentState
 
-    private suspend fun notifyWaiting() {
+    suspend fun notifyWaiting() {
         stateHolder.updateState(stateHolder.waiting, getProgress())
         downloadStateFlow.value = stateHolder.currentState
+        config.taskManager.updateTaskInfo(buildTaskInfo())
         "url ${param.url} download task waiting.".log()
     }
 
@@ -204,24 +157,28 @@ open class DownloadTask(
         stateHolder.updateState(stateHolder.downloading, getProgress())
         downloadStateFlow.value = stateHolder.currentState
         downloadProgressFlow.value = downloadProgressFlow.value + 1
+        config.taskManager.updateTaskInfo(buildTaskInfo())
         "url ${param.url} download task start.".log()
     }
 
-    private suspend fun notifyStopped() {
-        stateHolder.updateState(stateHolder.stopped, getProgress())
+    suspend fun notifyPaused() {
+        stateHolder.updateState(stateHolder.paused, getProgress())
         downloadStateFlow.value = stateHolder.currentState
-        "url ${param.url} download task stopped.".log()
+        config.taskManager.updateTaskInfo(buildTaskInfo())
+        "url ${param.url} download task paused.".log()
     }
 
-    private suspend fun notifyFailed() {
+    suspend fun notifyFailed() {
         stateHolder.updateState(stateHolder.failed, getProgress())
         downloadStateFlow.value = stateHolder.currentState
+        config.taskManager.updateTaskInfo(buildTaskInfo())
         "url ${param.url} download task failed.".log()
     }
 
     private suspend fun notifySucceed() {
         stateHolder.updateState(stateHolder.succeed, getProgress())
         downloadStateFlow.value = stateHolder.currentState
+        config.taskManager.updateTaskInfo(buildTaskInfo())
         "url ${param.url} download task succeed.".log()
     }
 
@@ -229,11 +186,31 @@ open class DownloadTask(
         return totalSize > 0 && totalSize == downloadSize
     }
 
+
+    /**
+     * 从DownloadTask构造可以存入DB的TaskInfo
+     */
+    fun buildTaskInfo(): TaskInfo {
+        val param = param
+        val state = stateHolder.currentState
+        return TaskInfo(
+            param.tag(),
+            param.saveName,
+            param.savePath,
+            param.extra,
+            param.url,
+            state.progress.downloadSize,
+            state.progress.totalSize,
+            System.currentTimeMillis(),
+            state.status
+        )
+    }
+
     class StateHolder {
         val none by lazy { State.None() }
         val waiting by lazy { State.Waiting() }
         val downloading by lazy { State.Downloading() }
-        val stopped by lazy { State.Stopped() }
+        val paused by lazy { State.Paused() }
         val failed by lazy { State.Failed() }
         val succeed by lazy { State.Succeed() }
 
@@ -252,24 +229,16 @@ open class DownloadTask(
         }
 
         fun canStart(): Boolean {
-            return currentState is State.None || currentState is State.Failed || currentState is State.Stopped
+            return currentState is State.None || currentState is State.Failed || currentState is State.Paused
         }
 
         fun isEnd(): Boolean {
-            return currentState is State.None || currentState is State.Waiting || currentState is State.Stopped || currentState is State.Failed || currentState is State.Succeed
+            return currentState is State.None || currentState is State.Waiting || currentState is State.Paused || currentState is State.Failed || currentState is State.Succeed
         }
 
         fun updateState(new: State, progress: Progress): State {
             currentState = new.apply { this.progress = progress }
             return currentState
         }
-
-
-        val STATUS_NONE = 0
-        val STATUS_WAITING = 1
-        val STATUS_DOWNLOADING = 2
-        val STATUS_PAUSED = 3
-        val STATUS_SUCCEED = 4
-        val STATUS_FAILED = 5
     }
 }

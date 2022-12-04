@@ -2,22 +2,16 @@ package org.nudt.player.ui.mine
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import org.koin.core.component.getScopeName
-import org.nudt.common.SLog
 import org.nudt.player.databinding.ActivityConfigBinding
-import zlc.season.downloadx.Downloader
+import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.State
-import zlc.season.downloadx.core.DownloadTask
 import zlc.season.downloadx.database.DownloadTaskManager
-import zlc.season.downloadx.database.TaskInfo
-import zlc.season.downloadx.download
 
 class ConfigActivity : AppCompatActivity() {
     private val binding by lazy { ActivityConfigBinding.inflate(layoutInflater) }
@@ -26,57 +20,129 @@ class ConfigActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val downloadTask = Downloader.download("http://192.168.3.4/01.mp4")
-        downloadTask.state().onEach {
+        val downloadTask1 = DownloadXManager.download("http://192.168.3.4/01.mp4", "", "")
+        downloadTask1.state().onEach {
             when (it) {
                 is State.None -> {
-                    binding.btnState.text = "下载"
+                    binding.btnState1.text = "下载"
                 }
                 is State.Waiting -> {
-                    binding.btnState.text = "等待中"
+                    binding.btnState1.text = "等待中"
                 }
                 is State.Downloading -> {
-                    binding.btnState.text = it.progress.percentStr()
+                    binding.btnState1.text = it.progress.percentStr()
                 }
                 is State.Failed -> {
-                    binding.btnState.text = "重试"
+                    binding.btnState1.text = "重试"
                 }
-                is State.Stopped -> {
-                    binding.btnState.text = "继续"
+                is State.Paused -> {
+                    binding.btnState1.text = "继续"
                 }
                 is State.Succeed -> {
-                    binding.btnState.text = "安装"
+                    binding.btnState1.text = "安装"
                 }
             }
         }.launchIn(lifecycleScope)
 
 
-        binding.btnStart.setOnClickListener {
-            downloadTask.let {
+        binding.btnStart1.setOnClickListener {
+            downloadTask1.let {
                 when {
-                    it.isStarted() -> it.stop()
-                    else -> it.start()
+                    it.isStarted() -> DownloadXManager.pauseDownloadTask(it)
+                    else -> DownloadXManager.startDownloadTask(it)
+                }
+            }
+        }
+
+        val downloadTask2 = DownloadXManager.download("http://192.168.3.4/02.mp4", "", "")
+        downloadTask2.state().onEach {
+            when (it) {
+                is State.None -> {
+                    binding.btnState2.text = "下载"
+                }
+                is State.Waiting -> {
+                    binding.btnState2.text = "等待中"
+                }
+                is State.Downloading -> {
+                    binding.btnState2.text = it.progress.percentStr()
+                }
+                is State.Failed -> {
+                    binding.btnState2.text = "重试"
+                }
+                is State.Paused -> {
+                    binding.btnState2.text = "继续"
+                }
+                is State.Succeed -> {
+                    binding.btnState2.text = "安装"
+                }
+            }
+        }.launchIn(lifecycleScope)
+
+
+        binding.btnStart2.setOnClickListener {
+            downloadTask2.let {
+                when {
+                    it.isStarted() -> DownloadXManager.pauseDownloadTask(it)
+                    else -> DownloadXManager.startDownloadTask(it)
+                }
+            }
+        }
+
+        val downloadTask3 = DownloadXManager.download("http://192.168.3.4/03.mp4", "", "")
+        downloadTask3.state().onEach {
+            when (it) {
+                is State.None -> {
+                    binding.btnState3.text = "下载"
+                }
+                is State.Waiting -> {
+                    binding.btnState3.text = "等待中"
+                }
+                is State.Downloading -> {
+                    binding.btnState3.text = it.progress.percentStr()
+                }
+                is State.Failed -> {
+                    binding.btnState3.text = "重试"
+                }
+                is State.Paused -> {
+                    binding.btnState3.text = "继续"
+                }
+                is State.Succeed -> {
+                    binding.btnState3.text = "安装"
+                }
+            }
+        }.launchIn(lifecycleScope)
+
+
+        binding.btnStart3.setOnClickListener {
+            downloadTask3.let {
+                when {
+                    it.isStarted() -> DownloadXManager.pauseDownloadTask(it)
+                    else -> DownloadXManager.startDownloadTask(it)
                 }
             }
         }
 
         binding.btnRemove.setOnClickListener {
-            downloadTask.remove()
+            DownloadXManager.removeDownloadTask(downloadTask1.buildTaskInfo())
+            DownloadXManager.removeDownloadTask(downloadTask2.buildTaskInfo())
+            DownloadXManager.removeDownloadTask(downloadTask3.buildTaskInfo())
         }
+
         val taskManager = DownloadTaskManager(this@ConfigActivity)
         binding.btnInsert.setOnClickListener {
-
-
-            val taskInfo = TaskInfo("http://192.168.3.4/01.mp4", "01.mp4", "/234/23/", "", "http://192.168.3.4/01.mp4", 500, 1000, System.currentTimeMillis(), 1)
+            val taskInfo = downloadTask1.buildTaskInfo()
             lifecycleScope.launch {
                 taskManager.insertTaskInfo(taskInfo)
             }
         }
 
         binding.btnQuery.setOnClickListener {
-            val taskInfo = taskManager.findTaskInfoByUrl("http://192.168.3.4/01.mp4")
+            val taskInfo = taskManager.queryUnfinishedTaskInfo().asLiveData()
             val gson = Gson()
-            binding.tvInfo.text = gson.toJson(taskInfo)
+
+            taskInfo.observe(this) {
+                binding.tvInfo.text = gson.toJson(it)
+            }
 
         }
 

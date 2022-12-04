@@ -1,6 +1,7 @@
 package zlc.season.downloadx.database
 
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskInfoDao {
@@ -13,6 +14,12 @@ interface TaskInfoDao {
 
     @Update
     suspend fun update(vararg taskInfo: TaskInfo)
+
+    @Query("select * from TaskInfo where status <> $STATUS_SUCCEED")
+    fun queryUnfinishedTaskInfo(): Flow<List<TaskInfo>>
+
+    @Query("select * from TaskInfo where status = $STATUS_SUCCEED")
+    fun getFinishedTaskInfo(): Flow<List<TaskInfo>>
 
     @Query("select * from TaskInfo where url=:url")
     fun findByUrl(url: String): TaskInfo?

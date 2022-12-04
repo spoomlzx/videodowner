@@ -1,15 +1,12 @@
 package zlc.season.downloadx
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.os.IBinder
 import android.util.Log
 import zlc.season.downloadx.core.DownloadTask
+import zlc.season.downloadx.database.TaskInfo
 
-object Downloader {
+object DownloadXManager {
 
     private lateinit var downloaderService: DownloaderService
 
@@ -27,14 +24,30 @@ object Downloader {
     }
 
 
-    fun download(url: String): DownloadTask {
-        val task = downloaderService.download(url)
-        //task.start()
+    fun download(url: String, saveName: String, extra: String): DownloadTask {
+        val task = downloaderService.download(url, saveName, extra)
+        downloaderService.startDownloadTask(task)
         return task
     }
 
+    fun startDownloadTask(downloadTask: DownloadTask) {
+        downloaderService.startDownloadTask(downloadTask)
+    }
 
-    fun initWithServiceMode(contextWrapper: ContextWrapper): Downloader {
+    fun pauseDownloadTask(downloadTask: DownloadTask) {
+        downloaderService.pauseDownloadTask(downloadTask)
+    }
+
+    fun removeDownloadTask(taskInfo: TaskInfo) {
+        downloaderService.removeDownloadTask(taskInfo)
+    }
+
+//    fun buildDownloadTask(taskInfo: TaskInfo): DownloadTask {
+//        return downloaderService.buildDownloadTask(downloaderService.lifecycleScope, taskInfo)
+//    }
+
+
+    fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {
         val serviceIntent = Intent(contextWrapper, DownloaderService::class.java)
         contextWrapper.apply {
             startService(serviceIntent)

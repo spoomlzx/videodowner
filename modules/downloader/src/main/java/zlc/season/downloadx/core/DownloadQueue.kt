@@ -11,6 +11,13 @@ interface DownloadQueue {
     suspend fun enqueue(task: DownloadTask)
 
     suspend fun dequeue(task: DownloadTask)
+
+    fun contain(task: DownloadTask): Boolean
+
+    /**
+     * 用于根据tag获取队列中的task，防止重复添加任务
+     */
+    fun getDownloadTaskByTag(tag: String): DownloadTask?
 }
 
 class DefaultDownloadQueue private constructor(private val maxTask: Int) : DownloadQueue {
@@ -30,7 +37,12 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
         }
     }
 
+    /**
+     * channel可以当做queue来使用
+     */
     private val channel = Channel<DownloadTask>()
+
+    // waiting或者downloading的task
     private val tempMap = ConcurrentHashMap<String, DownloadTask>()
 
     init {
@@ -59,7 +71,11 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
         tempMap.remove(task.param.tag())
     }
 
-    private fun contain(task: DownloadTask): Boolean {
+    override fun contain(task: DownloadTask): Boolean {
         return tempMap[task.param.tag()] != null
+    }
+
+    override fun getDownloadTaskByTag(tag: String): DownloadTask? {
+        return tempMap[tag]
     }
 }
