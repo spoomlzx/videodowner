@@ -1,24 +1,43 @@
 package zlc.season.downloadx
 
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
+import android.os.Environment
 import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
-import zlc.season.downloadx.core.DownloadTask
+import kotlinx.coroutines.launch
+import zlc.season.downloadx.core.*
+import zlc.season.downloadx.database.DownloadTaskManager
 
 class DownloaderService() : LifecycleService() {
     val tag = "DownloaderService"
 
+    private lateinit var taskManager: DownloadTaskManager
+    //val queue: DownloadQueue = DefaultDownloadQueue.get()
+
     override fun onCreate() {
         super.onCreate()
-        //appContext = applicationContext
+        taskManager = DownloadTaskManager(applicationContext)
     }
 
     fun download(url: String): DownloadTask {
-        val task = lifecycleScope.download(url)
-        return task
+        val dbTask = taskManager.findTaskInfoByUrl(url)
+        val downloadTask = if (dbTask != null) {
+            taskManager.buildDownloadTask(lifecycleScope, dbTask)
+        } else {
+            val downloadParam = DownloadParam(url, "", "")
+            DownloadTask(lifecycleScope, downloadParam, DownloadConfig())
+        }
+
+
+//        lifecycleScope.launch {
+//            queue.enqueue(task)
+//        }
+        //queue.enqueue(task)
+        return downloadTask
     }
 
 

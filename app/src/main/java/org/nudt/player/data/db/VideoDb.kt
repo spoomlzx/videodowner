@@ -11,7 +11,7 @@ import org.nudt.player.data.model.VideoRemoteKey
 
 @Database(
     entities = [Video::class, VideoRemoteKey::class, PlayHistory::class, FavoriteVideo::class],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 abstract class VideoDb : RoomDatabase() {

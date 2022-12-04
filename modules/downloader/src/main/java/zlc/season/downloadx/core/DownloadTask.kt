@@ -263,5 +263,13 @@ open class DownloadTask(
             currentState = new.apply { this.progress = progress }
             return currentState
         }
+
+
+        val STATUS_NONE = 0
+        val STATUS_WAITING = 1
+        val STATUS_DOWNLOADING = 2
+        val STATUS_PAUSED = 3
+        val STATUS_SUCCEED = 4
+        val STATUS_FAILED = 5
     }
 }

@@ -3,16 +3,20 @@ package org.nudt.player.ui.mine
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import com.google.gson.Gson
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.launch
 import org.koin.core.component.getScopeName
 import org.nudt.common.SLog
 import org.nudt.player.databinding.ActivityConfigBinding
 import zlc.season.downloadx.Downloader
 import zlc.season.downloadx.State
 import zlc.season.downloadx.core.DownloadTask
+import zlc.season.downloadx.database.DownloadTaskManager
+import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.download
 
 class ConfigActivity : AppCompatActivity() {
@@ -56,12 +60,25 @@ class ConfigActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnResume.setOnClickListener {
-            downloadTask.config.taskManager
-        }
-
         binding.btnRemove.setOnClickListener {
             downloadTask.remove()
         }
+        val taskManager = DownloadTaskManager(this@ConfigActivity)
+        binding.btnInsert.setOnClickListener {
+
+
+            val taskInfo = TaskInfo("http://192.168.3.4/01.mp4", "01.mp4", "/234/23/", "", "http://192.168.3.4/01.mp4", 500, 1000, System.currentTimeMillis(), 1)
+            lifecycleScope.launch {
+                taskManager.insertTaskInfo(taskInfo)
+            }
+        }
+
+        binding.btnQuery.setOnClickListener {
+            val taskInfo = taskManager.findTaskInfoByUrl("http://192.168.3.4/01.mp4")
+            val gson = Gson()
+            binding.tvInfo.text = gson.toJson(taskInfo)
+
+        }
+
     }
 }
