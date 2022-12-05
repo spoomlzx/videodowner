@@ -6,6 +6,7 @@ import android.util.Log
 import zlc.season.downloadx.core.DownloadTask
 import zlc.season.downloadx.database.DownloadTaskManager
 import zlc.season.downloadx.database.TaskInfo
+import zlc.season.downloadx.utils.log
 
 object DownloadXManager {
 
@@ -13,13 +14,13 @@ object DownloadXManager {
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            Log.d("Downloader", "onServiceConnected: ")
+            "onServiceConnected: ".log()
             val binder = service as DownloadService.DownloadServiceBinder
             downloadService = binder.getService()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            Log.d("Downloader", "onServiceDisconnected: ")
+            "onServiceDisconnected: ".log()
         }
 
     }
@@ -52,6 +53,8 @@ object DownloadXManager {
 
     // 获取后10条已下载完成任务的Flow
     fun queryFinishedTaskInfoTopFlow() = downloadService.queryFinishedTaskInfoTopFlow()
+
+    suspend fun queryFinishedTaskInfoTop() = downloadService.queryFinishedTaskInfoTop()
 
 
     fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {

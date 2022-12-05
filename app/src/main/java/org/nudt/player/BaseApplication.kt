@@ -14,10 +14,9 @@ class BaseApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        DownloadXManager.initWithServiceMode(this)
         initKoin()
         initMMKV()
-
-        DownloadXManager.initWithServiceMode(this)
     }
 
     /**

@@ -7,11 +7,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.next.easynavigation.view.EasyNavigationBar.OnTabClickListener
+import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.databinding.ActivityMainBinding
 import org.nudt.player.ui.favorite.FavoriteFragment
 import org.nudt.player.ui.home.HomeFragment
 import org.nudt.player.ui.mine.MineFragment
+import zlc.season.downloadx.DownloadXManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,9 +31,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-
         initNavigation()
-
     }
 
 
@@ -41,7 +41,8 @@ class MainActivity : AppCompatActivity() {
     private fun initNavigation() {
         fragments.add(HomeFragment())
         fragments.add(FavoriteFragment())
-        fragments.add(MineFragment())
+        val mineFragment = MineFragment()
+        fragments.add(mineFragment)
 
         // 设置页面底部导航栏
         binding.enbMain.titleItems(tabText)
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onTabSelectEvent(view: View, position: Int): Boolean {
                     //Tab点击事件  return true 页面不会切换
                     if (position == 2) {
-
+                        mineFragment.fetchDownloadedTaskInfo()
                     }
                     return false
                 }

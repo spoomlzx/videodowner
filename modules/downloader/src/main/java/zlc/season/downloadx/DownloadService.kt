@@ -117,6 +117,8 @@ class DownloadService() : LifecycleService() {
 
     fun queryFinishedTaskInfoTopFlow() = taskManager.queryFinishedTaskInfoTopFlow()
 
+    suspend fun queryFinishedTaskInfoTop() = taskManager.queryFinishedTaskInfoTop()
+
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)

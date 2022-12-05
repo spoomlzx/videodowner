@@ -10,8 +10,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.nudt.common.SLog
 import org.nudt.player.adapter.MineDownloadedAdapter
 import org.nudt.player.adapter.MineHistoryAdapter
 import org.nudt.player.databinding.FragmentMineBinding
@@ -36,9 +38,9 @@ class MineFragment : Fragment() {
 
         initToolbar()
 
-        initDownloadView()
-
         initHistoryView()
+
+        initDownloadView()
     }
 
     /**
@@ -92,13 +94,12 @@ class MineFragment : Fragment() {
             binding.rvVideoDownloaded.adapter = downloadedAdapter
         }
 
+
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        DownloadXManager.queryFinishedTaskInfoTopFlow().asLiveData().observe(viewLifecycleOwner){
-//            downloadedAdapter.updateTaskInfoList(it)
-//        }
-
+    fun fetchDownloadedTaskInfo() {
+        DownloadXManager.queryFinishedTaskInfoTopFlow().asLiveData().observe(viewLifecycleOwner) {
+            downloadedAdapter.updateTaskInfoList(it)
+        }
     }
 }
