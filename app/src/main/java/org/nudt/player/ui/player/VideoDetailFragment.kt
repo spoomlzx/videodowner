@@ -113,8 +113,10 @@ class VideoDetailFragment : Fragment() {
 
         }
 
-        binding.btnShare.setOnClickListener {
-
+        binding.btnDownload.setOnClickListener {
+            XPopup.Builder(context).asConfirm("提示", "下载该视频？") {
+                playerViewModel.cacheVideo()
+            }.show()
         }
 
         //todo 对应多地址的下载进行修改

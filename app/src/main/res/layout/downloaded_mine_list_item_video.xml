@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_downloaded_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/windows_background"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_normal_margin"
+        android:background="@color/windows_background"
+        android:orientation="vertical">
+
+        <org.nudt.player.component.ShapeImageView
+            android:id="@+id/iv_video_pic"
+            android:layout_width="@dimen/video_cover_width"
+            android:layout_height="@dimen/video_cover_height"
+            android:contentDescription="@string/image"
+            android:scaleType="centerCrop"
+            app:siv_round_radius="@dimen/image_radius"
+            tools:srcCompat="@drawable/default_image" />
+
+        <TextView
+            android:id="@+id/tv_video_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_video_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="50.0mb"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

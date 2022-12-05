@@ -2,9 +2,7 @@ package org.nudt.player.ui.player
 
 import android.os.Bundle
 import android.widget.LinearLayout
-import androidx.appcompat.app.AppCompatActivity
 import org.nudt.player.databinding.ActivityOfflinePlayerBinding
-import org.nudt.videoplayer.VideoPlayer
 
 class OfflinePlayerActivity : BasePlayerActivity() {
     private val binding by lazy { ActivityOfflinePlayerBinding.inflate(layoutInflater) }
@@ -30,21 +28,4 @@ class OfflinePlayerActivity : BasePlayerActivity() {
             player.prepareAsync()
         }
     }
-
-//    override fun onBackPressed() {
-//        if (Jzvd.backPress()) {
-//            return
-//        }
-//        super.onBackPressed()
-//    }
-//
-//    override fun onPause() {
-//        super.onPause()
-//        Jzvd.goOnPlayOnPause()
-//    }
-//
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        Jzvd.releaseAllVideos()
-//    }
 }

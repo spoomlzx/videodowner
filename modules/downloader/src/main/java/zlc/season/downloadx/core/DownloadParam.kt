@@ -5,9 +5,9 @@ import zlc.season.downloadx.utils.getMd5
 
 open class DownloadParam(
     var url: String,
+    var extra: String = "",
     var savePath: String,
-    var saveName: String = "",
-    var extra: String = ""
+    var saveName: String = ""
 ) {
 
     /**

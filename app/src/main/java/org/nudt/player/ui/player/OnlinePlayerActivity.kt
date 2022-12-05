@@ -29,14 +29,29 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        // 设置video player 的比例为 1920:1080
+        setVideoPlayerSize()
+
+        initPlayer(binding.videoPlayer)
+
+        fetchVideoInfo()
+
+        initTabLayout()
+    }
+
+    /**
+     * 设置video player 的比例为 1920:1080
+     */
+    private fun setVideoPlayerSize() {
         val width = resources.displayMetrics.widthPixels
         val height = width * 1080 / 1920
         val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
         binding.videoPlayer.layoutParams = params
+    }
 
-        initPlayer(binding.videoPlayer)
-
+    /**
+     * 获取视频信息并播放
+     */
+    private fun fetchVideoInfo() {
         vodId = intent.getIntExtra("vodId", 0)
 
         playerViewModel.fetchVideoInfo(vodId).observe(this) {
@@ -53,7 +68,6 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             //SLog.d("ready to play ${playerViewModel.progress}")
         }
 
-
         // 监听当前play index变化，切换视频
         playerViewModel.currentIndex.observe(this) {
             // 获取到视频信息进行播放以后的切换选集操作
@@ -63,10 +77,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
                 player.setPlayUrl(info.playUrlList[it].url)
                 player.startPlay()
             }
-
         }
-
-        initTabLayout()
     }
 
     /**
@@ -93,11 +104,9 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         }.attach()
     }
 
-    override fun onStop() {
-
-        super.onStop()
-    }
-
+    /**
+     * 关闭播放器时同步保存视频播放记录
+     */
     override fun onDestroy() {
         SLog.e("destroy player")
         playerViewModel.vodInfo.value?.apply {

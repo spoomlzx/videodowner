@@ -44,7 +44,7 @@ class DownloadingActivity : AppCompatActivity() {
 
         val taskInfoList = DownloadXManager.queryUnfinishedTaskInfo()
         for (taskInfo in taskInfoList) {
-            val downloadTask = DownloadXManager.download(taskInfo.url, taskInfo.file_name, taskInfo.extra)
+            val downloadTask = DownloadXManager.download(taskInfo.url,  taskInfo.extra)
             downloadTask.state().onEach {
                 when (it) {
                     is State.None -> {

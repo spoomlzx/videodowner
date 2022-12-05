@@ -21,8 +21,11 @@ interface TaskInfoDao {
     @Query("select * from TaskInfo where status <> $STATUS_SUCCEED")
     fun queryUnfinishedTaskInfoFlow(): Flow<List<TaskInfo>>
 
-    @Query("select * from TaskInfo where status = $STATUS_SUCCEED")
+    @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time")
     fun queryFinishedTaskInfoFlow(): Flow<List<TaskInfo>>
+
+    @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time desc limit 10")
+    fun queryFinishedTaskInfoTopFlow(): Flow<List<TaskInfo>>
 
     @Query("select * from TaskInfo where url=:url")
     fun findByUrl(url: String): TaskInfo?

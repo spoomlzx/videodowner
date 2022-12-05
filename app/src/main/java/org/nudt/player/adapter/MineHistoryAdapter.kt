@@ -21,31 +21,19 @@ class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Mi
     }
 
     override fun onBindViewHolder(holder: MineHistoryViewHolder, position: Int) {
-        historyList.let {
-            val playHistory = it[position]
-            holder.binding.tvVideoName.text = playHistory.vod_name
+        val playHistory = historyList[position]
+        holder.binding.tvVideoName.text = playHistory.vod_name
 
-            val progress = buildProgressText(playHistory)
-            holder.binding.tvVideoProgress.text = progress
-            val pic = if (playHistory.vod_pic_thumb?.startsWith("http") == true) playHistory.vod_pic_thumb else playHistory.vod_pic
+        val progress = buildProgressText(playHistory)
+        holder.binding.tvVideoProgress.text = progress
+        val pic = if (playHistory.vod_pic_thumb?.startsWith("http") == true) playHistory.vod_pic_thumb else playHistory.vod_pic
 
-            Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+        Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
-            holder.binding.cvHistoryItem.setOnClickListener {
-                val intent = Intent(context, OnlinePlayerActivity::class.java)
-                intent.putExtra("vodId", playHistory.vod_id)
-                context.startActivity(intent)
-            }
-
-//            holder.binding.cvHistoryItem.setOnLongClickListener {
-//                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
-//                    //videoViewModel.changeFavor()
-//                }.setNegativeButton("取消") { _, _ ->
-//                    // User cancelled the dialog
-//                }.create()
-//                dialog.show()
-//                true
-//            }
+        holder.binding.cvHistoryItem.setOnClickListener {
+            val intent = Intent(context, OnlinePlayerActivity::class.java)
+            intent.putExtra("vodId", playHistory.vod_id)
+            context.startActivity(intent)
         }
     }
 

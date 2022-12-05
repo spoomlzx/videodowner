@@ -43,6 +43,12 @@ fun Response<*>.isSupportRange(): Boolean {
     return false
 }
 
+fun Response<*>.fileType(): String {
+    val fileName = fileName()
+    val endP = fileName.lastIndexOf(".")
+    return if (endP > -1) fileName.substring(endP + 1) else ""
+}
+
 fun Response<*>.fileName(): String {
     val url = url()
 

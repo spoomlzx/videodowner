@@ -4,6 +4,7 @@ import android.content.*
 import android.os.IBinder
 import android.util.Log
 import zlc.season.downloadx.core.DownloadTask
+import zlc.season.downloadx.database.DownloadTaskManager
 import zlc.season.downloadx.database.TaskInfo
 
 object DownloadXManager {
@@ -24,8 +25,8 @@ object DownloadXManager {
     }
 
 
-    fun download(url: String, saveName: String, extra: String): DownloadTask {
-        return downloadService.download(url, saveName, extra)
+    fun download(url: String, extra: String): DownloadTask {
+        return downloadService.download(url, extra)
     }
 
     fun startDownloadTask(downloadTask: DownloadTask) {
@@ -48,6 +49,9 @@ object DownloadXManager {
 
     // 获取已下载完成任务的Flow
     fun queryFinishedTaskInfoFlow() = downloadService.queryFinishedTaskInfoFlow()
+
+    // 获取后10条已下载完成任务的Flow
+    fun queryFinishedTaskInfoTopFlow() = downloadService.queryFinishedTaskInfoTopFlow()
 
 
     fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {

@@ -8,6 +8,7 @@ import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.helper.Default
 import zlc.season.downloadx.utils.closeQuietly
 import zlc.season.downloadx.utils.fileName
+import zlc.season.downloadx.utils.fileType
 import zlc.season.downloadx.utils.log
 import java.io.File
 
@@ -86,7 +87,7 @@ open class DownloadTask(
                 }
 
                 if (param.saveName.isEmpty()) {
-                    param.saveName = response.fileName()
+                    param.saveName = "video." + response.fileType()
                 }
 
                 if (downloader == null) {

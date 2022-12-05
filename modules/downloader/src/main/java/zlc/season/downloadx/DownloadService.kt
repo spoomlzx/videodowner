@@ -24,11 +24,7 @@ class DownloadService() : LifecycleService() {
     // 下载队列
     private val queue: DownloadQueue = DefaultDownloadQueue.get()
 
-    override fun onCreate() {
-        super.onCreate()
-    }
-
-    fun download(url: String, saveName: String, extra: String): DownloadTask {
+    fun download(url: String, extra: String): DownloadTask {
         // 先查询DB中是否有当前url对应的任务
         val dbTask = taskManager.findTaskInfoByUrl(url)
         "query dbTask from db".log()
@@ -47,7 +43,7 @@ class DownloadService() : LifecycleService() {
             }
         } else {
             // 重新创建一个DownloadTask
-            val downloadParam = DownloadParam(url, getDownloadsDirPath() + "/" + url.getMd5(), saveName, extra)
+            val downloadParam = DownloadParam(url, extra, getDownloadsDirPath() + "/" + url.getMd5())
             downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager))
             "get new task ${downloadTask.param.tag()}".log()
             lifecycleScope.launch {
@@ -119,6 +115,8 @@ class DownloadService() : LifecycleService() {
 
     fun queryFinishedTaskInfoFlow() = taskManager.queryFinishedTaskInfoFlow()
 
+    fun queryFinishedTaskInfoTopFlow() = taskManager.queryFinishedTaskInfoTopFlow()
+
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
@@ -151,7 +149,7 @@ class DownloadService() : LifecycleService() {
      * 从已有的taskInfo初始化DownloadTask
      */
     private fun buildDownloadTask(coroutineScope: CoroutineScope, taskInfo: TaskInfo): DownloadTask {
-        val downloadParam = DownloadParam(taskInfo.url, taskInfo.file_path, taskInfo.file_name, taskInfo.extra)
+        val downloadParam = DownloadParam(taskInfo.url, taskInfo.extra, taskInfo.file_path, taskInfo.file_name)
         val stateHolder = DownloadTask.StateHolder()
         val state = when (taskInfo.status) {
             STATUS_NONE -> State.None()
