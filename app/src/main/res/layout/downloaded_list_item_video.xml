@@ -34,11 +34,22 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_general_margin"
             android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@string/sample_long_text"
+            android:text="@string/sample_video_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_video_pic"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_general_margin"
+            android:ellipsize="end"
+            android:text="HD"
+            android:textSize="@dimen/text_size_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_video_pic"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
         <TextView
             android:id="@+id/tv_video_size"
@@ -51,7 +62,7 @@
             android:textColor="@color/text_gray"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_video_pic"/>
+            app:layout_constraintStart_toEndOf="@+id/iv_video_pic" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

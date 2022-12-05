@@ -54,6 +54,7 @@
 
 
     <string name="sample_long_text">在实际开发中，可能会存在需要先请求A接口，再去请求B接口的情况</string>
+    <string name="sample_video_title">东方不败之风云再起</string>
 
 
     <string name="app_name">长沙影视</string>

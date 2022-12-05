@@ -31,20 +31,18 @@ class VideoDownloadedAdapter(private val context: Context) :
     override fun onBindViewHolder(holder: VideoDownloadedViewHolder, position: Int) {
         val taskInfo = downloadedTaskInfoList[position]
         val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
-        var title = "未知视频"
         if (extra is VideoCacheExtra) {
-            title = "${extra.vod_name}-${extra.vod_index}"
             Glide.with(context).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            holder.binding.tvTitle.text = extra.vod_name
+            holder.binding.tvIndex.text = extra.vod_index
         }
-
-        holder.binding.tvTitle.text = title
 
         holder.binding.tvVideoSize.text = taskInfo.total_bytes.formatFileSize()
 
         holder.binding.cvVideo.setOnClickListener {
             val intent = Intent(context, OfflinePlayerActivity::class.java)
             intent.putExtra("url", "${taskInfo.file_path}/${taskInfo.file_name}")
-            intent.putExtra("title", title)
+            intent.putExtra("title", "${extra.vod_name}-${extra.vod_index}")
             context.startActivity(intent)
         }
 

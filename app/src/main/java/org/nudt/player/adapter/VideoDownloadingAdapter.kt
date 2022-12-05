@@ -40,10 +40,9 @@ class VideoDownloadingAdapter(private val context: Context) :
         val taskInfo = downloadingTaskInfoList[position]
         val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
         if (extra is VideoCacheExtra) {
-            holder.binding.tvTitle.text = "${extra.vod_name}-${extra.vod_index}"
             Glide.with(context).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
-        } else {
-            holder.binding.tvTitle.text = "未知视频"
+            holder.binding.tvTitle.text = extra.vod_name
+            holder.binding.tvIndex.text = extra.vod_index
         }
 
         when (taskInfo.status) {
@@ -54,7 +53,7 @@ class VideoDownloadingAdapter(private val context: Context) :
                 holder.binding.tvState.text = "等待中"
             }
             2 -> {
-                holder.binding.tvState.text = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toString()
+                holder.binding.tvState.text = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toString() + "%"
                 holder.binding.progressBar.progress = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toInt()
             }
             3 -> {
@@ -69,18 +68,13 @@ class VideoDownloadingAdapter(private val context: Context) :
             }
         }
 
-        // TODO 点击暂停，重新开始
         holder.binding.cvVideo.setOnClickListener {
-//                val intent = Intent(context, OnlinePlayerActivity::class.java)
-//                intent.putExtra("vodId", playHistory.vod_id)
-//                context.startActivity(intent)
+            DownloadXManager.pauseResumeDownloadTask(taskInfo)
         }
 
         holder.binding.cvVideo.setOnLongClickListener {
-            XPopup.Builder(context).asConfirm("提示", "确认删除本条记录？") {
-//                    videoViewModel.deleteHistory(playHistory)
-//                    downloadingTaskInfoList.remove(playHistory)
-//                    notifyItemRemoved(position)
+            XPopup.Builder(context).asConfirm("提示", "确认删除本视频？") {
+                DownloadXManager.removeDownloadTask(taskInfo)
             }.show()
             true
         }
@@ -92,8 +86,10 @@ class VideoDownloadingAdapter(private val context: Context) :
 
     fun updateState(taskInfo: TaskInfo) {
         getPositionById(taskInfo.task_id)?.let {
-            downloadingTaskInfoList[it] = taskInfo
-            notifyItemChanged(it)
+            if (downloadingTaskInfoList.isNotEmpty()) {
+                downloadingTaskInfoList[it] = taskInfo
+                notifyItemChanged(it)
+            }
         }
     }
 

@@ -62,11 +62,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_general_margin"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="@string/sample_long_text"
+                android:text="@string/text_search_hint"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_downloading_video_pic"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_downloading_index"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_general_margin"
+                android:ellipsize="end"
+                android:text="@string/text_search_hint"
+                android:textSize="@dimen/text_size_small"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_downloading_video_pic"
+                app:layout_constraintTop_toBottomOf="@+id/tv_downloading_title" />
 
             <TextView
                 android:id="@+id/tv_downloading_video_num"
@@ -89,6 +100,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

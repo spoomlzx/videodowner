@@ -54,13 +54,26 @@ class DownloadService() : LifecycleService() {
         return downloadTask
     }
 
-    fun startDownloadTask(downloadTask: DownloadTask) {
+    fun pauseResumeDownloadTask(taskInfo: TaskInfo) {
+        val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
+        lifecycleScope.launch {
+            if (downloadTask.isStarted()) {
+                pauseTask(downloadTask)
+            } else if (downloadTask.canStart()) {
+                startTask(downloadTask)
+            }
+        }
+    }
+
+    fun startDownloadTask(taskInfo: TaskInfo) {
+        val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
         lifecycleScope.launch {
             startTask(downloadTask)
         }
     }
 
-    fun pauseDownloadTask(downloadTask: DownloadTask) {
+    fun pauseDownloadTask(taskInfo: TaskInfo) {
+        val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
         lifecycleScope.launch {
             pauseTask(downloadTask)
         }
@@ -116,8 +129,6 @@ class DownloadService() : LifecycleService() {
     fun queryFinishedTaskInfoFlow() = taskManager.queryFinishedTaskInfoFlow()
 
     fun queryFinishedTaskInfoTopFlow() = taskManager.queryFinishedTaskInfoTopFlow()
-
-    suspend fun queryFinishedTaskInfoTop() = taskManager.queryFinishedTaskInfoTop()
 
 
     override fun onBind(intent: Intent): IBinder {

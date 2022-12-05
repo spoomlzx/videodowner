@@ -3,13 +3,10 @@ package org.nudt.player.ui.player
 import android.os.Bundle
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.viewModelScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding

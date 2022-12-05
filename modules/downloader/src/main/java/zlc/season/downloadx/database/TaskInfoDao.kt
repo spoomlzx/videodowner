@@ -27,9 +27,6 @@ interface TaskInfoDao {
     @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time desc limit 10")
     fun queryFinishedTaskInfoTopFlow(): Flow<List<TaskInfo>>
 
-    @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time desc limit 10")
-    suspend fun queryFinishedTaskInfoTop(): MutableList<TaskInfo>
-
     @Query("select * from TaskInfo where url=:url")
     fun findByUrl(url: String): TaskInfo?
 }

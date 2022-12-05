@@ -15,7 +15,7 @@ object Default {
     /**
      * 同时下载的任务数量
      */
-    const val MAX_TASK_NUMBER = 2
+    const val MAX_TASK_NUMBER = 3
 
     /**
      * 默认的Header

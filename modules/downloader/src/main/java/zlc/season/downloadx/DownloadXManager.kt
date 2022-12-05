@@ -30,12 +30,16 @@ object DownloadXManager {
         return downloadService.download(url, extra)
     }
 
-    fun startDownloadTask(downloadTask: DownloadTask) {
-        downloadService.startDownloadTask(downloadTask)
+    fun pauseResumeDownloadTask(taskInfo: TaskInfo) {
+        downloadService.pauseResumeDownloadTask(taskInfo)
     }
 
-    fun pauseDownloadTask(downloadTask: DownloadTask) {
-        downloadService.pauseDownloadTask(downloadTask)
+    fun startDownloadTask(taskInfo: TaskInfo) {
+        downloadService.startDownloadTask(taskInfo)
+    }
+
+    fun pauseDownloadTask(taskInfo: TaskInfo) {
+        downloadService.pauseDownloadTask(taskInfo)
     }
 
     fun removeDownloadTask(taskInfo: TaskInfo) {
@@ -53,8 +57,6 @@ object DownloadXManager {
 
     // 获取后10条已下载完成任务的Flow
     fun queryFinishedTaskInfoTopFlow() = downloadService.queryFinishedTaskInfoTopFlow()
-
-    suspend fun queryFinishedTaskInfoTop() = downloadService.queryFinishedTaskInfoTop()
 
 
     fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {

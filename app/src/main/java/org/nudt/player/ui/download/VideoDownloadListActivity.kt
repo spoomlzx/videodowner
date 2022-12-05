@@ -3,14 +3,18 @@ package org.nudt.player.ui.download
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.tbruyelle.rxpermissions3.RxPermissions
 import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadedAdapter
 import org.nudt.player.adapter.VideoDownloadingAdapter
+import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.ActivityVideoDownloadListBinding
 import zlc.season.downloadx.DownloadXManager
 
@@ -34,7 +38,25 @@ class VideoDownloadListActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        initDownloadingView()
+
         initRecyclerView()
+    }
+
+    private fun initDownloadingView() {
+        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
+            if (it.isEmpty()) {
+                binding.llDownloading.visibility = View.GONE
+            } else {
+                val taskInfo = it.first()
+                val gson = Gson()
+                val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
+                Glide.with(this@VideoDownloadListActivity).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(binding.ivDownloadingVideoPic)
+                binding.tvDownloadingTitle.text = extra.vod_name
+                binding.tvDownloadingIndex.text = extra.vod_index
+                binding.tvDownloadingVideoNum.text = "${it.size}个内容"
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -45,11 +67,6 @@ class VideoDownloadListActivity : AppCompatActivity() {
         DownloadXManager.queryFinishedTaskInfoFlow().asLiveData().observe(this) {
             downloadedAdapter.updateTaskInfoList(it)
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 
     /**
