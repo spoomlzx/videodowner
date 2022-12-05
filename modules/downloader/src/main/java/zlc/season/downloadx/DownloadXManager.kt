@@ -25,9 +25,7 @@ object DownloadXManager {
 
 
     fun download(url: String, saveName: String, extra: String): DownloadTask {
-        val task = downloadService.download(url, saveName, extra)
-        downloadService.startDownloadTask(task)
-        return task
+        return downloadService.download(url, saveName, extra)
     }
 
     fun startDownloadTask(downloadTask: DownloadTask) {
@@ -41,6 +39,10 @@ object DownloadXManager {
     fun removeDownloadTask(taskInfo: TaskInfo) {
         downloadService.removeDownloadTask(taskInfo)
     }
+
+    fun queryUnfinishedTaskInfo() = downloadService.queryUnfinishedTaskInfo()
+
+    fun queryUnfinishedTaskInfoFlow() = downloadService.queryUnfinishedTaskInfoFlow()
 
 //    fun buildDownloadTask(taskInfo: TaskInfo): DownloadTask {
 //        return downloaderService.buildDownloadTask(downloaderService.lifecycleScope, taskInfo)

@@ -29,7 +29,7 @@ class Progress(
     /**
      * Return percent number.
      */
-    private fun percent(): Double {
+    fun percent(): Double {
         if (isChunked) return 0.0
         return downloadSize ratio totalSize
     }

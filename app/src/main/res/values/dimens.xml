@@ -55,7 +55,7 @@
 
     <!--    imageView-->
     <dimen name="image_radius">4dp</dimen>
-    <dimen name="video_cover_width">120dp</dimen>
+    <dimen name="video_cover_width">128dp</dimen>
     <dimen name="video_cover_height">72dp</dimen>
 
     <dimen name="icon_smaller">12dp</dimen>

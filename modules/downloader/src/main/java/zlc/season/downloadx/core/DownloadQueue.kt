@@ -6,6 +6,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import zlc.season.downloadx.helper.Default.MAX_TASK_NUMBER
+import zlc.season.downloadx.utils.log
 import java.util.concurrent.ConcurrentHashMap
 
 interface DownloadQueue {
@@ -65,12 +66,14 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
 
     override suspend fun enqueue(task: DownloadTask) {
         tempMap[task.param.tag()] = task
+        "enqueue task ${task.param.url}  && queue size is ${tempMap.size}".log()
         // send to channel to suspendStart task
         channel.send(task)
     }
 
     override suspend fun dequeue(task: DownloadTask) {
         tempMap.remove(task.param.tag())
+        "dequeue task ${task.param.url}  && queue size is ${tempMap.size}".log()
     }
 
     override fun contain(task: DownloadTask): Boolean {

@@ -4,7 +4,7 @@ import android.util.Log
 
 var LOG_ENABLE = true
 
-const val LOG_TAG = "DownloadX"
+const val LOG_TAG = "VideoDowner"
 
 fun <T> T.log(prefix: String = ""): T {
     val prefixStr = if (prefix.isEmpty()) "" else "[$prefix] "

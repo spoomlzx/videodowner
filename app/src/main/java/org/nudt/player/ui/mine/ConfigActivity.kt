@@ -2,7 +2,6 @@ package org.nudt.player.ui.mine
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.launchIn
@@ -25,6 +24,7 @@ class ConfigActivity : AppCompatActivity() {
 
         val video1 = VideoCacheExtra("切尔诺贝利", "http://192.168.0.173/upload/vodthumb/xiaomaomi/26/fb8cdd7bfcf14d9fbd2847e38c8bcd4f.jpg", "高清")
         val downloadTask1 = DownloadXManager.download("http://192.168.3.4/01.mp4", "", gson.toJson(video1))
+        DownloadXManager.download("http://192.168.3.4/04.mp4", "", gson.toJson(video1))
         downloadTask1.state().onEach {
             when (it) {
                 is State.None -> {
@@ -93,7 +93,7 @@ class ConfigActivity : AppCompatActivity() {
         }
 
         val video3 = VideoCacheExtra("绝命毒师第三季", "http://192.168.0.173/upload/vodthumb/xiaomaomi/28/b466b886ac50470381eeabb0c1053cd0.jpg", "第5集")
-        val downloadTask3 = DownloadXManager.download("http://192.168.3.4/03.mp4", "", "")
+        val downloadTask3 = DownloadXManager.download("http://192.168.3.4/03.mp4", "", gson.toJson(video3))
         downloadTask3.state().onEach {
             when (it) {
                 is State.None -> {
@@ -142,11 +142,9 @@ class ConfigActivity : AppCompatActivity() {
         }
 
         binding.btnQuery.setOnClickListener {
-            val taskInfo = taskManager.queryUnfinishedTaskInfo().asLiveData()
+            val taskInfoList = taskManager.queryUnfinishedTaskInfo()
 
-            taskInfo.observe(this) {
-                binding.tvInfo.text = gson.toJson(it)
-            }
+            binding.tvInfo.text = gson.toJson(taskInfoList)
         }
 
 

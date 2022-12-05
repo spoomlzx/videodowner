@@ -130,7 +130,7 @@ open class DownloadTask(
                     }
 
                     send(progress)
-                    "url ${param.url} progress ${progress.percentStr()}".log()
+                    //"url ${param.url} progress ${progress.percentStr()}".log()
                     hasSend = true
 
                     if (progress.isComplete()) break
@@ -157,7 +157,7 @@ open class DownloadTask(
     suspend fun notifyWaiting() {
         stateHolder.updateState(stateHolder.waiting, getProgress())
         downloadStateFlow.value = stateHolder.currentState
-        config.taskManager.updateTaskInfo(buildTaskInfo())
+        config.taskManager.insertTaskInfo(buildTaskInfo())
         "url ${param.url} download task waiting.".log()
     }
 

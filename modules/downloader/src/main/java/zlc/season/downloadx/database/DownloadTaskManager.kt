@@ -2,7 +2,6 @@ package zlc.season.downloadx.database
 
 import android.content.Context
 import androidx.room.Room
-import kotlinx.coroutines.flow.Flow
 
 const val DATABASE_NAME = "DownloadX.db"
 
@@ -25,17 +24,11 @@ class DownloadTaskManager(val context: Context) {
         dao.update(taskInfo)
     }
 
-    fun queryUnfinishedTaskInfo(): Flow<List<TaskInfo>> {
-        return dao.queryUnfinishedTaskInfo()
-    }
+    fun queryUnfinishedTaskInfo() = dao.queryUnfinishedTaskInfo()
 
-    fun queryFinishedTaskInfo(): Flow<List<TaskInfo>> {
-        return dao.queryFinishedTaskInfo()
-    }
+    fun queryUnfinishedTaskInfoFlow() = dao.queryUnfinishedTaskInfoFlow()
 
-    fun findTaskInfoByUrl(url: String): TaskInfo? {
-        return dao.findByUrl(url)
-    }
+    fun findTaskInfoByUrl(url: String) = dao.findByUrl(url)
 
 
 }

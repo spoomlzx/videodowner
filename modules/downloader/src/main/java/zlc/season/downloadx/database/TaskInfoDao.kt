@@ -16,7 +16,10 @@ interface TaskInfoDao {
     suspend fun update(vararg taskInfo: TaskInfo)
 
     @Query("select * from TaskInfo where status <> $STATUS_SUCCEED")
-    fun queryUnfinishedTaskInfo(): Flow<List<TaskInfo>>
+    fun queryUnfinishedTaskInfo(): MutableList<TaskInfo>
+
+    @Query("select * from TaskInfo where status <> $STATUS_SUCCEED")
+    fun queryUnfinishedTaskInfoFlow(): Flow<List<TaskInfo>>
 
     @Query("select * from TaskInfo where status = $STATUS_SUCCEED")
     fun queryFinishedTaskInfo(): Flow<List<TaskInfo>>

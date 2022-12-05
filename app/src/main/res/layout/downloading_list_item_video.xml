@@ -59,7 +59,7 @@
             android:layout_width="0dp"
             android:layout_height="3dp"
             android:layout_marginStart="@dimen/default_general_margin"
-            android:progress="25"
+            android:progress="0"
             android:progressDrawable="@drawable/progress_bar_drawable"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

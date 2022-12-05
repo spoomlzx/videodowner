@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import zlc.season.downloadx.core.*
 import zlc.season.downloadx.database.*
@@ -17,27 +19,41 @@ import zlc.season.downloadx.utils.getMd5
 import zlc.season.downloadx.utils.log
 
 class DownloadService() : LifecycleService() {
-    private lateinit var taskManager: DownloadTaskManager
+    private val taskManager by lazy { DownloadTaskManager(applicationContext) }
 
     // 下载队列
     private val queue: DownloadQueue = DefaultDownloadQueue.get()
 
     override fun onCreate() {
         super.onCreate()
-        taskManager = DownloadTaskManager(applicationContext)
     }
 
     fun download(url: String, saveName: String, extra: String): DownloadTask {
         // 先查询DB中是否有当前url对应的任务
         val dbTask = taskManager.findTaskInfoByUrl(url)
-
-        val downloadTask: DownloadTask = if (dbTask != null) {
+        "query dbTask from db".log()
+        var downloadTask: DownloadTask?
+        if (dbTask != null) {
+            downloadTask = queue.getDownloadTaskByTag(dbTask.task_id)
+            if (downloadTask != null) {
+                "get task from queue ${downloadTask.param.tag()}".log()
+                return downloadTask
+            }
             // 如果正在下载队列中，则返回队列中的task，否则从dbTask一个DownloadTask
-            queue.getDownloadTaskByTag(dbTask.task_id) ?: buildDownloadTask(lifecycleScope, dbTask)
+            downloadTask = buildDownloadTask(lifecycleScope, dbTask)
+            "get task from db ${downloadTask.param.tag()}".log()
+            lifecycleScope.launch {
+                startTask(downloadTask!!)
+            }
         } else {
             // 重新创建一个DownloadTask
             val downloadParam = DownloadParam(url, getDownloadsDirPath() + "/" + url.getMd5(), saveName, extra)
-            DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager))
+            downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager))
+            "get new task ${downloadTask.param.tag()}".log()
+            lifecycleScope.launch {
+                taskManager.insertTaskInfo(downloadTask.buildTaskInfo())
+                startTask(downloadTask)
+            }
         }
         return downloadTask
     }
@@ -77,10 +93,8 @@ class DownloadService() : LifecycleService() {
 
     private suspend fun startTask(downloadTask: DownloadTask) {
         if (downloadTask.checkJob()) return
-        taskManager.insertTaskInfo(downloadTask.buildTaskInfo())
         downloadTask.notifyWaiting()
         try {
-            "enqueue task ${downloadTask.param.tag()}".log()
             queue.enqueue(downloadTask)
         } catch (e: Exception) {
             if (e !is CancellationException) {
@@ -97,6 +111,11 @@ class DownloadService() : LifecycleService() {
             downloadTask.notifyPaused()
         }
     }
+
+
+    fun queryUnfinishedTaskInfo() = taskManager.queryUnfinishedTaskInfo()
+
+    fun queryUnfinishedTaskInfoFlow() = taskManager.queryUnfinishedTaskInfoFlow()
 
 
     override fun onBind(intent: Intent): IBinder {
