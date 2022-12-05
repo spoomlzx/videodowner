@@ -16,7 +16,7 @@ open class DownloadTask(
     val coroutineScope: CoroutineScope,
     val param: DownloadParam,
     val config: DownloadConfig,
-    val stateHolder: StateHolder = StateHolder()
+    private val stateHolder: StateHolder = StateHolder()
 ) {
     //private val stateHolder by lazy { StateHolder() }
 
@@ -50,6 +50,14 @@ open class DownloadTask(
     fun file(): File? {
         return if (param.saveName.isNotEmpty() && param.savePath.isNotEmpty()) {
             File(param.savePath, param.saveName)
+        } else {
+            null
+        }
+    }
+
+    fun dir(): File? {
+        return if (param.savePath.isNotEmpty()) {
+            File(param.savePath)
         } else {
             null
         }

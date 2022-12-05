@@ -1,11 +1,9 @@
 package org.nudt.player.utils
 
 
-import org.nudt.common.SLog
+import org.nudt.common.ratio
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.VodInfoModel.PlayUrl
-import zlc.season.downloadx.utils.ratio
-import kotlin.math.withSign
 
 
 object VideoUtil {

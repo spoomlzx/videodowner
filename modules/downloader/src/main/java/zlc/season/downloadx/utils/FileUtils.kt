@@ -2,7 +2,6 @@ package zlc.season.downloadx.utils
 
 import android.content.Context
 import android.os.Environment
-import kotlinx.coroutines.CoroutineScope
 import java.io.File
 import java.io.RandomAccessFile
 import java.nio.MappedByteBuffer

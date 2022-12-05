@@ -3,7 +3,7 @@
     package="zlc.season.downloadx">
 
     <application>
-        <service android:name=".DownloaderService"
+        <service android:name=".DownloadService"
             android:enabled="true"
             android:exported="true"/>
     </application>

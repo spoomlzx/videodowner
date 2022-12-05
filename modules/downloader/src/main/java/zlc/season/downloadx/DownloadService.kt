@@ -3,7 +3,6 @@ package zlc.season.downloadx
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CancellationException
@@ -17,13 +16,11 @@ import zlc.season.downloadx.utils.getDownloadsDirPath
 import zlc.season.downloadx.utils.getMd5
 import zlc.season.downloadx.utils.log
 
-class DownloaderService() : LifecycleService() {
-    val tag = "DownloaderService"
-
+class DownloadService() : LifecycleService() {
     private lateinit var taskManager: DownloadTaskManager
 
     // 下载队列
-    val queue: DownloadQueue = DefaultDownloadQueue.get()
+    private val queue: DownloadQueue = DefaultDownloadQueue.get()
 
     override fun onCreate() {
         super.onCreate()
@@ -69,9 +66,10 @@ class DownloaderService() : LifecycleService() {
             downloadTask.let {
                 // 先暂停任务，移出下载队列
                 pauseTask(it)
-                // 然后删除下载的文件
+                // 然后删除下载的文件&文件夹
                 if (deleteFile) {
                     it.file()?.clear()
+                    it.dir()?.delete()
                 }
             }
         }
@@ -108,23 +106,23 @@ class DownloaderService() : LifecycleService() {
     }
 
     inner class DownloadServiceBinder : Binder() {
-        fun getService() = this@DownloaderService
+        fun getService() = this@DownloadService
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Log.d(tag, "onStartCommand: ")
+        "onStartCommand: ".log()
         return START_NOT_STICKY
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
-        Log.d(tag, "onUnbind: ")
+        "onUnbind: ".log()
         return super.onUnbind(intent)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d(tag, "onDestroy: ")
+        "onDestroy: ".log()
     }
 
 

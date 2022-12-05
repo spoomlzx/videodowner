@@ -8,13 +8,13 @@ import zlc.season.downloadx.database.TaskInfo
 
 object DownloadXManager {
 
-    private lateinit var downloaderService: DownloaderService
+    private lateinit var downloadService: DownloadService
 
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             Log.d("Downloader", "onServiceConnected: ")
-            val binder = service as DownloaderService.DownloadServiceBinder
-            downloaderService = binder.getService()
+            val binder = service as DownloadService.DownloadServiceBinder
+            downloadService = binder.getService()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
@@ -25,21 +25,21 @@ object DownloadXManager {
 
 
     fun download(url: String, saveName: String, extra: String): DownloadTask {
-        val task = downloaderService.download(url, saveName, extra)
-        downloaderService.startDownloadTask(task)
+        val task = downloadService.download(url, saveName, extra)
+        downloadService.startDownloadTask(task)
         return task
     }
 
     fun startDownloadTask(downloadTask: DownloadTask) {
-        downloaderService.startDownloadTask(downloadTask)
+        downloadService.startDownloadTask(downloadTask)
     }
 
     fun pauseDownloadTask(downloadTask: DownloadTask) {
-        downloaderService.pauseDownloadTask(downloadTask)
+        downloadService.pauseDownloadTask(downloadTask)
     }
 
     fun removeDownloadTask(taskInfo: TaskInfo) {
-        downloaderService.removeDownloadTask(taskInfo)
+        downloadService.removeDownloadTask(taskInfo)
     }
 
 //    fun buildDownloadTask(taskInfo: TaskInfo): DownloadTask {
@@ -48,7 +48,7 @@ object DownloadXManager {
 
 
     fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {
-        val serviceIntent = Intent(contextWrapper, DownloaderService::class.java)
+        val serviceIntent = Intent(contextWrapper, DownloadService::class.java)
         contextWrapper.apply {
             startService(serviceIntent)
             bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)

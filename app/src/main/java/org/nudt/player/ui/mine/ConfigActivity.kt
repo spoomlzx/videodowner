@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.ActivityConfigBinding
 import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.State
@@ -20,7 +21,10 @@ class ConfigActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val downloadTask1 = DownloadXManager.download("http://192.168.3.4/01.mp4", "", "")
+        val gson = Gson()
+
+        val video1 = VideoCacheExtra("切尔诺贝利", "http://192.168.0.173/upload/vodthumb/xiaomaomi/26/fb8cdd7bfcf14d9fbd2847e38c8bcd4f.jpg", "高清")
+        val downloadTask1 = DownloadXManager.download("http://192.168.3.4/01.mp4", "", gson.toJson(video1))
         downloadTask1.state().onEach {
             when (it) {
                 is State.None -> {
@@ -53,8 +57,8 @@ class ConfigActivity : AppCompatActivity() {
                 }
             }
         }
-
-        val downloadTask2 = DownloadXManager.download("http://192.168.3.4/02.mp4", "", "")
+        val video2 = VideoCacheExtra("百妖谱", "http://192.168.0.173/upload/vodthumb/xiaomaomi/31/98ca3369f818460bb37d4887b393e16a.jpg", "第2集")
+        val downloadTask2 = DownloadXManager.download("http://192.168.3.4/02.mp4", "", gson.toJson(video2))
         downloadTask2.state().onEach {
             when (it) {
                 is State.None -> {
@@ -88,6 +92,7 @@ class ConfigActivity : AppCompatActivity() {
             }
         }
 
+        val video3 = VideoCacheExtra("绝命毒师第三季", "http://192.168.0.173/upload/vodthumb/xiaomaomi/28/b466b886ac50470381eeabb0c1053cd0.jpg", "第5集")
         val downloadTask3 = DownloadXManager.download("http://192.168.3.4/03.mp4", "", "")
         downloadTask3.state().onEach {
             when (it) {
@@ -138,13 +143,15 @@ class ConfigActivity : AppCompatActivity() {
 
         binding.btnQuery.setOnClickListener {
             val taskInfo = taskManager.queryUnfinishedTaskInfo().asLiveData()
-            val gson = Gson()
 
             taskInfo.observe(this) {
                 binding.tvInfo.text = gson.toJson(it)
             }
-
         }
 
+
+        binding.btnTest.setOnClickListener {
+            binding.tvInfo.text = gson.toJson(video1)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package zlc.season.downloadx.core
 
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.channels.consumeEach
@@ -20,6 +21,7 @@ interface DownloadQueue {
     fun getDownloadTaskByTag(tag: String): DownloadTask?
 }
 
+@OptIn(DelicateCoroutinesApi::class)
 class DefaultDownloadQueue private constructor(private val maxTask: Int) : DownloadQueue {
     companion object {
         private val lock = Any()
