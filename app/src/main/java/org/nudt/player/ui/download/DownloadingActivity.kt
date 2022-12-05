@@ -42,14 +42,10 @@ class DownloadingActivity : AppCompatActivity() {
         // 关闭recyclerview更新动画，防止图片闪烁
         (binding.rvVideoDownloading.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
-//        videoViewModel.downloadingTaskInfoList.observe(this) {
-//            downloadingAdapter.updateTaskInfoList(it)
-//        }
         val taskInfoList = DownloadXManager.queryUnfinishedTaskInfo()
         for (taskInfo in taskInfoList) {
             val downloadTask = DownloadXManager.download(taskInfo.url, taskInfo.file_name, taskInfo.extra)
             downloadTask.state().onEach {
-                SLog.d("new state: ${it.status} & ${it.progress.percent()}")
                 when (it) {
                     is State.None -> {
                         taskInfo.status = STATUS_NONE
@@ -76,6 +72,7 @@ class DownloadingActivity : AppCompatActivity() {
             }.launchIn(lifecycleScope)
         }
 
+        // DB查询的Flow，转化为liveData可以自动隐藏已完成的任务
         DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
             downloadingAdapter.updateTaskInfoList(it)
         }

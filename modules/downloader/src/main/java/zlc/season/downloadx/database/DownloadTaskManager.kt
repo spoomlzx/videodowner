@@ -28,6 +28,8 @@ class DownloadTaskManager(val context: Context) {
 
     fun queryUnfinishedTaskInfoFlow() = dao.queryUnfinishedTaskInfoFlow()
 
+    fun queryFinishedTaskInfoFlow() = dao.queryFinishedTaskInfoFlow()
+
     fun findTaskInfoByUrl(url: String) = dao.findByUrl(url)
 
 

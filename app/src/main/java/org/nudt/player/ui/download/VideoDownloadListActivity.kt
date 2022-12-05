@@ -4,13 +4,19 @@ import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.asLiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tbruyelle.rxpermissions3.RxPermissions
 import org.nudt.common.SLog
 import org.nudt.player.R
+import org.nudt.player.adapter.VideoDownloadedAdapter
+import org.nudt.player.adapter.VideoDownloadingAdapter
 import org.nudt.player.databinding.ActivityVideoDownloadListBinding
+import zlc.season.downloadx.DownloadXManager
 
 class VideoDownloadListActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDownloadListBinding.inflate(layoutInflater) }
+    private lateinit var downloadedAdapter: VideoDownloadedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +32,18 @@ class VideoDownloadListActivity : AppCompatActivity() {
         binding.llDownloading.setOnClickListener {
             val intent = Intent(this@VideoDownloadListActivity, DownloadingActivity::class.java)
             startActivity(intent)
+        }
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView() {
+        binding.rvVideoDownloaded.layoutManager = LinearLayoutManager(this@VideoDownloadListActivity)
+        downloadedAdapter = VideoDownloadedAdapter(this@VideoDownloadListActivity)
+        binding.rvVideoDownloaded.adapter = downloadedAdapter
+
+        DownloadXManager.queryFinishedTaskInfoFlow().asLiveData().observe(this) {
+            downloadedAdapter.updateTaskInfoList(it)
         }
     }
 

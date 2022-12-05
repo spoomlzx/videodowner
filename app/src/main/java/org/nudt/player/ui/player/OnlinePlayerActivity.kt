@@ -35,9 +35,6 @@ class OnlinePlayerActivity : BasePlayerActivity() {
         val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(width, height)
         binding.videoPlayer.layoutParams = params
 
-        val calHeight = resources.displayMetrics.heightPixels - height
-        SLog.d("activity popup height: $calHeight")
-
         initPlayer(binding.videoPlayer)
 
         vodId = intent.getIntExtra("vodId", 0)

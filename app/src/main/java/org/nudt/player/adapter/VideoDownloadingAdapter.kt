@@ -69,6 +69,7 @@ class VideoDownloadingAdapter(private val context: Context) :
             }
         }
 
+        // TODO 点击暂停，重新开始
         holder.binding.cvVideo.setOnClickListener {
 //                val intent = Intent(context, OnlinePlayerActivity::class.java)
 //                intent.putExtra("vodId", playHistory.vod_id)
@@ -76,12 +77,6 @@ class VideoDownloadingAdapter(private val context: Context) :
         }
 
         holder.binding.cvVideo.setOnLongClickListener {
-//                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("取消关注").setPositiveButton("确认") { dialog, id ->
-//                    //videoViewModel.changeFavor()
-//                }.setNegativeButton("取消") { _, _ ->
-//                    // User cancelled the dialog
-//                }.create()
-//                dialog.show()
             XPopup.Builder(context).asConfirm("提示", "确认删除本条记录？") {
 //                    videoViewModel.deleteHistory(playHistory)
 //                    downloadingTaskInfoList.remove(playHistory)
