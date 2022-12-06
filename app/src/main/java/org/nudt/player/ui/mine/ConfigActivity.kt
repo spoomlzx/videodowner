@@ -1,18 +1,8 @@
 package org.nudt.player.ui.mine
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.lifecycleScope
-import com.google.gson.Gson
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import org.nudt.player.data.model.VideoCacheExtra
+import androidx.appcompat.app.AppCompatActivity
 import org.nudt.player.databinding.ActivityConfigBinding
-import zlc.season.downloadx.DownloadXManager
-import zlc.season.downloadx.State
-import zlc.season.downloadx.database.DownloadTaskManager
 
 class ConfigActivity : AppCompatActivity() {
     private val binding by lazy { ActivityConfigBinding.inflate(layoutInflater) }
@@ -20,11 +10,6 @@ class ConfigActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
-        val gson = Gson()
-        DownloadXManager.queryFinishedTaskInfoTopFlow().asLiveData().observe(this) {
-            binding.tvInfo.text = gson.toJson(it)
-        }
 
 //        val gson = Gson()
 //

@@ -1,7 +1,7 @@
 package org.nudt.videoplayer
 
 import android.content.Context
-import android.text.TextUtils
+import android.net.Uri
 import android.util.AttributeSet
 import android.widget.Toast
 import com.android.iplayer.base.AbstractMediaPlayer
@@ -38,8 +38,12 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         //监听标题栏的功能事件
         toolBarView.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener() {
             override fun onTv() {
-                if (TextUtils.isEmpty(url)) {
-                    Toast.makeText(context, "投屏功能暂不可用", Toast.LENGTH_SHORT).show()
+                if (url.isEmpty()) {
+                    Toast.makeText(context, "视频地址为空", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                if (url.startsWith("file")) {
+                    Toast.makeText(context, "暂不支持投屏本地视频", Toast.LENGTH_SHORT).show()
                     return
                 }
                 // 如果是播放地址，则弹出设备列表框
@@ -92,5 +96,10 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     fun setPlayUrl(url: String) {
         setDataSource(url)
         this.url = url
+    }
+
+    fun setLocalDataSource(dataSource: String) {
+        val filePath = Uri.parse("file://$dataSource").toString()
+        setDataSource(filePath)
     }
 }

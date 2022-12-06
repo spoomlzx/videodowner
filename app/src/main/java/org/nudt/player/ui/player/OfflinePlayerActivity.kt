@@ -1,5 +1,6 @@
 package org.nudt.player.ui.player
 
+import android.net.Uri
 import android.os.Bundle
 import android.widget.LinearLayout
 import org.nudt.player.databinding.ActivityOfflinePlayerBinding
@@ -24,7 +25,7 @@ class OfflinePlayerActivity : BasePlayerActivity() {
             player.setTitle(title)
         }
         if (url != null) {
-            player.setPlayUrl(url)
+            player.setLocalDataSource(url)
             player.prepareAsync()
         }
     }
