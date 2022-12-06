@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_recommend_item"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/windows_background"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/default_tiny_margin"
+        android:background="@color/windows_background">
+
+        <org.nudt.player.component.ShapeImageView
+            android:id="@+id/iv_video_pic"
+            android:layout_width="96dp"
+            android:layout_height="54dp"
+            android:contentDescription="@string/image"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:siv_round_radius="@dimen/image_radius"
+            tools:srcCompat="@drawable/default_image" />
+
+        <TextView
+            android:id="@+id/tv_video_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textColor="@color/text_score"
+            android:text="9.0"
+            android:paddingEnd="@dimen/default_normal_margin"
+            android:textSize="@dimen/text_size_smaller"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_video_pic"
+            app:layout_constraintEnd_toEndOf="@id/iv_video_pic" />
+
+        <TextView
+            android:id="@+id/tv_video_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:textSize="@dimen/text_size_small"
+            android:text="@string/sample_video_title"
+            app:layout_constraintTop_toBottomOf="@+id/iv_video_pic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

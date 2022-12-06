@@ -8,19 +8,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
+import org.nudt.player.adapter.MineHistoryAdapter
 import org.nudt.player.adapter.PlayUrlAdapter
+import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
-import org.nudt.player.ui.VideoViewModel
 
 class VideoDetailFragment : Fragment() {
 
     private val binding by lazy { FragmentVideoDetailBinding.inflate(layoutInflater) }
+    private lateinit var recommendAdapter: RecommendAdapter
 
-    private val videoViewModel: VideoViewModel by viewModel()
     private val playerViewModel: PlayerViewModel by sharedViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -36,7 +36,6 @@ class VideoDetailFragment : Fragment() {
             SLog.d("vodInfo: in detail " + it.vod_name)
             initVideoDetail(it)
         }
-
     }
 
     /**
@@ -49,6 +48,8 @@ class VideoDetailFragment : Fragment() {
             binding.tvRemarks.text = "$vod_remarks  |  $vod_year  |  $vod_area"
             //tvVideoContent.text = vod_content
         }
+
+        initRecommend(vodInfoModel.type_id)
 
         val width = resources.displayMetrics.widthPixels
         val playerHeight = width * 1080 / 1920
@@ -97,6 +98,25 @@ class VideoDetailFragment : Fragment() {
 //                        .isThreeDrag(true) //是否开启三阶拖拽，如果设置enableDrag(false)则无效
                 .asCustom(VideoPlayUrlListPopup(context!!).initPopup(vodInfoModel, adapter, height))
                 .show();
+        }
+    }
+
+    /**
+     * 推荐视频
+     */
+    private fun initRecommend(type: Int) {
+        val linearLayoutManager = LinearLayoutManager(context)
+        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        binding.rvVodRecommend.layoutManager = linearLayoutManager
+
+        context?.let {
+            recommendAdapter = RecommendAdapter(it)
+            binding.rvVodRecommend.adapter = recommendAdapter
+        }
+        playerViewModel.getVideoRecommend(type)
+
+        playerViewModel.recommendVideoList.observe(viewLifecycleOwner) {
+            recommendAdapter.updateRecommendList(it)
         }
     }
 

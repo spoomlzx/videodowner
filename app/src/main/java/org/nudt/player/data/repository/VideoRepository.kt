@@ -12,6 +12,7 @@ import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.api.VideoResult
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.model.PlayHistory
+import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
 
 class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
@@ -51,6 +52,17 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
 
 
                 emit(VideoResult.Success(VodInfoModel.fromVideo(videoInfo, history)))
+            } catch (e: Exception) {
+                emit(VideoResult.Failure(e.cause))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getVideoRecommend(type: Int): Flow<VideoResult<List<Video>>> {
+        return flow {
+            try {
+                val videoList = videoApi.getVideoRecommend(type).Data.items
+                emit(VideoResult.Success(videoList))
             } catch (e: Exception) {
                 emit(VideoResult.Failure(e.cause))
             }

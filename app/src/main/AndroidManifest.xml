@@ -38,6 +38,7 @@
         <activity
             android:name=".ui.player.OfflinePlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTop"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity

@@ -73,7 +73,7 @@ class SearchActivity : AppCompatActivity() {
     private fun initResult() {
         adapter = VideoPagingAdapter(this@SearchActivity, videoViewModel)
         binding.rvVideo.adapter = adapter
-        binding.rvVideo.layoutManager = GridLayoutManager(this@SearchActivity, 2)
+        binding.rvVideo.layoutManager = GridLayoutManager(this@SearchActivity, 3)
     }
 
     /**

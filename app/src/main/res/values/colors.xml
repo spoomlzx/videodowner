@@ -18,7 +18,7 @@
 
 
 
-
+    <color name="text_score">#EF7B43</color>
     <color name="text_search_bar">#8B8A8A</color>
     <color name="text_gray">#555555</color>
     <color name="text_color">#ff333333</color>

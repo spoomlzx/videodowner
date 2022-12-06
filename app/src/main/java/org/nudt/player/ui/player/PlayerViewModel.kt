@@ -1,9 +1,6 @@
 package org.nudt.player.ui.player
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
@@ -12,6 +9,7 @@ import org.nudt.player.data.api.doFailure
 import org.nudt.player.data.api.doSuccess
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.model.PlayHistory
+import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.data.model.VodInfoModel.PlayUrl
@@ -23,8 +21,9 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     val currentIndex = MutableLiveData(0)
 
     val videoPlayerHeight = MutableLiveData(235f)
+    val recommendVideoList = MutableLiveData<List<Video>>()
 
-    val gson = Gson()
+    private val gson = Gson()
 
     fun setCurrent(newIndex: Int) {
         currentIndex.postValue(newIndex)
@@ -43,6 +42,21 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
                 SLog.e("error: $throwable")
             }
         }
+    }
+
+
+    fun getVideoRecommend(type: Int) {
+        viewModelScope.launch {
+            videoRepository.getVideoRecommend(type).collectLatest { result ->
+                result.doSuccess { value ->
+                    recommendVideoList.postValue(value)
+                }
+                result.doFailure { throwable ->
+                    SLog.e("error: $throwable")
+                }
+            }
+        }
+
     }
 
     fun cacheVideo() {

@@ -27,6 +27,9 @@ interface VideoApi {
     @GET("?service=App.Video.getVodById")
     suspend fun getVideoById(@Query("vodId") vodId: Int): ResponseData<Video>
 
+    @GET("?service=App.Video.GetRecommend")
+    suspend fun getVideoRecommend(@Query("type") type: Int): ResponseData<ListBean<Video>>
+
     class ListBean<T>(
         val total: Int,
         val page: Int,
