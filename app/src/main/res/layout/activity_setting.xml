@@ -53,34 +53,4 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/divider_height"
         android:background="@color/divider" />
-
-
-    <TextView
-        android:id="@+id/tv_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
-    <Button
-        android:id="@+id/btn_download"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Download" />
-
-    <Button
-        android:id="@+id/btn_stop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Stop" />
-    <Button
-        android:id="@+id/btn_resume"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Resume" />
-
-    <TextView
-        android:id="@+id/tv_file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
 </LinearLayout>
