@@ -1,129 +1,107 @@
-package com.android.iplayer.controller;
+package com.android.iplayer.controller
 
-import android.content.Context;
-import android.os.Looper;
-import android.os.Message;
-import android.view.View;
-import android.view.animation.Animation;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.android.iplayer.R;
-import com.android.iplayer.model.PlayerState;
-import com.android.iplayer.utils.AnimationUtils;
-import com.android.iplayer.utils.PlayerUtils;
+import android.content.Context
+import android.os.Looper
+import android.os.Message
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.viewbinding.ViewBinding
+import com.android.iplayer.R
+import com.android.iplayer.databinding.PlayerVideoControllerBinding
+import com.android.iplayer.model.PlayerState
+import com.android.iplayer.utils.AnimationUtils
+import com.android.iplayer.utils.PlayerUtils
 
 /**
  * created by hty
  * 2022/6/28
- * Desc:默认的视频交互UI控制器，自定义控制器请继承{@link GestureController}或BaseController实现自己的视频UI交互控制器
- * 1、此控制器支持手势识别交互，如需自定义控制器请继承{@link GestureController}或BaseController
+ * Desc:默认的视频交互UI控制器，自定义控制器请继承[GestureController]或BaseController实现自己的视频UI交互控制器
+ * 1、此控制器支持手势识别交互，如需自定义控制器请继承[GestureController]或BaseController
  * 2、此控制器只维护屏幕锁功能、点击事件传递
- * 3、如需自定义UI交互组件，请参照{@link #addControllerWidget(IControllerView)}
+ * 3、如需自定义UI交互组件，请参照[.addControllerWidget]
  */
-public class VideoController extends GestureController {
+class VideoController(context: Context?) : GestureController(context) {
+    private var mController: View? = null //屏幕锁
 
-    private static final int MESSAGE_CONTROL_HIDE   = 10;//延时隐藏控制器
-    private static final int MESSAGE_LOCKER_HIDE    = 11;//延时隐藏屏幕锁
-    private static final int DELAYED_INVISIBLE      = 5000;//延时隐藏锁时长
-    private static final int MATION_DRAUTION        = 500;//控制器、控制锁等显示\隐藏过渡动画时长(毫秒)
-    private View mController;//屏幕锁
+    private lateinit var binding: PlayerVideoControllerBinding
+
     //是否播放(试看)完成\是否开启屏幕锁
-    protected boolean isCompletion,isLocked;
 
-    public VideoController(Context context) {
-        super(context);
+    override fun getLayoutId(): Int {
+        return R.layout.player_video_controller
     }
 
-    @Override
-    public int getLayoutId() {
-        return R.layout.player_video_controller;
+    override fun initBinding(): ViewBinding {
+        binding = PlayerVideoControllerBinding.inflate(LayoutInflater.from(context))
+        return binding
     }
 
-    @Override
-    public void initViews() {
-        super.initViews();
-        setDoubleTapTogglePlayEnabled(true);//横屏竖屏状态下都允许双击开始\暂停播放
-        mController = findViewById(R.id.controller_locker);
-        mController.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                stopDelayedRunnable();
-                setLocker(isLocked=!isLocked);
-                ((ImageView) findViewById(R.id.controller_locker_ic)).setImageResource(isLocked?R.mipmap.ic_player_locker_true:R.mipmap.ic_player_locker_false);
-                Toast.makeText(getContext(),isLocked()?getString(R.string.player_locker_true):getString(R.string.player_locker_flase),Toast.LENGTH_SHORT).show();
-                if(isLocked){
-                    hideWidget(true);//屏幕锁开启时隐藏其它所有控制器
-                    startDelayedRunnable(MESSAGE_LOCKER_HIDE);
-                }else{
-                    showWidget(true);//屏幕锁关闭时显示其它所有控制器
-                    startDelayedRunnable(MESSAGE_CONTROL_HIDE);
-                }
+    override fun initViews() {
+        super.initViews()
+        setDoubleTapTogglePlayEnabled(true) //横屏竖屏状态下都允许双击开始\暂停播放
+        //mController = findViewById(R.id.controller_locker)
+        binding.controllerLocker.setOnClickListener(OnClickListener {
+            stopDelayedRunnable()
+            setLocker(!isLocked)
+            (findViewById<View>(R.id.controller_locker_ic) as ImageView).setImageResource(if (isLocked) R.mipmap.ic_player_locker_true else R.mipmap.ic_player_locker_false)
+            Toast.makeText(context, if (isLocked) getString(R.string.player_locker_true) else getString(R.string.player_locker_flase), Toast.LENGTH_SHORT).show()
+            if (isLocked) {
+                hideWidget(true) //屏幕锁开启时隐藏其它所有控制器
+                startDelayedRunnable(MESSAGE_LOCKER_HIDE)
+            } else {
+                showWidget(true) //屏幕锁关闭时显示其它所有控制器
+                startDelayedRunnable(MESSAGE_CONTROL_HIDE)
             }
-        });
+        })
     }
 
-    @Override
-    public void onSingleTap() {
-        if(isOrientationPortrait()&&isListPlayerScene()){//竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
-            if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay();//回调给播放器
-        }else{
-            if(isLocked()){
+    public override fun onSingleTap() {
+        if (isOrientationPortrait && isListPlayerScene) { //竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
+            if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay() //回调给播放器
+        } else {
+            if (isLocked) {
                 //屏幕锁显示、隐藏
-                toggleLocker();
-            }else{
+                toggleLocker()
+            } else {
                 //控制器显示、隐藏
-                toggleController();
+                toggleController()
             }
         }
     }
 
-    @Override
-    public void onDoubleTap() {
-        if(!isLocked()){
-            if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay();//回调给播放器
+    public override fun onDoubleTap() {
+        if (!isLocked) {
+            if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay() //回调给播放器
         }
     }
 
-    @Override
-    public void onPlayerState(PlayerState state, String message) {
-        super.onPlayerState(state,message);
-        switch (state) {
-            case STATE_RESET://初始状态\播放器还原重置
-            case STATE_STOP://初始\停止
-                onReset();
-                break;
-            case STATE_PREPARE://准备中
-            case STATE_BUFFER://缓冲中
-                break;
-            case STATE_START://首次播放
-                startDelayedRunnable(MESSAGE_CONTROL_HIDE);
-                if(isOrientationLandscape()){//横屏模式下首次播放显示屏幕锁
-                    if(null!=mController) mController.setVisibility(View.VISIBLE);
+    override fun onPlayerState(state: PlayerState, message: String) {
+        super.onPlayerState(state, message)
+        when (state) {
+            PlayerState.STATE_RESET, PlayerState.STATE_STOP -> onReset()
+            PlayerState.STATE_PREPARE, PlayerState.STATE_BUFFER -> {}
+            PlayerState.STATE_START -> {
+                startDelayedRunnable(MESSAGE_CONTROL_HIDE)
+                if (isOrientationLandscape) { //横屏模式下首次播放显示屏幕锁
+                    if (null != mController) mController!!.visibility = VISIBLE
                 }
-                break;
-            case STATE_PLAY://缓冲结束恢复播放
-            case STATE_ON_PLAY://生命周期\暂停情况下恢复播放
-                startDelayedRunnable(MESSAGE_CONTROL_HIDE);
-                break;
-            case STATE_PAUSE://人为暂停中
-            case STATE_ON_PAUSE://生命周期暂停中
-                stopDelayedRunnable();
-                break;
-            case STATE_COMPLETION://播放结束
-                stopDelayedRunnable();
-                hideWidget(false);
-                hideLockerView();
-                break;
-            case STATE_MOBILE://移动网络播放(如果设置允许4G播放则播放器内部不会回调此状态)
-                break;
-            case STATE_ERROR://播放失败
-                setLocker(false);
-                hideLockerView();
-                break;
-            case STATE_DESTROY://播放器回收
-                onDestroy();
-                break;
+            }
+            PlayerState.STATE_PLAY, PlayerState.STATE_ON_PLAY -> startDelayedRunnable(MESSAGE_CONTROL_HIDE)
+            PlayerState.STATE_PAUSE, PlayerState.STATE_ON_PAUSE -> stopDelayedRunnable()
+            PlayerState.STATE_COMPLETION -> {
+                stopDelayedRunnable()
+                hideWidget(false)
+                hideLockerView()
+            }
+            PlayerState.STATE_MOBILE -> {}
+            PlayerState.STATE_ERROR -> {
+                setLocker(false)
+                hideLockerView()
+            }
+            PlayerState.STATE_DESTROY -> onDestroy()
         }
     }
 
@@ -131,17 +109,16 @@ public class VideoController extends GestureController {
      * 竖屏状态下,如果用户设置返回按钮可见仅显示返回按钮,切换到横屏模式下播放时初始都不显示
      * @param orientation 更新控制器方向状态 0:竖屏 1:横屏
      */
-    @Override
-    public void onScreenOrientation(int orientation) {
-        super.onScreenOrientation(orientation);
-        if(null!= mController){
-            if(isOrientationPortrait()){
-                setLocker(false);
-                mController.setVisibility(GONE);
-            }else{
-                setLocker(false);
-                if(isPlayering()){
-                    mController.setVisibility(View.VISIBLE);
+    override fun onScreenOrientation(orientation: Int) {
+        super.onScreenOrientation(orientation)
+        if (null != mController) {
+            if (isOrientationPortrait) {
+                setLocker(false)
+                mController!!.visibility = GONE
+            } else {
+                setLocker(false)
+                if (isPlayering) {
+                    mController!!.visibility = VISIBLE
                 }
             }
         }
@@ -150,86 +127,83 @@ public class VideoController extends GestureController {
     /**
      * 显示\隐藏屏幕锁
      */
-    private void toggleLocker(){
-        if(null== mController) return;
-        stopDelayedRunnable();
-        if(mController.getVisibility()==View.VISIBLE){
-            hideLockerView();
-        }else{
-            AnimationUtils.getInstance().startTranslateRightToLocat(mController, MATION_DRAUTION,null);
-            startDelayedRunnable(MESSAGE_LOCKER_HIDE);
+    private fun toggleLocker() {
+        if (null == mController) return
+        stopDelayedRunnable()
+        if (mController!!.visibility == VISIBLE) {
+            hideLockerView()
+        } else {
+            AnimationUtils.getInstance().startTranslateRightToLocat(mController, MATION_DRAUTION.toLong(), null)
+            startDelayedRunnable(MESSAGE_LOCKER_HIDE)
         }
     }
 
     /**
      * 显示\隐藏控制器
      */
-    private void toggleController() {
-        stopDelayedRunnable();
-        if(isControllerShowing()){
+    private fun toggleController() {
+        stopDelayedRunnable()
+        if (isControllerShowing) {
             //屏幕锁
-            hideLockerView();
+            hideLockerView()
             //其它控制器
-            hideWidget(true);
-        }else{
+            hideWidget(true)
+        } else {
             //屏幕锁
-            if(isOrientationLandscape()&&null!= mController && mController.getVisibility()!=View.VISIBLE){
-                AnimationUtils.getInstance().startTranslateRightToLocat(mController, MATION_DRAUTION,null);
+            if (isOrientationLandscape && null != mController && mController!!.visibility != VISIBLE) {
+                AnimationUtils.getInstance().startTranslateRightToLocat(mController, MATION_DRAUTION.toLong(), null)
             }
-            showWidget(true);
-            startDelayedRunnable();
+            showWidget(true)
+            startDelayedRunnable()
         }
     }
 
     /**
      * 结启动延时任务
      */
-    @Override
-    public void startDelayedRunnable() {
-        startDelayedRunnable(MESSAGE_CONTROL_HIDE);
+    override fun startDelayedRunnable() {
+        startDelayedRunnable(MESSAGE_CONTROL_HIDE)
     }
 
     /**
      * 根据消息通道结启动延时任务
      */
-    private void startDelayedRunnable(int msg) {
-        super.startDelayedRunnable();
-        if(null!=mExHandel){
-            stopDelayedRunnable();
-            Message message = mExHandel.obtainMessage();
-            message.what= msg;
-            mExHandel.sendMessageDelayed(message,DELAYED_INVISIBLE);
+    private fun startDelayedRunnable(msg: Int) {
+        super.startDelayedRunnable()
+        if (null != mExHandel) {
+            stopDelayedRunnable()
+            val message = mExHandel.obtainMessage()
+            message.what = msg
+            mExHandel.sendMessageDelayed(message, DELAYED_INVISIBLE.toLong())
         }
     }
 
     /**
      * 结束延时任务
      */
-    @Override
-    public void stopDelayedRunnable() {
-        stopDelayedRunnable(0);
+    override fun stopDelayedRunnable() {
+        stopDelayedRunnable(0)
     }
 
     /**
      * 重新开始延时任务
      */
-    @Override
-    public void reStartDelayedRunnable() {
-        super.stopDelayedRunnable();
-        stopDelayedRunnable();
-        startDelayedRunnable();
+    override fun reStartDelayedRunnable() {
+        super.stopDelayedRunnable()
+        stopDelayedRunnable()
+        startDelayedRunnable()
     }
 
     /**
      * 根据消息通道取消延时任务
      * @param msg
      */
-    private void stopDelayedRunnable(int msg){
-        if(null!=mExHandel) {
-            if(0==msg){
-                mExHandel.removeCallbacksAndMessages(null);
-            }else{
-                mExHandel.removeMessages(msg);
+    private fun stopDelayedRunnable(msg: Int) {
+        if (null != mExHandel) {
+            if (0 == msg) {
+                mExHandel.removeCallbacksAndMessages(null)
+            } else {
+                mExHandel.removeMessages(msg)
             }
         }
     }
@@ -237,34 +211,27 @@ public class VideoController extends GestureController {
     /**
      * 使用这个Handel替代getHandel(),避免多播放器同时工作的相互影响
      */
-    private ExHandel mExHandel=new ExHandel(Looper.getMainLooper()){
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if(MESSAGE_LOCKER_HIDE ==msg.what){//屏幕锁
-                hideLockerView();
-            }else if(MESSAGE_CONTROL_HIDE==msg.what){//控制器
+    private val mExHandel: ExHandel? = object : ExHandel(Looper.getMainLooper()) {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            if (MESSAGE_LOCKER_HIDE == msg.what) { //屏幕锁
+                hideLockerView()
+            } else if (MESSAGE_CONTROL_HIDE == msg.what) { //控制器
                 //屏幕锁
-                if(isOrientationLandscape()){
-                    hideLockerView();
+                if (isOrientationLandscape) {
+                    hideLockerView()
                 }
-                hideWidget(true);
+                hideWidget(true)
             }
         }
-    };
+    }
 
     /**
      * 隐藏屏幕锁
      */
-    private void hideLockerView(){
-        if(null!= mController && mController.getVisibility()==View.VISIBLE){
-            AnimationUtils.getInstance().startTranslateLocatToRight(mController, MATION_DRAUTION, new AnimationUtils.OnAnimationListener() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    mController.setVisibility(GONE);
-                }
-            });
+    private fun hideLockerView() {
+        if (null != mController && mController!!.visibility == VISIBLE) {
+            AnimationUtils.getInstance().startTranslateLocatToRight(mController, MATION_DRAUTION.toLong()) { mController!!.visibility = GONE }
         }
     }
 
@@ -272,38 +239,42 @@ public class VideoController extends GestureController {
      * 设置给用户看的虚拟的视频总时长
      * @param totalDuration 单位：秒
      */
-    public void setPreViewTotalDuration(String totalDuration) {
-        int duration = PlayerUtils.getInstance().parseInt(totalDuration);
-        if(duration>0) setPreViewTotalDuration(duration*1000);
+    fun setPreViewTotalDuration(totalDuration: String?) {
+        val duration = PlayerUtils.getInstance().parseInt(totalDuration)
+        if (duration > 0) preViewTotalDuration = (duration * 1000).toLong()
     }
 
     /**
      * 是否启用屏幕锁功能(默认开启)，只在横屏状态下可用
      * @param showLocker true:启用 fasle:禁止
      */
-    public void showLocker(boolean showLocker) {
-        findViewById(R.id.controller_root).setVisibility(showLocker?View.VISIBLE:View.GONE);
+    fun showLocker(showLocker: Boolean) {
+        findViewById<View>(R.id.controller_root).visibility = if (showLocker) VISIBLE else GONE
     }
 
     /**
      * 重置内部状态
      */
-    private void reset(){
-        stopDelayedRunnable();
-        if(null!=mExHandel) mExHandel.removeCallbacksAndMessages(null);
+    private fun reset() {
+        stopDelayedRunnable()
+        mExHandel?.removeCallbacksAndMessages(null)
     }
 
-
-    @Override
-    public void onReset() {
-        super.onReset();
-        reset();
+    override fun onReset() {
+        super.onReset()
+        reset()
     }
 
-    @Override
-    public void onDestroy() {
-        stopDelayedRunnable();
-        super.onDestroy();
-        reset();
+    override fun onDestroy() {
+        stopDelayedRunnable()
+        super.onDestroy()
+        reset()
+    }
+
+    companion object {
+        private const val MESSAGE_CONTROL_HIDE = 10 //延时隐藏控制器
+        private const val MESSAGE_LOCKER_HIDE = 11 //延时隐藏屏幕锁
+        private const val DELAYED_INVISIBLE = 5000 //延时隐藏锁时长
+        private const val MATION_DRAUTION = 500 //控制器、控制锁等显示\隐藏过渡动画时长(毫秒)
     }
 }
