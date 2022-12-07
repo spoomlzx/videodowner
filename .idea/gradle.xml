@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/modules" />
             <option value="$PROJECT_DIR$/modules/common" />
             <option value="$PROJECT_DIR$/modules/downloader" />
+            <option value="$PROJECT_DIR$/modules/iplayer" />
             <option value="$PROJECT_DIR$/modules/videoplayer" />
           </set>
         </option>

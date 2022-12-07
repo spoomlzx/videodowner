@@ -7,7 +7,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        minSdk 25
+        minSdk 26
         targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -39,7 +39,7 @@ dependencies {
     //api 'com.github.hty527.iPlayer:iplayer:2.1.1'
     // 临时引入包，修改BasePlayer 方便布局预览
 
-    api 'com.gitee.spoomlan.iPlayer:iplayer:2.1.2'
+    api project(':modules:iplayer')
 
     //EXO解码器
     api 'com.google.android.exoplayer:exoplayer:2.18.1'
