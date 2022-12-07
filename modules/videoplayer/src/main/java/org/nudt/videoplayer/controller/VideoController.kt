@@ -1,19 +1,23 @@
-package com.android.iplayer.controller
+package org.nudt.videoplayer.controller
 
 import android.content.Context
 import android.os.Looper
 import android.os.Message
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.viewbinding.ViewBinding
-import com.android.iplayer.R
-import com.android.iplayer.databinding.PlayerVideoControllerBinding
+import com.android.iplayer.controller.GestureController
+import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
+import com.android.iplayer.utils.ILogger
 import com.android.iplayer.utils.PlayerUtils
+import org.nudt.videoplayer.R
+import org.nudt.videoplayer.controls.*
+import org.nudt.videoplayer.databinding.PlayerVideoControllerBinding
 
 /**
  * created by hty
@@ -28,11 +32,7 @@ class VideoController(context: Context?) : GestureController(context) {
 
     private lateinit var binding: PlayerVideoControllerBinding
 
-    //是否播放(试看)完成\是否开启屏幕锁
-
-    override fun getLayoutId(): Int {
-        return R.layout.player_video_controller
-    }
+    private lateinit var toolBarView: ControlToolBarView
 
     override fun initBinding(): ViewBinding {
         binding = PlayerVideoControllerBinding.inflate(LayoutInflater.from(context))
@@ -40,13 +40,41 @@ class VideoController(context: Context?) : GestureController(context) {
     }
 
     override fun initViews() {
+        //initWidget()
         super.initViews()
         setDoubleTapTogglePlayEnabled(true) //横屏竖屏状态下都允许双击开始\暂停播放
+        initLocker()
+
+        initSpeedSelect()
+
+
+    }
+
+    private fun initSpeedSelect() {
+
+    }
+
+    private fun initWidget() {
+        toolBarView = ControlToolBarView(context) //标题栏，返回按钮、视频标题、功能按钮、系统时间、电池电量等组件
+        toolBarView.target = IVideoController.TARGET_CONTROL_TOOL
+        toolBarView.showBack(false) //是否显示返回按钮,仅限竖屏情况下，横屏模式下强制显示
+        Log.d("iplayer","addControllerWidget toolBarView")
+        addControllerWidget(toolBarView)
+    }
+
+    fun setOnToolBarActionListener(onToolBarActionListener: ControlToolBarView.OnToolBarActionListener?) {
+        toolBarView.setOnToolBarActionListener(onToolBarActionListener)
+    }
+
+    /**
+     * 设置屏幕锁功能
+     */
+    private fun initLocker() {
         //mController = findViewById(R.id.controller_locker)
         binding.controllerLocker.setOnClickListener(OnClickListener {
             stopDelayedRunnable()
             setLocker(!isLocked)
-            (findViewById<View>(R.id.controller_locker_ic) as ImageView).setImageResource(if (isLocked) R.mipmap.ic_player_locker_true else R.mipmap.ic_player_locker_false)
+            binding.controllerLockerIc.setImageResource(if (isLocked) R.mipmap.ic_player_locker_true else R.mipmap.ic_player_locker_false)
             Toast.makeText(context, if (isLocked) getString(R.string.player_locker_true) else getString(R.string.player_locker_flase), Toast.LENGTH_SHORT).show()
             if (isLocked) {
                 hideWidget(true) //屏幕锁开启时隐藏其它所有控制器
@@ -249,7 +277,7 @@ class VideoController(context: Context?) : GestureController(context) {
      * @param showLocker true:启用 fasle:禁止
      */
     fun showLocker(showLocker: Boolean) {
-        findViewById<View>(R.id.controller_root).visibility = if (showLocker) VISIBLE else GONE
+        binding.controllerRoot.visibility = if (showLocker) VISIBLE else GONE
     }
 
     /**

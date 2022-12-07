@@ -1,4 +1,4 @@
-package org.nudt.videoplayer;
+package org.nudt.videoplayer.controls;
 
 import android.content.Context;
 import android.os.Handler;

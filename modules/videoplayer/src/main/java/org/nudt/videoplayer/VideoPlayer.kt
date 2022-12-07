@@ -3,14 +3,15 @@ package org.nudt.videoplayer
 import android.content.Context
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.Toast
 import com.android.iplayer.base.AbstractMediaPlayer
 import com.android.iplayer.base.BasePlayer
-import com.android.iplayer.controller.VideoController
 import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.listener.OnPlayerEventListener
 import com.android.iplayer.media.IMediaPlayer
 import com.lxj.xpopup.XPopup
+import org.nudt.videoplayer.controller.VideoController
 import org.nudt.videoplayer.controls.*
 import org.nudt.videoplayer.media.ExoPlayerFactory
 import org.nudt.videoplayer.view.DlanListPopupView
@@ -68,7 +69,9 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         val statusView = ControlStatusView(context) //移动网络播放提示、播放失败、试看完成
         val loadingView = ControlLoadingView(context) //加载中、开始播放
         val windowView = ControWindowView(context) //悬浮窗窗口播放器的窗口样式
+        Log.d("iplayer", "addControllerWidget functionBarView")
         controller.addControllerWidget(toolBarView, functionBarView, gestureView, completionView, statusView, loadingView, windowView)
+        //controller.addControllerWidget()
 
         setOnPlayerActionListener(object : OnPlayerEventListener() {
             //自定义解码器

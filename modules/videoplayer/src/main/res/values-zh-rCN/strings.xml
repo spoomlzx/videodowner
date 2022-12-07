@@ -7,4 +7,7 @@
     <string name="player_btn_try">重试</string>
     <string name="player_tips_unknown">未知原因</string>
     <string name="player_btn_unknown">未知</string>
+
+    <string name="player_locker_flase">已解锁</string>
+    <string name="player_locker_true">已锁定</string>
 </resources>

@@ -7,7 +7,6 @@ import com.android.iplayer.media.IMediaPlayer
 import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
 import com.android.iplayer.utils.PlayerUtils
-import org.nudt.videoplayer.BaseControlWidget
 import org.nudt.videoplayer.databinding.PlayerControlToolarBinding
 import org.nudt.videoplayer.view.BatteryView
 

@@ -7,4 +7,7 @@
     <string name="player_btn_try">retry</string>
     <string name="player_tips_unknown">Unknown reason</string>
     <string name="player_btn_unknown">unknown</string>
+
+    <string name="player_locker_flase">Unlocked</string>
+    <string name="player_locker_true">Locked</string>
 </resources>

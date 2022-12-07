@@ -13,7 +13,6 @@ import com.android.iplayer.media.IMediaPlayer
 import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
 import com.android.iplayer.utils.PlayerUtils
-import org.nudt.videoplayer.BaseControlWidget
 import org.nudt.videoplayer.R
 import org.nudt.videoplayer.databinding.PlayerControlFunctionbarBinding
 

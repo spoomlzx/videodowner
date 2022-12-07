@@ -63,8 +63,6 @@ public abstract class BaseController extends FrameLayout implements IVideoContro
         initViews();
     }
 
-    public abstract int getLayoutId();
-
     public abstract ViewBinding initBinding();
 
     public abstract void initViews();
