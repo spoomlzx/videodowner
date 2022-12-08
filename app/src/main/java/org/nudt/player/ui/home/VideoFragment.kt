@@ -19,9 +19,11 @@ import org.nudt.player.databinding.FragmentVideoBinding
 import org.nudt.player.ui.VideoViewModel
 
 private const val TYPE_PARAM = "type_id"
+private const val ITEM_VIEW_TYPE_PARAM = "item_view_type_id"
 
 class VideoFragment : Fragment() {
     private var type: Int = 1
+    private var itemViewType: Int = VERTICAL_PIC
 
     private val binding by lazy { FragmentVideoBinding.inflate(layoutInflater) }
 
@@ -31,10 +33,12 @@ class VideoFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        type = requireArguments().getInt(TYPE_PARAM)
+        itemViewType = requireArguments().getInt(ITEM_VIEW_TYPE_PARAM)
         context?.let {
-            adapter = VideoPagingAdapter(it, videoViewModel)
+            adapter = VideoPagingAdapter(it, itemViewType)
             binding.rvVideo.adapter = adapter
-            binding.rvVideo.layoutManager = GridLayoutManager(it, 3)
+            binding.rvVideo.layoutManager = GridLayoutManager(it, if (itemViewType == HORIZONTAL_PIC) 2 else 3)
             binding.swipeRefreshLayout.setOnRefreshListener {
                 adapter.refresh()
             }
@@ -44,7 +48,7 @@ class VideoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        type = requireArguments().getInt(TYPE_PARAM)
+
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collect { loadStates ->
                 //根据刷新状态来通知swipeRefreshLayout是否刷新完毕
@@ -70,10 +74,15 @@ class VideoFragment : Fragment() {
          * @return A new instance of fragment VideoFragment.
          */
         @JvmStatic
-        fun newInstance(type: Int) = VideoFragment().apply {
+        fun newInstance(type: Int, itemViewType: Int = VERTICAL_PIC) = VideoFragment().apply {
             arguments = Bundle().apply {
                 putInt(TYPE_PARAM, type)
+                putInt(ITEM_VIEW_TYPE_PARAM, itemViewType)
             }
         }
+
+        const val VERTICAL_PIC = 1
+        const val HORIZONTAL_PIC = 2
+
     }
 }

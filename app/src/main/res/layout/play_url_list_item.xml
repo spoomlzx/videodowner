@@ -23,8 +23,8 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/hamAnimaImg"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
+        android:layout_width="@dimen/video_playing_icon_size"
+        android:layout_height="@dimen/video_playing_icon_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:lottie_autoPlay="true"

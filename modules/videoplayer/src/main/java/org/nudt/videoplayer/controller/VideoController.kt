@@ -3,7 +3,6 @@ package org.nudt.videoplayer.controller
 import android.content.Context
 import android.os.Looper
 import android.os.Message
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -13,7 +12,6 @@ import com.android.iplayer.controller.GestureController
 import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
-import com.android.iplayer.utils.ILogger
 import com.android.iplayer.utils.PlayerUtils
 import org.nudt.videoplayer.R
 import org.nudt.videoplayer.controls.*
@@ -33,6 +31,7 @@ class VideoController(context: Context?) : GestureController(context) {
     private lateinit var binding: PlayerVideoControllerBinding
 
     private lateinit var toolBarView: ControlToolBarView
+    private lateinit var functionBarView: ControlFunctionBarView
 
     override fun initBinding(): ViewBinding {
         binding = PlayerVideoControllerBinding.inflate(LayoutInflater.from(context))
@@ -45,21 +44,41 @@ class VideoController(context: Context?) : GestureController(context) {
         setDoubleTapTogglePlayEnabled(true) //横屏竖屏状态下都允许双击开始\暂停播放
         initLocker()
 
-        initSpeedSelect()
-
 
     }
 
-    private fun initSpeedSelect() {
-
+    override fun onCreate() {
+        super.onCreate()
+        initWidget()
+        initFunctionBar()
     }
 
     private fun initWidget() {
         toolBarView = ControlToolBarView(context) //标题栏，返回按钮、视频标题、功能按钮、系统时间、电池电量等组件
         toolBarView.target = IVideoController.TARGET_CONTROL_TOOL
         toolBarView.showBack(false) //是否显示返回按钮,仅限竖屏情况下，横屏模式下强制显示
-        Log.d("iplayer","addControllerWidget toolBarView")
-        addControllerWidget(toolBarView)
+        val gestureView = ControlGestureView(context) //手势控制屏幕亮度、系统音量、快进、快退UI交互
+        val completionView = ControlCompletionView(context) //播放完成、重试
+        val statusView = ControlStatusView(context) //移动网络播放提示、播放失败、试看完成
+        val loadingView = ControlLoadingView(context) //加载中、开始播放
+        val windowView = ControWindowView(context) //悬浮窗窗口播放器的窗口样式
+        addControllerWidget(toolBarView, gestureView, completionView, statusView, loadingView, windowView)
+    }
+
+    private fun initFunctionBar() {
+        functionBarView = ControlFunctionBarView(context) //底部时间、seek、静音、全屏功能栏
+        functionBarView.setOnFunctionBarActionListener(object : ControlFunctionBarView.OnFunctionBarActionListener() {
+            override fun onSelectSpeed() {
+                AnimationUtils.getInstance().startTranslateRightToLocat(binding.llSpeed, animationDuration, null)
+                hideWidget(true)
+            }
+
+            override fun onSelectVideo() {
+                Toast.makeText(context, "选择选集", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        addControllerWidget(functionBarView)
     }
 
     fun setOnToolBarActionListener(onToolBarActionListener: ControlToolBarView.OnToolBarActionListener?) {

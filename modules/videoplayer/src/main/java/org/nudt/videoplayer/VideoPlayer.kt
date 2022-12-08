@@ -30,14 +30,11 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         controller = VideoController(context)
 
 
-
+        Log.d("iplayer", "setController")
         setController(controller)
         //给播放器控制器绑定自定义UI交互组件，也可调用initControlComponents()一键使用SDK内部提供的所有UI交互组件
-        toolBarView = ControlToolBarView(context) //标题栏，返回按钮、视频标题、功能按钮、系统时间、电池电量等组件
-        toolBarView.target = IVideoController.TARGET_CONTROL_TOOL
-        toolBarView.showBack(false) //是否显示返回按钮,仅限竖屏情况下，横屏模式下强制显示
         //监听标题栏的功能事件
-        toolBarView.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener() {
+        controller.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener() {
             override fun onTv() {
                 if (url.isEmpty()) {
                     Toast.makeText(context, "视频地址为空", Toast.LENGTH_SHORT).show()
@@ -63,15 +60,7 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
             }
         })
 
-        val functionBarView = ControlFunctionBarView(context) //底部时间、seek、静音、全屏功能栏
-        val gestureView = ControlGestureView(context) //手势控制屏幕亮度、系统音量、快进、快退UI交互
-        val completionView = ControlCompletionView(context) //播放完成、重试
-        val statusView = ControlStatusView(context) //移动网络播放提示、播放失败、试看完成
-        val loadingView = ControlLoadingView(context) //加载中、开始播放
-        val windowView = ControWindowView(context) //悬浮窗窗口播放器的窗口样式
-        Log.d("iplayer", "addControllerWidget functionBarView")
-        controller.addControllerWidget(toolBarView, functionBarView, gestureView, completionView, statusView, loadingView, windowView)
-        //controller.addControllerWidget()
+
 
         setOnPlayerActionListener(object : OnPlayerEventListener() {
             //自定义解码器
@@ -92,7 +81,7 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     }
 
     fun setTitle(title: String) {
-        toolBarView.setTitle(title)
+        controller.setTitle(title)
         this.title = title
     }
 

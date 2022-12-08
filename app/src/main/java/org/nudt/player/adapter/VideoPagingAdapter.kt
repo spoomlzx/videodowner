@@ -8,16 +8,19 @@ import androidx.appcompat.app.AlertDialog
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import org.nudt.player.R
 import org.nudt.player.databinding.HomeListItemVideoBinding
 import org.nudt.player.data.model.Video
+import org.nudt.player.databinding.HomeListItemVideoHorizontalBinding
 import org.nudt.player.ui.player.OnlinePlayerActivity
 import org.nudt.player.ui.VideoViewModel
+import org.nudt.player.ui.home.VideoFragment
 import org.nudt.player.utils.SpUtils
 import org.nudt.player.utils.VideoUtil
 
-class VideoPagingAdapter(private val context: Context, private val videoViewModel: VideoViewModel) :
+class VideoPagingAdapter(private val context: Context, private val itemViewType: Int = 1) :
     PagingDataAdapter<Video, VideoPagingAdapter.BindingViewHolder>(object : DiffUtil.ItemCallback<Video>() {
         override fun areItemsTheSame(oldItem: Video, newItem: Video): Boolean {
             return oldItem.vod_id == newItem.vod_id
@@ -31,35 +34,44 @@ class VideoPagingAdapter(private val context: Context, private val videoViewMode
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         val video: Video? = getItem(position)
-        video?.let {
-            holder.binding.tvTitle.text = video.vod_name
-            // dontAnimate() 搭配placeholder确保还未加载时，保持页面布局，减少抖动
-            Glide.with(context).load(VideoUtil.getPicUrl(video.vod_pic)).placeholder(R.drawable.default_pic).into(holder.binding.ivVideoPic)
-            holder.binding.cvVideo.setOnClickListener {
-                val intent = Intent(context, OnlinePlayerActivity::class.java)
-                intent.putExtra("vodId", video.vod_id)
-                context.startActivity(intent)
+        if (itemViewType == VideoFragment.HORIZONTAL_PIC) {
+            val binding = holder.binding as HomeListItemVideoHorizontalBinding
+            video?.let {
+                binding.tvTitle.text = video.vod_name
+                val pic = if (video.vod_pic_thumb?.isNotEmpty() == true) video.vod_pic_thumb else video.vod_pic
+                Glide.with(context).load(VideoUtil.getPicUrl(pic)).placeholder(R.drawable.default_pic).into(binding.ivVideoPic)
+                binding.cvVideo.setOnClickListener {
+                    val intent = Intent(context, OnlinePlayerActivity::class.java)
+                    intent.putExtra("vodId", video.vod_id)
+                    context.startActivity(intent)
+                }
             }
+        } else {
+            val binding = holder.binding as HomeListItemVideoBinding
+            video?.let {
+                binding.tvTitle.text = video.vod_name
 
-            // 客户端关闭删除功能，仅用于测试
-//            holder.binding.cvVideo.setOnLongClickListener {
-//                val dialog = AlertDialog.Builder(context, R.style.AlertDialog).setMessage("删除视频").setPositiveButton("删除") { dialog, id ->
-//                    videoViewModel.removeVideo(video)
-//                }.setNegativeButton("取消") { _, _ ->
-//                    // User cancelled the dialog
-//                }.create()
-//                dialog.show()
-//                true
-//            }
+                Glide.with(context).load(VideoUtil.getPicUrl(video.vod_pic)).placeholder(R.drawable.default_pic).into(binding.ivVideoPic)
+                binding.cvVideo.setOnClickListener {
+                    val intent = Intent(context, OnlinePlayerActivity::class.java)
+                    intent.putExtra("vodId", video.vod_id)
+                    context.startActivity(intent)
+                }
+            }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
-        val binding = HomeListItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return BindingViewHolder(binding)
+        return if (itemViewType == VideoFragment.HORIZONTAL_PIC) {
+            BindingViewHolder(HomeListItemVideoHorizontalBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        } else {
+            BindingViewHolder(HomeListItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        }
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return itemViewType
+    }
 
-    class BindingViewHolder(val binding: HomeListItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
+    class BindingViewHolder(val binding: ViewBinding) : RecyclerView.ViewHolder(binding.root)
 }

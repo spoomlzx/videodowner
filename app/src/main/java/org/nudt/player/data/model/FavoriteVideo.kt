@@ -9,8 +9,10 @@ data class FavoriteVideo(
     var id: Int = 0,
     var vod_id: Int,
     var vod_name: String,
-    var vod_pic: String,
-    var vod_remarks: String,
-    var vod_index: Int,
+    var vod_pic: String?,
+    var vod_pic_thumb: String?,
+    var vod_pic_slide: String?,
+    var vod_remarks: String?,
+    var total_duration: Long,
     var last_play_time: Long,
 )

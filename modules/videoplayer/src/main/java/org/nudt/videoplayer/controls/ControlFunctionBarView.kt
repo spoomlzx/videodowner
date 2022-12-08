@@ -122,6 +122,19 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
         })
     }
 
+    abstract class OnFunctionBarActionListener {
+        open fun onSelectSpeed() {}
+        open fun onSelectVideo() {}
+    }
+
+    private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
+    fun setOnFunctionBarActionListener(onFunctionBarActionListener: OnFunctionBarActionListener?) {
+        mOnFunctionBarActionListener = onFunctionBarActionListener
+    }
+
+
+
+
     override fun attachControlWrapper(controlWrapper: ControlWrapper) {
         super.attachControlWrapper(controlWrapper)
         mTotalDuration.text = PlayerUtils.getInstance().stringForAudioTime(mControlWrapper.preViewTotalDuration)
@@ -138,10 +151,10 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
                 reStartDelayedRunnable()
             }
             binding.controllerCurrentSpeed -> {
-                //XLog.d("speed press")
+                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onSelectSpeed()
             }
             binding.controllerTotalList -> {
-                //XLog.d("list press")
+                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onSelectVideo()
             }
         }
     }

@@ -1,24 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/controller_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/controller_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_speed"
+        android:layout_width="160dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:orientation="vertical"
+        android:visibility="invisible">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="2.0X"
+            android:textColor="@color/text_white"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="1.5X"
+            android:textColor="@color/text_white"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="1.25X"
+            android:textColor="@color/text_white"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="1.0X"
+            android:textColor="@color/text_white"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="0.75X"
+            android:textColor="@color/text_white"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/player_speed_background"
+            android:text="0.5X"
+            android:textColor="@color/text_white"/>
+    </LinearLayout>
+
     <!--手势锁-->
     <LinearLayout
         android:id="@+id/controller_locker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_gravity="center_vertical|right"
+        android:orientation="horizontal"
         android:visibility="gone">
         <ImageView
             android:id="@+id/controller_locker_ic"
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:layout_marginRight="32dp"
-            android:src="@mipmap/ic_player_locker_false"
+            android:background="@drawable/player_locker_bg"
             android:scaleType="center"
-            android:background="@drawable/player_locker_bg" />
+            android:src="@mipmap/ic_player_locker_false" />
     </LinearLayout>
 </FrameLayout>

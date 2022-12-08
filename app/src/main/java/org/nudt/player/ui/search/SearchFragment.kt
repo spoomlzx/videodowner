@@ -30,7 +30,7 @@ class SearchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         context?.let {
-            adapter = VideoPagingAdapter(it, videoViewModel)
+            adapter = VideoPagingAdapter(it, 1)
             binding.rvVideo.adapter = adapter
             binding.rvVideo.layoutManager = GridLayoutManager(it, 2)
             binding.swipeRefreshLayout.setOnRefreshListener {

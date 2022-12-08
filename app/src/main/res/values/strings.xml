@@ -5,6 +5,7 @@
         <item>@string/section_tv</item>
         <item>@string/section_comic</item>
         <item>@string/section_variety</item>
+        <item>@string/section_private</item>
     </string-array>
 
     <!--    fragment tabLayout title-->
@@ -13,8 +14,8 @@
     <string name="section_tv">电视剧</string>
     <string name="section_comic">动漫</string>
     <string name="section_variety">综艺</string>
+    <string name="section_private">私人</string>
 
-    <string name="section_face">露脸</string>
     <string name="section_cn">中文</string>
 
     <!--    mine page-->

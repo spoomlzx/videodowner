@@ -41,6 +41,7 @@
     <!--    player-->
     <dimen name="player_height">200dp</dimen>
     <dimen name="video_state_icon_size">12dp</dimen>
+    <dimen name="video_playing_icon_size">15dp</dimen>
 
 
     <!--    tabLayout-->

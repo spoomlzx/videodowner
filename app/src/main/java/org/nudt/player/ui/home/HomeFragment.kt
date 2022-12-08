@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
                         1 -> fragments[position] = VideoFragment.newInstance(VideoType.TV)
                         2 -> fragments[position] = VideoFragment.newInstance(VideoType.COMIC)
                         3 -> fragments[position] = VideoFragment.newInstance(VideoType.VARIETY)
+                        4 -> fragments[position] = VideoFragment.newInstance(VideoType.PRIVATE, VideoFragment.HORIZONTAL_PIC)
                         else -> {}
                     }
                 }

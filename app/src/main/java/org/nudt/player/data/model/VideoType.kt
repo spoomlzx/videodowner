@@ -20,4 +20,6 @@ object VideoType {
      * 综艺
      */
     const val VARIETY = 4
+
+    const val PRIVATE = 42
 }
