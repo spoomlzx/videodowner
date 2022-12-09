@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import com.android.iplayer.base.AbstractMediaPlayer
 import com.android.iplayer.base.BasePlayer
-import com.android.iplayer.interfaces.IVideoController
 import com.android.iplayer.listener.OnPlayerEventListener
 import com.android.iplayer.media.IMediaPlayer
 import com.lxj.xpopup.XPopup
@@ -34,7 +33,7 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         setController(controller)
         //给播放器控制器绑定自定义UI交互组件，也可调用initControlComponents()一键使用SDK内部提供的所有UI交互组件
         //监听标题栏的功能事件
-        controller.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener() {
+        controller.setOnToolBarActionListener(object : ControlToolBarView.OnToolBarActionListener {
             override fun onTv() {
                 if (url.isEmpty()) {
                     Toast.makeText(context, "视频地址为空", Toast.LENGTH_SHORT).show()
@@ -57,6 +56,12 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
 
             override fun onMenu() {
                 //XLog.d("onMenu")
+            }
+        })
+
+        controller.setOnFunctionBarActionListener(object : VideoController.OnFunctionBarActionListener {
+            override fun onSelectSpeed(speed: Float) {
+                setSpeed(speed)
             }
         })
 

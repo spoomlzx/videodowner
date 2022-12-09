@@ -6,6 +6,7 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import com.android.iplayer.controller.GestureController
@@ -32,6 +33,8 @@ class VideoController(context: Context?) : GestureController(context) {
 
     private lateinit var toolBarView: ControlToolBarView
     private lateinit var functionBarView: ControlFunctionBarView
+
+    private var isSpeedSelectShow = false
 
     override fun initBinding(): ViewBinding {
         binding = PlayerVideoControllerBinding.inflate(LayoutInflater.from(context))
@@ -68,17 +71,46 @@ class VideoController(context: Context?) : GestureController(context) {
     private fun initFunctionBar() {
         functionBarView = ControlFunctionBarView(context) //底部时间、seek、静音、全屏功能栏
         functionBarView.setOnFunctionBarActionListener(object : ControlFunctionBarView.OnFunctionBarActionListener() {
-            override fun onSelectSpeed() {
-                AnimationUtils.getInstance().startTranslateRightToLocat(binding.llSpeed, animationDuration, null)
+            override fun onClickSpeed() {
+                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rgSpeed, animationDuration, null)
+                isSpeedSelectShow = true
                 hideWidget(true)
             }
 
-            override fun onSelectVideo() {
+            override fun onClickVideo() {
                 Toast.makeText(context, "选择选集", Toast.LENGTH_SHORT).show()
             }
         })
 
+
+        binding.rgSpeed.setOnCheckedChangeListener { group, checkedId ->
+            var speed = 1.0f
+            when (checkedId) {
+                binding.rb20x.id -> speed = 2.0f
+                binding.rb15x.id -> speed = 1.5f
+                binding.rb125x.id -> speed = 1.25f
+                binding.rb1x.id -> speed = 1.0f
+                binding.rb075x.id -> speed = 0.75f
+                binding.rb05x.id -> speed = 0.5f
+            }
+            mOnFunctionBarActionListener?.onSelectSpeed(speed)
+            // 选择倍速以后选择框隐藏
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, animationDuration) { binding.rgSpeed.visibility = GONE }
+            isSpeedSelectShow = false
+        }
+
         addControllerWidget(functionBarView)
+    }
+
+
+    interface OnFunctionBarActionListener {
+        fun onSelectSpeed(speed: Float)
+    }
+
+    private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
+
+    fun setOnFunctionBarActionListener(onFunctionBarActionListener: OnFunctionBarActionListener) {
+        this.mOnFunctionBarActionListener = onFunctionBarActionListener
     }
 
     fun setOnToolBarActionListener(onToolBarActionListener: ControlToolBarView.OnToolBarActionListener?) {
@@ -106,7 +138,11 @@ class VideoController(context: Context?) : GestureController(context) {
     }
 
     public override fun onSingleTap() {
-        if (isOrientationPortrait && isListPlayerScene) { //竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
+        if (isSpeedSelectShow) {
+            // 只有速度选择界面显示的时候，隐藏
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, animationDuration) { binding.rgSpeed.visibility = GONE }
+            isSpeedSelectShow = false
+        } else if (isOrientationPortrait && isListPlayerScene) { //竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
             if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay() //回调给播放器
         } else {
             if (isLocked) {
@@ -162,6 +198,7 @@ class VideoController(context: Context?) : GestureController(context) {
             if (isOrientationPortrait) {
                 setLocker(false)
                 mController!!.visibility = GONE
+                binding.rgSpeed.visibility = GONE
             } else {
                 setLocker(false)
                 if (isPlayering) {

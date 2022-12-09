@@ -187,11 +187,11 @@ class ControlToolBarView(context: Context?) : BaseControlWidget(context), View.O
         binding.controllerTitleMenu.visibility = if (isOrientationLandscape) VISIBLE else if (showMenu) VISIBLE else GONE //菜单按钮
     }
 
-    abstract class OnToolBarActionListener {
-        open fun onBack() {}
-        open fun onTv() {}
-        open fun onWindow() {}
-        open fun onMenu() {}
+    interface OnToolBarActionListener {
+        fun onBack() {}
+        fun onTv() {}
+        fun onWindow() {}
+        fun onMenu() {}
     }
 
     private var mOnToolBarActionListener: OnToolBarActionListener? = null

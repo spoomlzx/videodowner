@@ -1,60 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/controller_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/ll_speed"
+    <RadioGroup
+        android:id="@+id/rg_speed"
         android:layout_width="160dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:orientation="vertical"
+        android:background="@color/player_speed_background"
         android:visibility="invisible">
-        <Button
+
+        <RadioButton
+            android:id="@+id/rb_2_0x"
+            style="@style/RadioButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="2.0X"
-            android:textColor="@color/text_white"/>
-        <Button
+            android:text="2.0X  " />
+
+        <RadioButton
+            android:id="@+id/rb_1_5x"
+            style="@style/RadioButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="1.5X"
-            android:textColor="@color/text_white"/>
-        <Button
+            android:text="1.5X  " />
+
+        <RadioButton
+            android:id="@+id/rb_1_25x"
+            style="@style/RadioButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="1.25X"
-            android:textColor="@color/text_white"/>
-        <Button
+            android:text="1.25X  " />
+
+        <RadioButton
+            android:id="@+id/rb_1x"
+            style="@style/RadioButton"
+            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="1.0X"
-            android:textColor="@color/text_white"/>
-        <Button
+            android:text="1.0X  " />
+
+        <RadioButton
+            android:id="@+id/rb_0_75x"
+            style="@style/RadioButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="0.75X"
-            android:textColor="@color/text_white"/>
-        <Button
+            android:text="0.75X  " />
+
+        <RadioButton
+            android:id="@+id/rb_0_5x"
+            style="@style/RadioButton"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/player_speed_background"
-            android:text="0.5X"
-            android:textColor="@color/text_white"/>
-    </LinearLayout>
+            android:text="0.5X  " />
+    </RadioGroup>
+
 
     <!--手势锁-->
     <LinearLayout
@@ -64,6 +71,7 @@
         android:layout_gravity="center_vertical|right"
         android:orientation="horizontal"
         android:visibility="gone">
+
         <ImageView
             android:id="@+id/controller_locker_ic"
             android:layout_width="45dp"

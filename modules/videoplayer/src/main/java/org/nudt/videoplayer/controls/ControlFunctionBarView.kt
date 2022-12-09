@@ -123,8 +123,8 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
     }
 
     abstract class OnFunctionBarActionListener {
-        open fun onSelectSpeed() {}
-        open fun onSelectVideo() {}
+        open fun onClickSpeed() {}
+        open fun onClickVideo() {}
     }
 
     private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
@@ -151,10 +151,10 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
                 reStartDelayedRunnable()
             }
             binding.controllerCurrentSpeed -> {
-                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onSelectSpeed()
+                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onClickSpeed()
             }
             binding.controllerTotalList -> {
-                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onSelectVideo()
+                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onClickVideo()
             }
         }
     }
