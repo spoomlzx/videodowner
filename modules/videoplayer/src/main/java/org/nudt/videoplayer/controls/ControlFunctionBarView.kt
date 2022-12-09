@@ -132,7 +132,9 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
         mOnFunctionBarActionListener = onFunctionBarActionListener
     }
 
-
+    fun setSpeedText(speed: String) {
+        binding.controllerCurrentSpeed.text = speed
+    }
 
 
     override fun attachControlWrapper(controlWrapper: ControlWrapper) {

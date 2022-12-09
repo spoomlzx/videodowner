@@ -58,7 +58,7 @@ public interface IVideoController {
     /**
      * 各控制器/UI组件显示/隐藏动画持续时长，单位：时间戳
      */
-    long MATION_DRAUTION =300;
+    long ANIMATION_DURATION =300;
 
 
     //=======================================生命周期及状态回调=========================================

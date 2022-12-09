@@ -22,14 +22,10 @@ import org.nudt.videoplayer.R
  * Desc:手势交互声音、亮度、快进、快退等UI交互
  */
 class ControlGestureView(context: Context?) : BaseControlWidget(context), IGestureControl {
-    private var mController //UI交互区域
-            : View? = null
-    private var mPresentIcon //ICON
-            : ImageView? = null
-    private var mPresentText //进度文字
-            : TextView? = null
-    private var mPresentProgress //亮度、声音进度
-            : ProgressBar? = null
+    private var mController: View? = null //UI交互区域
+    private var mPresentIcon: ImageView? = null //ICON
+    private var mPresentText: TextView? = null //进度文字
+    private var mPresentProgress: ProgressBar? = null//亮度、声音进度
 
     override fun getLayoutId(): Int {
         return R.layout.player_control_gesture

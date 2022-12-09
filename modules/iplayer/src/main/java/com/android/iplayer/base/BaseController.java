@@ -37,7 +37,7 @@ public abstract class BaseController extends FrameLayout implements IVideoContro
     protected int mScreenOrientation = IMediaPlayer.ORIENTATION_PORTRAIT, mPlayerScene = IVideoController.SCENE_NOIMAL;//当前控制器(播放器)方向\当前控制器(播放器)场景
     protected LinkedList<IControllerView> mIControllerViews = new LinkedList<>();//所有自定义UI控制器组件
     private ControlWrapper mControlWrapper;
-    protected long mAnimationDuration = MATION_DRAUTION;//控制交互组件显示|隐藏的动画时长
+    protected long mAnimationDuration = ANIMATION_DURATION;//控制交互组件显示|隐藏的动画时长
     protected boolean isCompletion;//是否播放(试看)完成
     protected long mPreViewTotalDuration;//试看模式下总时长
 

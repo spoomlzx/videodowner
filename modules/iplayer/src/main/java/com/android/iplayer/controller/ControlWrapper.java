@@ -128,7 +128,7 @@ public final class ControlWrapper {
         if(null!= mController) {
             return mController.getAnimationDuration();
         }
-        return IVideoController.MATION_DRAUTION;
+        return IVideoController.ANIMATION_DURATION;
     }
 
     //========================================播放器常用功能方法========================================

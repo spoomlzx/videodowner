@@ -449,7 +449,7 @@ public abstract class BaseControlWidget extends FrameLayout implements IControll
         if (null != mControlWrapper) {
             return mControlWrapper.getAnimationDuration();
         }
-        return IVideoController.MATION_DRAUTION;
+        return IVideoController.ANIMATION_DURATION;
     }
 
     //==================下面这些方法时不常用的，子类如果需要处理下列方法,请复写实现自己的逻辑====================

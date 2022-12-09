@@ -110,7 +110,7 @@
                 android:shadowColor="#26000000"
                 android:text="倍速"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:layout_marginRight="30dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/controller_total_list"
@@ -125,7 +125,7 @@
                 android:shadowColor="#26000000"
                 android:text="选集"
                 android:textColor="#FFFFFF"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
