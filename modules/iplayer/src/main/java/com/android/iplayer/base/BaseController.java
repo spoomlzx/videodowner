@@ -41,8 +41,8 @@ public abstract class BaseController extends FrameLayout implements IVideoContro
     protected boolean isCompletion;//是否播放(试看)完成
     protected long mPreViewTotalDuration;//试看模式下总时长
 
-    protected class ExHandel extends Handler {
-        public ExHandel(Looper looper) {
+    protected class Exhandler extends Handler {
+        public Exhandler(Looper looper) {
             super(looper);
         }
     }

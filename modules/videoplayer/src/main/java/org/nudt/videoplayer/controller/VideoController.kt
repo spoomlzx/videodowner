@@ -260,11 +260,11 @@ class VideoController(context: Context?) : GestureController(context) {
      */
     private fun startDelayedRunnable(msg: Int) {
         super.startDelayedRunnable()
-        if (null != mExHandel) {
+        if (null != mExHandler) {
             stopDelayedRunnable()
-            val message = mExHandel.obtainMessage()
+            val message = mExHandler.obtainMessage()
             message.what = msg
-            mExHandel.sendMessageDelayed(message, DELAYED_INVISIBLE.toLong())
+            mExHandler.sendMessageDelayed(message, DELAYED_INVISIBLE.toLong())
         }
     }
 
@@ -289,11 +289,11 @@ class VideoController(context: Context?) : GestureController(context) {
      * @param msg
      */
     private fun stopDelayedRunnable(msg: Int) {
-        if (null != mExHandel) {
+        if (null != mExHandler) {
             if (0 == msg) {
-                mExHandel.removeCallbacksAndMessages(null)
+                mExHandler.removeCallbacksAndMessages(null)
             } else {
-                mExHandel.removeMessages(msg)
+                mExHandler.removeMessages(msg)
             }
         }
     }
@@ -301,7 +301,7 @@ class VideoController(context: Context?) : GestureController(context) {
     /**
      * 使用这个Handel替代getHandel(),避免多播放器同时工作的相互影响
      */
-    private val mExHandel: ExHandel? = object : ExHandel(Looper.getMainLooper()) {
+    private val mExHandler: Exhandler? = object : Exhandler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             if (MESSAGE_LOCKER_HIDE == msg.what) { //屏幕锁
@@ -347,7 +347,7 @@ class VideoController(context: Context?) : GestureController(context) {
      */
     private fun reset() {
         stopDelayedRunnable()
-        mExHandel?.removeCallbacksAndMessages(null)
+        mExHandler?.removeCallbacksAndMessages(null)
     }
 
     override fun onReset() {
