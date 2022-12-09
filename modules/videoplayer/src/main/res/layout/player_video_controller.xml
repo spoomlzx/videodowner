@@ -68,15 +68,15 @@
         android:id="@+id/controller_locker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|right"
+        android:layout_gravity="center_vertical|start"
         android:orientation="horizontal"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/controller_locker_ic"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginRight="32dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="32dp"
             android:background="@drawable/player_locker_bg"
             android:scaleType="center"
             android:src="@mipmap/ic_player_locker_false" />

@@ -26,7 +26,7 @@ import org.nudt.videoplayer.databinding.PlayerVideoControllerBinding
  * 3、如需自定义UI交互组件，请参照[.addControllerWidget]
  */
 class VideoController(context: Context?) : GestureController(context) {
-    private var mController: View? = null //屏幕锁
+    private var controllerLocker: View? = null //屏幕锁
 
     private lateinit var binding: PlayerVideoControllerBinding
 
@@ -73,6 +73,9 @@ class VideoController(context: Context?) : GestureController(context) {
             override fun onClickSpeed() {
                 AnimationUtils.getInstance().startTranslateRightToLocat(binding.rgSpeed, SPEED_ANIMATION_DURATION, null)
                 isSpeedSelectShow = true
+
+                controllerLocker!!.visibility = GONE
+                setLocker(false)
                 hideWidget(true)
             }
 
@@ -122,7 +125,7 @@ class VideoController(context: Context?) : GestureController(context) {
      * 设置屏幕锁功能
      */
     private fun initLocker() {
-        //mController = findViewById(R.id.controller_locker)
+        controllerLocker = binding.controllerLocker
         binding.controllerLocker.setOnClickListener(OnClickListener {
             stopDelayedRunnable()
             setLocker(!isLocked)
@@ -170,7 +173,7 @@ class VideoController(context: Context?) : GestureController(context) {
             PlayerState.STATE_START -> {
                 startDelayedRunnable(MESSAGE_CONTROL_HIDE)
                 if (isOrientationLandscape) { //横屏模式下首次播放显示屏幕锁
-                    if (null != mController) mController!!.visibility = VISIBLE
+                    if (null != controllerLocker) controllerLocker!!.visibility = VISIBLE
                 }
             }
             PlayerState.STATE_PLAY, PlayerState.STATE_ON_PLAY -> startDelayedRunnable(MESSAGE_CONTROL_HIDE)
@@ -195,15 +198,16 @@ class VideoController(context: Context?) : GestureController(context) {
      */
     override fun onScreenOrientation(orientation: Int) {
         super.onScreenOrientation(orientation)
-        if (null != mController) {
+        if (null != controllerLocker) {
             if (isOrientationPortrait) {
                 setLocker(false)
-                mController!!.visibility = GONE
+                controllerLocker!!.visibility = GONE
                 binding.rgSpeed.visibility = GONE
+                isSpeedSelectShow = false
             } else {
                 setLocker(false)
                 if (isPlayering) {
-                    mController!!.visibility = VISIBLE
+                    controllerLocker!!.visibility = VISIBLE
                 }
             }
         }
@@ -213,12 +217,13 @@ class VideoController(context: Context?) : GestureController(context) {
      * 显示\隐藏屏幕锁
      */
     private fun toggleLocker() {
-        if (null == mController) return
+        if (null == controllerLocker) return
         stopDelayedRunnable()
-        if (mController!!.visibility == VISIBLE) {
+        if (controllerLocker!!.visibility == VISIBLE) {
             hideLockerView()
         } else {
-            AnimationUtils.getInstance().startTranslateRightToLocat(mController, ANIMATION_DURATION.toLong(), null)
+            // 显示屏幕锁
+            AnimationUtils.getInstance().startTranslateLeftToLocat(controllerLocker, ANIMATION_DURATION.toLong(), null)
             startDelayedRunnable(MESSAGE_LOCKER_HIDE)
         }
     }
@@ -234,9 +239,9 @@ class VideoController(context: Context?) : GestureController(context) {
             //其它控制器
             hideWidget(true)
         } else {
-            //屏幕锁
-            if (isOrientationLandscape && null != mController && mController!!.visibility != VISIBLE) {
-                AnimationUtils.getInstance().startTranslateRightToLocat(mController, ANIMATION_DURATION.toLong(), null)
+            // 显示屏幕锁
+            if (isOrientationLandscape && null != controllerLocker && controllerLocker!!.visibility != VISIBLE) {
+                AnimationUtils.getInstance().startTranslateLeftToLocat(controllerLocker, ANIMATION_DURATION.toLong(), null)
             }
             showWidget(true)
             startDelayedRunnable()
@@ -315,8 +320,8 @@ class VideoController(context: Context?) : GestureController(context) {
      * 隐藏屏幕锁
      */
     private fun hideLockerView() {
-        if (null != mController && mController!!.visibility == VISIBLE) {
-            AnimationUtils.getInstance().startTranslateLocatToRight(mController, ANIMATION_DURATION.toLong()) { mController!!.visibility = GONE }
+        if (null != controllerLocker && controllerLocker!!.visibility == VISIBLE) {
+            AnimationUtils.getInstance().startTranslateLocatToLeft(controllerLocker, ANIMATION_DURATION.toLong()) { controllerLocker!!.visibility = GONE }
         }
     }
 
