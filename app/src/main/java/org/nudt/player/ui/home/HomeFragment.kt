@@ -52,11 +52,11 @@ class HomeFragment : Fragment() {
             override fun createFragment(bean: String?, position: Int): Fragment {
                 if (fragments[position] == null) {
                     when (position) {
-                        4 -> fragments[position] = VideoFragment.newInstance(VideoType.MOVIE)
+                        0 -> fragments[position] = VideoFragment.newInstance(VideoType.MOVIE)
                         1 -> fragments[position] = VideoFragment.newInstance(VideoType.TV)
                         2 -> fragments[position] = VideoFragment.newInstance(VideoType.COMIC)
                         3 -> fragments[position] = VideoFragment.newInstance(VideoType.VARIETY)
-                        0 -> fragments[position] = VideoFragment.newInstance(VideoType.PRIVATE, VideoFragment.HORIZONTAL_PIC)
+                        4 -> fragments[position] = VideoFragment.newInstance(VideoType.PRIVATE, VideoFragment.HORIZONTAL_PIC)
                         else -> {}
                     }
                 }

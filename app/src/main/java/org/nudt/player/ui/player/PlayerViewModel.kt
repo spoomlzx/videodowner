@@ -25,6 +25,14 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
 
     private val gson = Gson()
 
+
+    @OptIn(DelicateCoroutinesApi::class)
+    fun savePlayHistory(history: PlayHistory) {
+        GlobalScope.launch(Dispatchers.IO) {
+            videoRepository.saveHistory(history)
+        }
+    }
+
     fun setCurrent(newIndex: Int) {
         currentIndex.postValue(newIndex)
     }

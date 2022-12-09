@@ -6,7 +6,6 @@ import org.koin.dsl.module
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.repository.VideoRepository
-import org.nudt.player.ui.AppViewModel
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.player.PlayerViewModel
 
@@ -26,10 +25,6 @@ val modulePlayer = module {
 
     viewModel {
         VideoViewModel(get())
-    }
-
-    viewModel {
-        AppViewModel(get(), androidApplication())
     }
 
     single { VideoDb.initDataBase(androidApplication()) }

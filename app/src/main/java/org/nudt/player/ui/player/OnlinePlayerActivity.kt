@@ -10,7 +10,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.SLog
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
-import org.nudt.player.ui.AppViewModel
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -18,7 +17,6 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     private val tabTitles = arrayOf("剧集", "评论")
 
     private val playerViewModel: PlayerViewModel by viewModel()
-    private val appViewModel: AppViewModel by viewModel()
 
     private var vodId = 0
 
@@ -120,7 +118,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
                 total_duration = player.duration,
                 last_play_time = System.currentTimeMillis()
             )
-            appViewModel.savePlayHistory(history)
+            playerViewModel.savePlayHistory(history)
         }
         super.onDestroy()
     }
