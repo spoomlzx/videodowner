@@ -115,7 +115,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
                 vod_index = playerViewModel.currentIndex.value ?: 0,
                 total_video_num = playUrlList.size,
                 progress_time = player.currentPosition,
-                total_duration = player.duration,
+                vod_duration = player.duration,
                 last_play_time = System.currentTimeMillis()
             )
             playerViewModel.savePlayHistory(history)

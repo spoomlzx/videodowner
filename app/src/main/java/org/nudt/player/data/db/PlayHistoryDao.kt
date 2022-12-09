@@ -10,6 +10,9 @@ interface PlayHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(playHistory: PlayHistory)
 
+    /**
+     * 一般不用非suspend的insert
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertHistory(playHistory: PlayHistory)
 

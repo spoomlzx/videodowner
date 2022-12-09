@@ -127,7 +127,7 @@ object VideoUtil {
         return if (playHistory.total_video_num > 1) {
             "看至第${playHistory.vod_index + 1}集"
         } else {
-            val percent = playHistory.progress_time ratio playHistory.total_duration
+            val percent = playHistory.progress_time ratio playHistory.vod_duration
             "观看至${percent}%"
         }
     }

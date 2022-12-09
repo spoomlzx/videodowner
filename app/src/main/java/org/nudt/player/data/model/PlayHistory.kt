@@ -20,6 +20,6 @@ data class PlayHistory(
     var vod_index: Int,
     var total_video_num: Int,
     var progress_time: Long,
-    var total_duration: Long,
+    var vod_duration: Long,
     var last_play_time: Long,
 )

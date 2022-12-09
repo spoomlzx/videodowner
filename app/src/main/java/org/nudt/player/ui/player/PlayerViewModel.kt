@@ -7,12 +7,7 @@ import kotlinx.coroutines.flow.collectLatest
 import org.nudt.common.SLog
 import org.nudt.player.data.api.doFailure
 import org.nudt.player.data.api.doSuccess
-import org.nudt.player.data.db.VideoDb
-import org.nudt.player.data.model.PlayHistory
-import org.nudt.player.data.model.Video
-import org.nudt.player.data.model.VideoCacheExtra
-import org.nudt.player.data.model.VodInfoModel
-import org.nudt.player.data.model.VodInfoModel.PlayUrl
+import org.nudt.player.data.model.*
 import org.nudt.player.data.repository.VideoRepository
 import zlc.season.downloadx.DownloadXManager
 
@@ -30,6 +25,21 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     fun savePlayHistory(history: PlayHistory) {
         GlobalScope.launch(Dispatchers.IO) {
             videoRepository.saveHistory(history)
+        }
+    }
+
+    fun addFavorite(favoriteVideo: FavoriteVideo) {
+        viewModelScope.launch(Dispatchers.IO) {
+            videoRepository.addFavorite(favoriteVideo)
+        }
+    }
+
+    fun getFavoriteById(vodId: Int): LiveData<FavoriteVideo?> = videoRepository.getFavoriteById(vodId).asLiveData()
+
+
+    fun deleteFavorites(vodId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            videoRepository.deleteFavorite(vodId)
         }
     }
 

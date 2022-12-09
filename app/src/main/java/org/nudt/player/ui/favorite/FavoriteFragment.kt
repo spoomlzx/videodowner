@@ -25,8 +25,8 @@ class FavoriteFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding.tbCommon.tvTitle.text = getText(R.string.main_nav_favorite)
+        binding.tbCommon.ivBack.visibility = View.GONE
         initRecyclerView()
-        observeData()
         return binding.root
     }
 
@@ -37,17 +37,8 @@ class FavoriteFragment : Fragment() {
             binding.rvVideo.adapter = adapter
         }
 
-        binding.swipeRefreshLayout.setOnRefreshListener {
-            observeData()
-        }
-    }
-
-    private fun observeData() {
-        lifecycleScope.launch {
-            videoViewModel.getFavoriteVideos()?.collectLatest {
-                adapter.updateFavoriteList(it)
-                binding.swipeRefreshLayout.isRefreshing = false
-            }
+        videoViewModel.favorites.observe(viewLifecycleOwner) {
+            adapter.updateFavoriteList(it)
         }
     }
 }

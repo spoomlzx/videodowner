@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     private val fragments: ArrayList<Fragment> = arrayListOf()
-    private val tabText = arrayOf("首页", "发现", "我的")
+    private val tabText = arrayOf("首页", "收藏", "我的")
     private val normalIcon =
         intArrayOf(R.drawable.ic_vector_tab_bar_home_default, R.drawable.ic_vector_tab_bar_moments_default, R.drawable.ic_vector_tab_bar_mine_default)
     private val selectedIcon =

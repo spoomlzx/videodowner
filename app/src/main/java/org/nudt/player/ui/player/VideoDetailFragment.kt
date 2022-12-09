@@ -13,6 +13,7 @@ import org.nudt.common.SLog
 import org.nudt.player.adapter.MineHistoryAdapter
 import org.nudt.player.adapter.PlayUrlAdapter
 import org.nudt.player.adapter.RecommendAdapter
+import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding
 
@@ -31,12 +32,18 @@ class VideoDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initClickListener()
+        initFavoriteView()
         // 监听viewModel中的vidInfoModel，更新详情信息
         playerViewModel.vodInfo.observe(viewLifecycleOwner) {
             SLog.d("vodInfo: in detail " + it.vod_name)
             initVideoDetail(it)
+
+            playerViewModel.getFavoriteById(it.vod_id).observe(viewLifecycleOwner) { favoriteVideo ->
+                binding.btnFavor.isSelected = favoriteVideo != null
+            }
         }
     }
+
 
     /**
      * 加载播放器页面信息
@@ -120,6 +127,32 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
+    private fun initFavoriteView() {
+        // 收藏图标变换状态
+        binding.btnFavor.setOnClickListener {
+            if (binding.btnFavor.isSelected) {
+                // 取消收藏
+                playerViewModel.vodInfo.value?.let { it1 -> playerViewModel.deleteFavorites(it1.vod_id) }
+            } else {
+                // 添加收藏
+                playerViewModel.vodInfo.value?.apply {
+                    val favoriteVideo = FavoriteVideo(
+                        vod_id = vod_id,
+                        vod_name = vod_name,
+                        vod_pic = vod_pic,
+                        vod_pic_thumb = vod_pic_thumb,
+                        vod_pic_slide = vod_pic_slide,
+                        vod_remarks = vod_remarks,
+                        total_video_num = playerViewModel.currentIndex.value ?: 0,
+                        vod_duration = 0L,
+                        add_time = System.currentTimeMillis()
+                    )
+                    playerViewModel.addFavorite(favoriteVideo)
+                }
+            }
+        }
+    }
+
     /**
      * 添加点赞等按钮的监听
      */
@@ -128,10 +161,7 @@ class VideoDetailFragment : Fragment() {
         binding.btnLike.setOnClickListener {
             binding.btnLike.isSelected = !binding.btnLike.isSelected
         }
-        // 收藏图标变换状态
-        binding.btnFavor.setOnClickListener {
 
-        }
 
         binding.btnDownload.setOnClickListener {
             XPopup.Builder(context).asConfirm("提示", "下载该视频？") {

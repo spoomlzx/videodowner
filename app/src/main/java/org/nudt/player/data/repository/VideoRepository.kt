@@ -11,6 +11,7 @@ import org.nudt.player.adapter.VideoSearchPagingSource
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.api.VideoResult
 import org.nudt.player.data.db.VideoDb
+import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
@@ -73,8 +74,7 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
      * 保存视频观看记录
      */
     suspend fun saveHistory(history: PlayHistory) {
-        val playHistoryDao = db.playHistoryDao()
-        playHistoryDao.insert(history)
+        db.playHistoryDao().insert(history)
     }
 
     /**
@@ -96,6 +96,23 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
     fun getHistory() = db.playHistoryDao().getHistory()
 
     suspend fun deleteHistory(history: PlayHistory) = db.playHistoryDao().deleteHistory(history)
+
+
+    suspend fun addFavorite(favoriteVideo: FavoriteVideo) {
+        db.favoriteVideoDao().insert(favoriteVideo)
+    }
+
+    fun getFavoriteById(vodId: Int) = db.favoriteVideoDao().getFavoriteById(vodId)
+
+    /**
+     * 获取所有收藏内容
+     */
+    fun getFavorites() = db.favoriteVideoDao().getFavorites()
+
+    /**
+     * 删除一条收藏记录
+     */
+    suspend fun deleteFavorite(vodId: Int) = db.favoriteVideoDao().deleteFavorite(vodId)
 
 
     private val pagingConfig = PagingConfig(
