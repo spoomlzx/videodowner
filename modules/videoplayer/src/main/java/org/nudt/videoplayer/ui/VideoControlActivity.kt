@@ -170,12 +170,13 @@ class VideoControlActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        stop()
+        // 注释以下代码，这样在推出视频播放时，投屏的设备不会退出该视频
+        //stop()
 
-        mHandler.removeCallbacksAndMessages(null)
-        unregisterReceiver(transportStateBroadcastReceiver)
-        ClingManager.getInstance().destroy()
-        ClingDeviceList.getInstance().destroy()
+//        mHandler.removeCallbacksAndMessages(null)
+//        unregisterReceiver(transportStateBroadcastReceiver)
+//        ClingManager.getInstance().destroy()
+//        ClingDeviceList.getInstance().destroy()
     }
 
     /**

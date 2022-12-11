@@ -76,6 +76,8 @@ class DlanListPopupView(context: Context, val url: String, val title: String) : 
 
     }
 
+
+
     private fun initAndRefresh() {
 
         mUpnpServiceConnection = object : ServiceConnection {

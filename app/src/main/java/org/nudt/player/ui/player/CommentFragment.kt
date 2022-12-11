@@ -26,12 +26,6 @@ class CommentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding.tvContent.text = param1.toString()
 
-        binding.button.setOnClickListener {
-            val intent = Intent(context, OnlinePlayerActivity::class.java)
-            intent.putExtra("vodId", param1)
-            context?.startActivity(intent)
-        }
-
         return binding.root
     }
 

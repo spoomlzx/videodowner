@@ -84,9 +84,9 @@ class VideoController(context: Context?) : GestureController(context) {
             }
         })
 
-
+        var speed = 1.0f
+        functionBarView.setSpeedText("倍速")
         binding.rgSpeed.setOnCheckedChangeListener { group, checkedId ->
-            var speed = 1.0f
             when (checkedId) {
                 binding.rb20x.id -> speed = 2.0f
                 binding.rb15x.id -> speed = 1.5f

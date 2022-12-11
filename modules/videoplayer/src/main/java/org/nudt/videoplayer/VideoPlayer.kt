@@ -98,5 +98,6 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     fun setLocalDataSource(dataSource: String) {
         val filePath = Uri.parse("file://$dataSource").toString()
         setDataSource(filePath)
+        this.url = filePath
     }
 }
