@@ -28,8 +28,7 @@ class RecommendAdapter(private val context: Context) : RecyclerView.Adapter<Reco
         holder.binding.tvVideoName.text = video.vod_name
         holder.binding.tvVideoScore.text = video.vod_score
 
-        val pic = if (video.vod_pic_thumb?.isNotEmpty() == true) video.vod_pic_thumb else video.vod_pic
-        Glide.with(context).load(VideoUtil.getPicUrl(pic)).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+        Glide.with(context).load(VideoUtil.getPicUrl(video.vod_pic_thumb)).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
         holder.binding.cvRecommendItem.setOnClickListener {
             val intent = Intent(context, OnlinePlayerActivity::class.java)

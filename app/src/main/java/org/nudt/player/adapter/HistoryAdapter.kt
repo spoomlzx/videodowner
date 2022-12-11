@@ -29,9 +29,8 @@ class HistoryAdapter(private val context: Context, private val videoViewModel: V
 
         val progress = VideoUtil.buildProgressText(playHistory)
         holder.binding.tvVideoProgress.text = progress
-        val pic = if (playHistory.vod_pic_thumb?.startsWith("http") == true) playHistory.vod_pic_thumb else playHistory.vod_pic
 
-        Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+        Glide.with(context).load(playHistory.vod_pic_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
         holder.binding.cvHistoryItem.setOnClickListener {
             val intent = Intent(context, OnlinePlayerActivity::class.java)

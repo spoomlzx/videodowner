@@ -29,8 +29,7 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
             val video = it[position]
             holder.binding.tvTitle.text = video.vod_name
 
-            val pic = if (video.vod_pic_thumb?.startsWith("http") == true) video.vod_pic_thumb else video.vod_pic
-            Glide.with(context).load(pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            Glide.with(context).load(video.vod_pic_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
 
             holder.binding.tvRemarks.text = video.vod_remarks
 
