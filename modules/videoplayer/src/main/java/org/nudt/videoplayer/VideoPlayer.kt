@@ -25,6 +25,9 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     private lateinit var title: String
     private lateinit var url: String
 
+    private var currentIndex = 0
+    private var subVideoList: ArrayList<SubVideo> = arrayListOf()
+
     override fun initViews() {
         controller = VideoController(context)
 
@@ -64,12 +67,13 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
                 setSpeed(speed)
             }
 
-            override fun onSelectSubVideo(subVideo: SubVideo) {
-                onReset()
-                setProgressCallBackSpaceMilliss(300)
-                setPlayUrl(subVideo.sub_video_url)
-                url = subVideo.sub_video_url
-                startPlay()
+            override fun onSelectSubVideo(index: Int) {
+                setIndex(index)
+                mOnIndexChangeListener?.onIndexChange(index)
+            }
+
+            override fun onClickNext() {
+
             }
         })
 
@@ -93,28 +97,62 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         setAutoChangeOrientation(true) //是否开启重力旋转。当系统"自动旋转"开启+正在播放生效
     }
 
+    fun setIndex(index: Int) {
+        if (index < subVideoList.size && currentIndex != index) {
+            this.currentIndex = index
+            controller.updateIndex(index)
+            onReset()
+            setProgressCallBackSpaceMilliss(300)
+            playSubVideoByIndex(currentIndex)
+        }
+    }
+
+    fun setIndexChangeListener(onIndexChangeListener: OnIndexChangeListener) {
+        this.mOnIndexChangeListener = onIndexChangeListener
+    }
+
+    private var mOnIndexChangeListener: OnIndexChangeListener? = null
+
+    interface OnIndexChangeListener {
+        fun onIndexChange(index: Int)
+    }
+
+    fun setHistory(index: Int, playTime: Long) {
+        setIndex(index)
+        seekTo(playTime)
+    }
+
+    fun setSubVideoList(subVideos: ArrayList<SubVideo>) {
+        subVideoList = subVideos
+        controller.updateSubVideoList(subVideoList)
+        playSubVideoByIndex(currentIndex)
+    }
+
+    private fun playSubVideoByIndex(index: Int) {
+        if (index < subVideoList.size) {
+            playSubVideo(subVideoList[index])
+        }
+    }
+
+    private fun playSubVideo(subVideo: SubVideo) {
+        setDataSource(subVideo.sub_video_url)
+        this.url = subVideo.sub_video_url
+        this.title = "${subVideo.video_name} - ${subVideo.sub_video_name}"
+        setTitle(title)
+        startPlay()
+    }
+
+    /**
+     * 暂时保留给离线视频，准备废弃
+     */
     fun setTitle(title: String) {
         controller.setTitle(title)
         this.title = title
     }
 
-    fun setPlayUrl(url: String) {
-        val subVideoList: ArrayList<SubVideo> = arrayListOf()
-        for (i in 1..4) {
-            val subVideo = SubVideo(
-                "百妖谱", "第" + i + "话",
-                "http://192.168.0.173/upload/vodthumb/xiaomaomi/49/332905c1f596415899acd52169fc481e.png",
-                "http://192.168.0.173:83/dongman/百妖谱第二季/0$i.mp4"
-            )
-            subVideoList.add(subVideo)
-        }
-
-        controller.updateSubVideoList(subVideoList)
-
-        setDataSource(subVideoList[0].sub_video_url)
-        this.url = subVideoList[0].sub_video_url
-    }
-
+    /**
+     * 暂时保留给离线视频，准备废弃
+     */
     fun setLocalDataSource(dataSource: String) {
         val filePath = Uri.parse("file://$dataSource").toString()
         setDataSource(filePath)

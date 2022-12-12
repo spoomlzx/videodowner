@@ -10,6 +10,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.common.SLog
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
+import org.nudt.videoplayer.VideoPlayer
 
 
 class OnlinePlayerActivity : BasePlayerActivity() {
@@ -49,29 +50,23 @@ class OnlinePlayerActivity : BasePlayerActivity() {
     private fun fetchVideoInfo() {
         vodId = intent.getIntExtra("vodId", 0)
 
-        playerViewModel.fetchVideoInfo(vodId).observe(this) {
-            player.setTitle(it.vod_name)
-            // 根据history初始化的index进行播放，
-            var index = 0
-            it.history?.let { history -> index = history.vod_index }
-            if (it.playUrlList.size > 0) {
-                player.setPlayUrl(it.playUrlList[index].url)
-                player.prepareAsync()
-            }
 
-            it.history?.let { history -> player.seekTo(history.progress_time) }
-            //SLog.d("ready to play ${playerViewModel.progress}")
+        player.setIndexChangeListener(object : VideoPlayer.OnIndexChangeListener {
+            override fun onIndexChange(index: Int) {
+                playerViewModel.setCurrent(index)
+            }
+        })
+
+        playerViewModel.fetchVideoInfo(vodId).observe(this) {
+            player.setSubVideoList(it.subVideoList)
+            if (it.history != null) {
+                player.setHistory(it.history!!.vod_index, it.history!!.progress_time)
+            }
         }
 
         // 监听当前play index变化，切换视频
         playerViewModel.currentIndex.observe(this) {
-            // 获取到视频信息进行播放以后的切换选集操作
-            playerViewModel.vodInfo.value?.let { info ->
-                player.onReset()
-                player.setProgressCallBackSpaceMilliss(300)
-                player.setPlayUrl(info.playUrlList[it].url)
-                player.startPlay()
-            }
+            player.setIndex(it)
         }
     }
 
@@ -113,7 +108,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
                 vod_pic_slide = vod_pic_slide,
                 vod_remarks = vod_remarks,
                 vod_index = playerViewModel.currentIndex.value ?: 0,
-                total_video_num = playUrlList.size,
+                total_video_num = subVideoList.size,
                 progress_time = player.currentPosition,
                 vod_duration = player.duration,
                 last_play_time = System.currentTimeMillis()

@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.lxj.xpopup.core.BottomPopupView
 import org.nudt.player.R
-import org.nudt.player.adapter.PlayUrlAdapter
+import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.data.model.VodInfoModel
 
 class VideoPlayUrlListPopup(context: Context) : BottomPopupView(context) {
     private lateinit var vodInfoModel: VodInfoModel
-    private lateinit var playUrlAdapter: PlayUrlAdapter
+    private lateinit var subVideoAdapter: SubVideoAdapter
     private var popupMaxHeight: Int = 0
 
     override fun getImplLayoutId(): Int {
@@ -24,14 +24,14 @@ class VideoPlayUrlListPopup(context: Context) : BottomPopupView(context) {
         vodInfoModel.apply {
             // 分集数标题
             val tvVodAllTitle = findViewById<TextView>(R.id.tv_vod_all_title)
-            tvVodAllTitle.text = "分集(${playUrlList.size})"
+            tvVodAllTitle.text = "分集(${subVideoList.size})"
 
             // 选择分集按钮列表
             val rvVodListAll = findViewById<RecyclerView>(R.id.rv_vod_list_all)
             val gridLayoutManager = GridLayoutManager(context, 5)
             rvVodListAll.layoutManager = gridLayoutManager
             //binding.rvVodListAll.addItemDecoration(GridItemDecoration())
-            rvVodListAll.adapter = playUrlAdapter
+            rvVodListAll.adapter = subVideoAdapter
 
             // 点击隐藏弹窗
             val ivVodAllClose = findViewById<ImageView>(R.id.iv_vod_all_close)
@@ -52,9 +52,9 @@ class VideoPlayUrlListPopup(context: Context) : BottomPopupView(context) {
      * @param adapter 视频分集按钮列表的adapter
      * @param maxHeight 弹窗最大高度
      */
-    fun initPopup(vodInfoModel: VodInfoModel, adapter: PlayUrlAdapter, maxHeight: Int): BottomPopupView {
+    fun initPopup(vodInfoModel: VodInfoModel, adapter: SubVideoAdapter, maxHeight: Int): BottomPopupView {
         this.vodInfoModel = vodInfoModel
-        this.playUrlAdapter = adapter
+        this.subVideoAdapter = adapter
         this.popupMaxHeight = maxHeight
         return this
     }

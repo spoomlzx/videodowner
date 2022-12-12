@@ -1,6 +1,7 @@
 package org.nudt.player.data.model
 
 import org.nudt.player.utils.VideoUtil
+import org.nudt.videoplayer.model.SubVideo
 
 data class VodInfoModel(
 
@@ -22,18 +23,13 @@ data class VodInfoModel(
     var vod_score: String?,
     var vod_time: Int,
     var vod_time_add: Int,
-    var playUrlList: ArrayList<PlayUrl>,
+    var subVideoList: ArrayList<SubVideo>,
     var history: PlayHistory?
 ) {
-    data class PlayUrl(
-        var name: String,
-        var url: String
-    )
-
     companion object {
         fun fromVideo(video: Video, history: PlayHistory?): VodInfoModel {
             return video.run {
-                val playUrlList = VideoUtil.convertPlayUrlList(play_server, vod_play_url)
+                val playUrlList = VideoUtil.convertPlayUrlList(video)
                 VodInfoModel(
                     vod_id, type_id, type_pid, vod_name, vod_actor, vod_director, VideoUtil.getPicUrl(vod_pic), VideoUtil.getPicUrl(vod_pic_thumb),
                     VideoUtil.getPicUrl(vod_pic_slide), vod_remarks, vod_class,

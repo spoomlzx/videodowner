@@ -3,18 +3,29 @@ package org.nudt.player.utils
 
 import org.nudt.common.ratio
 import org.nudt.player.data.model.PlayHistory
-import org.nudt.player.data.model.VodInfoModel.PlayUrl
+import org.nudt.player.data.model.Video
+import org.nudt.videoplayer.model.SubVideo
 
 
 object VideoUtil {
     /**
      * 把数据库中请求到的playUrlList转化为List<PlayUrl>
      */
-    fun convertPlayUrlList(playServer: String?, dbVodPlayUrls: String?): ArrayList<PlayUrl> {
+    fun convertPlayUrlList(video: Video): ArrayList<SubVideo> {
+        val playServer = video.play_server
+        val dbVodPlayUrls = video.vod_play_url
+        val subVideoPic = if (getPicUrl(video.vod_pic_thumb)?.startsWith("http") == true) {
+            getPicUrl(video.vod_pic_thumb)
+        } else {
+            getPicUrl(video.vod_pic)
+        }
+
+        val videoName = video.vod_name
+
         //电影播放地址集合
-        val urls: ArrayList<PlayUrl> = ArrayList()
+        val subVideos: ArrayList<SubVideo> = ArrayList()
         if (playServer == null || dbVodPlayUrls == null) {
-            return urls
+            return subVideos
         }
         //先通过$$$将播放组分出来
         val vodGroup = dbVodPlayUrls.split("$$$").toTypedArray()
@@ -30,8 +41,8 @@ object VideoUtil {
                         if (singleUrl.contains("$")) {
                             val vodData = singleUrl.split("$").toTypedArray()
                             if (vodData.size == 2) {
-                                val playUrl = PlayUrl(vodData[0], vodData[1])
-                                urls.add(playUrl)
+                                val subVideo = SubVideo(videoName, vodData[0], subVideoPic, vodData[1])
+                                subVideos.add(subVideo)
                             }
                         }
                     }
@@ -41,8 +52,8 @@ object VideoUtil {
                 if (vodPlayUrls.contains("$")) {
                     val vodData: Array<String> = vodPlayUrls.split("$").toTypedArray()
                     if (vodData.size == 2) {
-                        val playUrl = PlayUrl(vodData[0], vodData[1])
-                        urls.add(playUrl)
+                        val subVideo = SubVideo(videoName, vodData[0], subVideoPic, vodData[1])
+                        subVideos.add(subVideo)
                     }
                 }
             }
@@ -62,8 +73,8 @@ object VideoUtil {
                                 } else {
                                     playServer + vodData[1]
                                 }
-                                val playUrl = PlayUrl(vodData[0], url)
-                                urls.add(playUrl)
+                                val subVideo = SubVideo(videoName, vodData[0], subVideoPic, url)
+                                subVideos.add(subVideo)
                             }
                         }
                     }
@@ -78,8 +89,8 @@ object VideoUtil {
                         } else {
                             playServer + vodData[1]
                         }
-                        val playUrl = PlayUrl(vodData[0], url)
-                        urls.add(playUrl)
+                        val subVideo = SubVideo(videoName, vodData[0], subVideoPic, url)
+                        subVideos.add(subVideo)
                     }
                 }
             }
@@ -93,8 +104,8 @@ object VideoUtil {
                     if (singleUrl.contains("$")) {
                         val vodData = singleUrl.replace("$", "bbb").split("bbb").toTypedArray()
                         if (vodData.size == 2) {
-                            val playUrl = PlayUrl(vodData[0], vodData[1])
-                            urls.add(playUrl)
+                            val subVideo = SubVideo(videoName, vodData[0], subVideoPic, vodData[1])
+                            subVideos.add(subVideo)
                         }
                     }
                 }
@@ -103,13 +114,13 @@ object VideoUtil {
                 if (vodPlayUrls.contains("$")) {
                     val vodData: Array<String> = vodPlayUrls.replace("$", "bbb").split("bbb").toTypedArray()
                     if (vodData.size == 2) {
-                        val playUrl = PlayUrl(vodData[0], vodData[1])
-                        urls.add(playUrl)
+                        val subVideo = SubVideo(videoName, vodData[0], subVideoPic, vodData[1])
+                        subVideos.add(subVideo)
                     }
                 }
             }
         }
-        return urls
+        return subVideos
     }
 
     /**

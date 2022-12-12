@@ -15,7 +15,6 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     val vodInfo = MutableLiveData<VodInfoModel>()
     val currentIndex = MutableLiveData(0)
 
-    val videoPlayerHeight = MutableLiveData(235f)
     val recommendVideoList = MutableLiveData<List<Video>>()
 
     private val gson = Gson()
@@ -52,7 +51,10 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
         videoRepository.fetchVideoInfo(vodId).collectLatest { result ->
             result.doSuccess { value ->
                 vodInfo.postValue(value)
-                currentIndex.value = value.history?.vod_index
+                value.history?.let {
+                    currentIndex.value = it.vod_index
+                }
+
                 SLog.d("video: ${value.vod_name} index: ${value.history?.vod_index}")
                 emit(value)
             }
@@ -80,10 +82,9 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     fun cacheVideo() {
         val vod = vodInfo.value
         vod?.let {
-            val pic = if (vod.vod_pic_thumb?.startsWith("http") == true) vod.vod_pic_thumb else vod.vod_pic
-            val playUrl = vod.playUrlList[currentIndex.value ?: 0]
-            val extra = VideoCacheExtra(vod.vod_name, pic ?: "", playUrl.name)
-            DownloadXManager.download(playUrl.url, gson.toJson(extra))
+            val subVideo = vod.subVideoList[currentIndex.value ?: 0]
+            val extra = VideoCacheExtra(vod.vod_name, subVideo.sub_video_pic ?: "", subVideo.sub_video_name)
+            DownloadXManager.download(subVideo.sub_video_url, gson.toJson(extra))
         }
     }
 }

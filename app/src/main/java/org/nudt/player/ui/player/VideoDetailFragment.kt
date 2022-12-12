@@ -10,8 +10,7 @@ import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
-import org.nudt.player.adapter.MineHistoryAdapter
-import org.nudt.player.adapter.PlayUrlAdapter
+import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.VodInfoModel
@@ -21,6 +20,7 @@ class VideoDetailFragment : Fragment() {
 
     private val binding by lazy { FragmentVideoDetailBinding.inflate(layoutInflater) }
     private lateinit var recommendAdapter: RecommendAdapter
+    private lateinit var subVideoAdapter: SubVideoAdapter
 
     private val playerViewModel: PlayerViewModel by sharedViewModel()
 
@@ -41,6 +41,15 @@ class VideoDetailFragment : Fragment() {
             playerViewModel.getFavoriteById(it.vod_id).observe(viewLifecycleOwner) { favoriteVideo ->
                 binding.btnFavor.isSelected = favoriteVideo != null
             }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // 按当前播放history 滚动到指定集数位置
+        playerViewModel.currentIndex.observe(viewLifecycleOwner) {
+            binding.rvVodList.smoothScrollToPosition(it)
+            subVideoAdapter.updateCurrent(it)
         }
     }
 
@@ -83,17 +92,14 @@ class VideoDetailFragment : Fragment() {
         linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
         binding.rvVodList.layoutManager = linearLayoutManager
 
-        val adapter = PlayUrlAdapter(playerViewModel)
-        adapter.setPlayUrlList(vodInfoModel.playUrlList)
+        subVideoAdapter = SubVideoAdapter(playerViewModel)
+        subVideoAdapter.setPlayUrlList(vodInfoModel.subVideoList)
 
-        binding.rvVodList.adapter = adapter
+        binding.rvVodList.adapter = subVideoAdapter
 
-        // 按当前播放history 滚动到指定集数位置
-        playerViewModel.currentIndex.value?.let {
-            binding.rvVodList.smoothScrollToPosition(it)
-        }
 
-        binding.tvSerialTitle.text = "选集(${vodInfoModel.playUrlList.size})"
+
+        binding.tvSerialTitle.text = "选集(${vodInfoModel.subVideoList.size})"
 
         // 点击出现所有选集弹窗
         binding.tvVodAll.setOnClickListener {
@@ -103,7 +109,7 @@ class VideoDetailFragment : Fragment() {
                 //.isViewMode(true)
                 .isDestroyOnDismiss(true) //对于只使用一次的弹窗，推荐设置这个
 //                        .isThreeDrag(true) //是否开启三阶拖拽，如果设置enableDrag(false)则无效
-                .asCustom(VideoPlayUrlListPopup(context!!).initPopup(vodInfoModel, adapter, height))
+                .asCustom(VideoPlayUrlListPopup(context!!).initPopup(vodInfoModel, subVideoAdapter, height))
                 .show();
         }
     }

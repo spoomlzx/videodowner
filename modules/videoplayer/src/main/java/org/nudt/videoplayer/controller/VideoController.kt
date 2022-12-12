@@ -5,7 +5,6 @@ import android.os.Looper
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnClickListener
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
@@ -80,7 +79,7 @@ class VideoController(context: Context?) : GestureController(context) {
         functionBarView = ControlFunctionBarView(context) //底部时间、seek、静音、全屏功能栏
         functionBarView.setOnFunctionBarActionListener(object : ControlFunctionBarView.OnFunctionBarActionListener() {
             override fun onClickSpeed() {
-                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rgSpeed, SPEED_ANIMATION_DURATION, null)
+                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rgSpeed, SHORT_ANIMATION_DURATION, null)
                 isSpeedSelectShow = true
 
                 controllerLocker!!.visibility = GONE
@@ -90,7 +89,7 @@ class VideoController(context: Context?) : GestureController(context) {
             }
 
             override fun onClickVideo() {
-                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rvVideoSelect, SPEED_ANIMATION_DURATION, null)
+                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rvVideoSelect, SHORT_ANIMATION_DURATION, null)
                 isVideoSelectShow = true
                 controllerLocker!!.visibility = GONE
                 setLocker(false)
@@ -113,7 +112,7 @@ class VideoController(context: Context?) : GestureController(context) {
             }
             mOnFunctionBarActionListener?.onSelectSpeed(speed)
             // 选择倍速以后选择框隐藏
-            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, SPEED_ANIMATION_DURATION) { binding.rgSpeed.visibility = GONE }
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, SHORT_ANIMATION_DURATION) { binding.rgSpeed.visibility = GONE }
             isSpeedSelectShow = false
             functionBarView.setSpeedText(if (speed == 1.0f) "倍速" else "${speed}X")
             Toast.makeText(context, "${speed}X", Toast.LENGTH_SHORT).show()
@@ -123,8 +122,8 @@ class VideoController(context: Context?) : GestureController(context) {
         binding.rvVideoSelect.layoutManager = LinearLayoutManager(context)
         videoSelectAdapter = VideoSelectAdapter(context) {
             mOnFunctionBarActionListener?.onSelectSubVideo(it)
-
-            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SPEED_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
+            // 点击sub video以后隐藏视频选择框
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SHORT_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
             isVideoSelectShow = false
         }
         binding.rvVideoSelect.adapter = videoSelectAdapter
@@ -136,10 +135,15 @@ class VideoController(context: Context?) : GestureController(context) {
         videoSelectAdapter.updateSubVideoList(subVideoList)
     }
 
+    fun updateIndex(index: Int) {
+        binding.rvVideoSelect.smoothScrollToPosition(index)
+        videoSelectAdapter.updateCurrentIndex(index)
+    }
 
     interface OnFunctionBarActionListener {
         fun onSelectSpeed(speed: Float)
-        fun onSelectSubVideo(subVideo: SubVideo)
+        fun onSelectSubVideo(index: Int)
+        fun onClickNext()
     }
 
     private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
@@ -175,11 +179,11 @@ class VideoController(context: Context?) : GestureController(context) {
     public override fun onSingleTap() {
         if (isSpeedSelectShow) {
             // 只有速度选择界面显示的时候，隐藏
-            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, SPEED_ANIMATION_DURATION) { binding.rgSpeed.visibility = GONE }
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, SHORT_ANIMATION_DURATION) { binding.rgSpeed.visibility = GONE }
             isSpeedSelectShow = false
         } else if (isVideoSelectShow) {
             // 只有视频选择界面显示的时候，隐藏
-            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SPEED_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SHORT_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
             isVideoSelectShow = false
         } else if (isOrientationPortrait && isListPlayerScene) { //竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
             if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay() //回调给播放器
@@ -404,6 +408,6 @@ class VideoController(context: Context?) : GestureController(context) {
         private const val MESSAGE_LOCKER_HIDE = 11 //延时隐藏屏幕锁
         private const val DELAYED_INVISIBLE = 5000 //延时隐藏锁时长
         private const val ANIMATION_DURATION = 500 //控制器、控制锁等显示\隐藏过渡动画时长(毫秒)
-        private const val SPEED_ANIMATION_DURATION = 200L // 倍速选择框显示\隐藏过度动画时长
+        private const val SHORT_ANIMATION_DURATION = 200L // 倍速选择框显示\隐藏过度动画时长
     }
 }
