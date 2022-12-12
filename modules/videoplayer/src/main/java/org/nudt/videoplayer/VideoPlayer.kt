@@ -73,7 +73,9 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
             }
 
             override fun onClickNext() {
-
+                val newIndex = (currentIndex + 1) % subVideoList.size
+                setIndex(newIndex)
+                mOnIndexChangeListener?.onIndexChange(newIndex)
             }
         })
 

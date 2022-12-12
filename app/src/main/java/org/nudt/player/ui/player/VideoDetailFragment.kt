@@ -44,16 +44,6 @@ class VideoDetailFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // 按当前播放history 滚动到指定集数位置
-        playerViewModel.currentIndex.observe(viewLifecycleOwner) {
-            binding.rvVodList.smoothScrollToPosition(it)
-            subVideoAdapter.updateCurrent(it)
-        }
-    }
-
-
     /**
      * 加载播放器页面信息
      */
@@ -97,6 +87,11 @@ class VideoDetailFragment : Fragment() {
 
         binding.rvVodList.adapter = subVideoAdapter
 
+        // 按当前播放history 滚动到指定集数位置
+        playerViewModel.currentIndex.observe(viewLifecycleOwner) {
+            binding.rvVodList.smoothScrollToPosition(it)
+            subVideoAdapter.updateCurrent(it)
+        }
 
 
         binding.tvSerialTitle.text = "选集(${vodInfoModel.subVideoList.size})"

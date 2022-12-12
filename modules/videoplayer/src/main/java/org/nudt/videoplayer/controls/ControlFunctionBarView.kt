@@ -3,11 +3,8 @@ package org.nudt.videoplayer.controls
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.SeekBar
+import android.widget.*
 import android.widget.SeekBar.OnSeekBarChangeListener
-import android.widget.TextView
 import com.android.iplayer.controller.ControlWrapper
 import com.android.iplayer.media.IMediaPlayer
 import com.android.iplayer.model.PlayerState
@@ -57,6 +54,7 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
         binding.controllerBtnFullscreen.setOnClickListener(this)
         binding.controllerCurrentSpeed.setOnClickListener(this)
         binding.controllerTotalList.setOnClickListener(this)
+        binding.controllerNext.setOnClickListener(this)
         //seekBar监听
         mSeekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
             /**
@@ -122,9 +120,10 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
         })
     }
 
-    abstract class OnFunctionBarActionListener {
-        open fun onClickSpeed() {}
-        open fun onClickVideo() {}
+    interface OnFunctionBarActionListener {
+        fun onClickSpeed()
+        fun onClickVideo()
+        fun onClickNext()
     }
 
     private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
@@ -152,12 +151,18 @@ class ControlFunctionBarView(context: Context?) : BaseControlWidget(context), Vi
                 toggleFullScreen()
                 reStartDelayedRunnable()
             }
+
+            binding.controllerNext -> {
+                if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onClickNext()
+            }
+
             binding.controllerCurrentSpeed -> {
                 if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onClickSpeed()
             }
             binding.controllerTotalList -> {
                 if (null != mOnFunctionBarActionListener) mOnFunctionBarActionListener!!.onClickVideo()
             }
+
         }
     }
 

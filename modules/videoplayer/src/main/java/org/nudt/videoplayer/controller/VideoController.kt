@@ -77,7 +77,7 @@ class VideoController(context: Context?) : GestureController(context) {
 
     private fun initFunctionBar() {
         functionBarView = ControlFunctionBarView(context) //底部时间、seek、静音、全屏功能栏
-        functionBarView.setOnFunctionBarActionListener(object : ControlFunctionBarView.OnFunctionBarActionListener() {
+        functionBarView.setOnFunctionBarActionListener(object : ControlFunctionBarView.OnFunctionBarActionListener {
             override fun onClickSpeed() {
                 AnimationUtils.getInstance().startTranslateRightToLocat(binding.rgSpeed, SHORT_ANIMATION_DURATION, null)
                 isSpeedSelectShow = true
@@ -96,6 +96,12 @@ class VideoController(context: Context?) : GestureController(context) {
                 hideWidget(true)
                 isSpeedSelectShow = false
             }
+
+            override fun onClickNext() {
+                mOnFunctionBarActionListener?.onClickNext()
+            }
+
+
         })
 
         // 速度选择部分逻辑
