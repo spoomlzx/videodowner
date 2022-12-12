@@ -1,4 +1,4 @@
-package org.nudt.player.component;
+package org.nudt.common.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatImageView;
 
-import org.nudt.player.R;
+import org.nudt.common.R;
 
 /**
  * Created by zhxh on 2018/8/29

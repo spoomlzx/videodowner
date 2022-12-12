@@ -4,7 +4,7 @@
         <item name="android:textSize">16.0sp</item>
         <item name="android:textColor">@color/speed_selector_text_color</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@color/player_speed_background</item>
+        <item name="android:background">@color/player_select_background</item>
         <item name="android:paddingLeft">16.0dip</item>
         <item name="android:paddingTop">8.0dip</item>
         <item name="android:paddingRight">16.0dip</item>

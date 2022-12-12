@@ -13,6 +13,7 @@ import com.lxj.xpopup.XPopup
 import org.nudt.videoplayer.controller.VideoController
 import org.nudt.videoplayer.controls.*
 import org.nudt.videoplayer.media.ExoPlayerFactory
+import org.nudt.videoplayer.model.SubVideo
 import org.nudt.videoplayer.view.DlanListPopupView
 
 class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : BasePlayer(context, attrs, defStyleAttr) {
@@ -20,7 +21,6 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0) {}
 
     private lateinit var controller: VideoController
-    private lateinit var toolBarView: ControlToolBarView
 
     private lateinit var title: String
     private lateinit var url: String
@@ -63,6 +63,14 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
             override fun onSelectSpeed(speed: Float) {
                 setSpeed(speed)
             }
+
+            override fun onSelectSubVideo(subVideo: SubVideo) {
+                onReset()
+                setProgressCallBackSpaceMilliss(300)
+                setPlayUrl(subVideo.sub_video_url)
+                url = subVideo.sub_video_url
+                startPlay()
+            }
         })
 
 
@@ -91,8 +99,20 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     }
 
     fun setPlayUrl(url: String) {
-        setDataSource(url)
-        this.url = url
+        val subVideoList: ArrayList<SubVideo> = arrayListOf()
+        for (i in 1..4) {
+            val subVideo = SubVideo(
+                "百妖谱", "第" + i + "话",
+                "http://192.168.0.173/upload/vodthumb/xiaomaomi/49/332905c1f596415899acd52169fc481e.png",
+                "http://192.168.0.173:83/dongman/百妖谱第二季/0$i.mp4"
+            )
+            subVideoList.add(subVideo)
+        }
+
+        controller.updateSubVideoList(subVideoList)
+
+        setDataSource(subVideoList[0].sub_video_url)
+        this.url = subVideoList[0].sub_video_url
     }
 
     fun setLocalDataSource(dataSource: String) {

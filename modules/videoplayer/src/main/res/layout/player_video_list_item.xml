@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cl_sub_video"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:paddingStart="@dimen/default_general_margin"
+    android:paddingTop="@dimen/default_normal_margin"
+    android:paddingEnd="@dimen/default_general_margin"
+    android:paddingBottom="@dimen/default_normal_margin">
+
+    <org.nudt.common.component.ShapeImageView
+        android:id="@+id/iv_video_pic"
+        android:layout_width="@dimen/video_cover_width"
+        android:layout_height="@dimen/video_cover_height"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:siv_round_radius="@dimen/image_radius"
+        app:srcCompat="@drawable/default_image" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_general_margin"
+        android:ellipsize="end"
+        android:textColor="@color/text_white"
+        android:text="东方不败之风云再起"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_video_pic"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_index"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/default_general_margin"
+        android:ellipsize="end"
+        android:text="HD"
+        android:textColor="@color/text_sub_name"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_video_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

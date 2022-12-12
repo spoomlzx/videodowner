@@ -9,7 +9,7 @@
         android:layout_width="160dp"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:background="@color/player_speed_background"
+        android:background="@color/player_select_background"
         android:visibility="invisible">
 
         <RadioButton
@@ -39,10 +39,10 @@
         <RadioButton
             android:id="@+id/rb_1x"
             style="@style/RadioButton"
-            android:checked="true"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:checked="true"
             android:text="1.0X  " />
 
         <RadioButton
@@ -62,6 +62,13 @@
             android:text="0.5X  " />
     </RadioGroup>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_video_select"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/player_select_background"
+        android:visibility="invisible"/>
 
     <!--手势锁-->
     <LinearLayout

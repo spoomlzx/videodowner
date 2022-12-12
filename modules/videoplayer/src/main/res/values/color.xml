@@ -11,8 +11,9 @@
     <color name="player_progress_start">#37CAF9</color>
     <color name="player_progress_end">@color/player_style</color>
 
-    <color name="player_speed_background">#80000000</color>
+    <color name="player_select_background">#99000000</color>
     <color name="text_white">#FFFFFF</color>
+    <color name="text_sub_name">#DFDBDB</color>
     <color name="text_selected">#ffff6699</color>
     <color name="text_disabled">#ff9499a0</color>
 </resources>

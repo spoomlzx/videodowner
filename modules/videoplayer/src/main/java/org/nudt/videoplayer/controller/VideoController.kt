@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import com.android.iplayer.controller.GestureController
 import com.android.iplayer.interfaces.IVideoController
@@ -14,8 +15,10 @@ import com.android.iplayer.model.PlayerState
 import com.android.iplayer.utils.AnimationUtils
 import com.android.iplayer.utils.PlayerUtils
 import org.nudt.videoplayer.R
+import org.nudt.videoplayer.adapter.VideoSelectAdapter
 import org.nudt.videoplayer.controls.*
 import org.nudt.videoplayer.databinding.PlayerVideoControllerBinding
+import org.nudt.videoplayer.model.SubVideo
 
 /**
  * created by hty
@@ -34,6 +37,9 @@ class VideoController(context: Context?) : GestureController(context) {
     private lateinit var functionBarView: ControlFunctionBarView
 
     private var isSpeedSelectShow = false
+    private var isVideoSelectShow = false
+
+    private lateinit var videoSelectAdapter: VideoSelectAdapter
 
     override fun initBinding(): ViewBinding {
         binding = PlayerVideoControllerBinding.inflate(LayoutInflater.from(context))
@@ -49,6 +55,9 @@ class VideoController(context: Context?) : GestureController(context) {
 
     }
 
+    /**
+     * 在onCreate中添加控制组件才能正常显示
+     */
     override fun onCreate() {
         super.onCreate()
         initWidget()
@@ -77,13 +86,20 @@ class VideoController(context: Context?) : GestureController(context) {
                 controllerLocker!!.visibility = GONE
                 setLocker(false)
                 hideWidget(true)
+                isVideoSelectShow = false
             }
 
             override fun onClickVideo() {
-                Toast.makeText(context, "选择选集", Toast.LENGTH_SHORT).show()
+                AnimationUtils.getInstance().startTranslateRightToLocat(binding.rvVideoSelect, SPEED_ANIMATION_DURATION, null)
+                isVideoSelectShow = true
+                controllerLocker!!.visibility = GONE
+                setLocker(false)
+                hideWidget(true)
+                isSpeedSelectShow = false
             }
         })
 
+        // 速度选择部分逻辑
         var speed = 1.0f
         functionBarView.setSpeedText("倍速")
         binding.rgSpeed.setOnCheckedChangeListener { group, checkedId ->
@@ -103,12 +119,27 @@ class VideoController(context: Context?) : GestureController(context) {
             Toast.makeText(context, "${speed}X", Toast.LENGTH_SHORT).show()
         }
 
+        // 视频选择部分逻辑
+        binding.rvVideoSelect.layoutManager = LinearLayoutManager(context)
+        videoSelectAdapter = VideoSelectAdapter(context) {
+            mOnFunctionBarActionListener?.onSelectSubVideo(it)
+
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SPEED_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
+            isVideoSelectShow = false
+        }
+        binding.rvVideoSelect.adapter = videoSelectAdapter
+
         addControllerWidget(functionBarView)
+    }
+
+    fun updateSubVideoList(subVideoList: List<SubVideo>) {
+        videoSelectAdapter.updateSubVideoList(subVideoList)
     }
 
 
     interface OnFunctionBarActionListener {
         fun onSelectSpeed(speed: Float)
+        fun onSelectSubVideo(subVideo: SubVideo)
     }
 
     private var mOnFunctionBarActionListener: OnFunctionBarActionListener? = null
@@ -126,7 +157,7 @@ class VideoController(context: Context?) : GestureController(context) {
      */
     private fun initLocker() {
         controllerLocker = binding.controllerLocker
-        binding.controllerLocker.setOnClickListener(OnClickListener {
+        binding.controllerLocker.setOnClickListener {
             stopDelayedRunnable()
             setLocker(!isLocked)
             binding.controllerLockerIc.setImageResource(if (isLocked) R.mipmap.ic_player_locker_true else R.mipmap.ic_player_locker_false)
@@ -138,7 +169,7 @@ class VideoController(context: Context?) : GestureController(context) {
                 showWidget(true) //屏幕锁关闭时显示其它所有控制器
                 startDelayedRunnable(MESSAGE_CONTROL_HIDE)
             }
-        })
+        }
     }
 
     public override fun onSingleTap() {
@@ -146,6 +177,10 @@ class VideoController(context: Context?) : GestureController(context) {
             // 只有速度选择界面显示的时候，隐藏
             AnimationUtils.getInstance().startTranslateLocatToRight(binding.rgSpeed, SPEED_ANIMATION_DURATION) { binding.rgSpeed.visibility = GONE }
             isSpeedSelectShow = false
+        } else if (isVideoSelectShow) {
+            // 只有视频选择界面显示的时候，隐藏
+            AnimationUtils.getInstance().startTranslateLocatToRight(binding.rvVideoSelect, SPEED_ANIMATION_DURATION) { binding.rvVideoSelect.visibility = GONE }
+            isVideoSelectShow = false
         } else if (isOrientationPortrait && isListPlayerScene) { //竖屏&&列表模式响应单击事件直接处理为开始\暂停播放事件
             if (null != mVideoPlayerControl) mVideoPlayerControl.togglePlay() //回调给播放器
         } else {
@@ -204,6 +239,9 @@ class VideoController(context: Context?) : GestureController(context) {
                 controllerLocker!!.visibility = GONE
                 binding.rgSpeed.visibility = GONE
                 isSpeedSelectShow = false
+
+                binding.rvVideoSelect.visibility = GONE
+                isVideoSelectShow = false
             } else {
                 setLocker(false)
                 if (isPlayering) {

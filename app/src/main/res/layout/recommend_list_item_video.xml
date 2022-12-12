@@ -14,7 +14,7 @@
         android:layout_margin="@dimen/default_tiny_margin"
         android:background="@color/windows_background">
 
-        <org.nudt.player.component.ShapeImageView
+        <org.nudt.common.component.ShapeImageView
             android:id="@+id/iv_video_pic"
             android:layout_width="@dimen/video_cover_width"
             android:layout_height="@dimen/video_cover_height"

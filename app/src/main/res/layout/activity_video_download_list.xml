@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <org.nudt.player.component.ShapeImageView
+            <org.nudt.common.component.ShapeImageView
                 android:id="@+id/iv_downloading_video_pic"
                 android:layout_width="@dimen/video_cover_width"
                 android:layout_height="@dimen/video_cover_height"
