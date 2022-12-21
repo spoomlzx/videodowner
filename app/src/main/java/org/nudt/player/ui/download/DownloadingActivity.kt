@@ -71,11 +71,12 @@ class DownloadingActivity : AppCompatActivity() {
                 downloadingAdapter.updateState(taskInfo)
             }.launchIn(lifecycleScope)
         }
+        downloadingAdapter.updateTaskInfoList(taskInfoList)
 
         // DB查询的Flow，转化为liveData可以自动隐藏已完成的任务
-        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
-            downloadingAdapter.updateTaskInfoList(it)
-        }
+//        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
+//            downloadingAdapter.updateTaskInfoList(it)
+//        }
     }
 
     override fun onDestroy() {

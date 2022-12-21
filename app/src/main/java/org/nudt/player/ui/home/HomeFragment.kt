@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.cy.tablayoutniubility.*
 import org.nudt.player.R
 import org.nudt.player.component.TabMediatorVp2
@@ -16,6 +18,7 @@ import org.nudt.player.databinding.FragmentHomeBinding
 import org.nudt.player.data.model.VideoType
 import org.nudt.player.ui.search.SearchActivity
 import org.nudt.player.ui.setting.SettingActivity
+import java.lang.reflect.Field
 
 class HomeFragment : Fragment() {
 
@@ -47,6 +50,18 @@ class HomeFragment : Fragment() {
         val tabLayoutScroll = binding.tbsMain
         val titles = resources.getStringArray(R.array.sections)
         val fragments = arrayOfNulls<Fragment>(titles.size)
+
+        // 这段代码可以降低viewPager2的左右滑动灵敏度
+        try {
+            val recyclerViewField: Field = ViewPager2::class.java.getDeclaredField("mRecyclerView")
+            recyclerViewField.isAccessible = true
+            val recyclerView = recyclerViewField.get(viewPager2) as RecyclerView
+            val touchSlopField: Field = RecyclerView::class.java.getDeclaredField("mTouchSlop")
+            touchSlopField.isAccessible = true
+            val touchSlop = touchSlopField.get(recyclerView) as Int
+            touchSlopField.set(recyclerView, touchSlop * 4)
+        } catch (ignore: java.lang.Exception) {
+        }
 
         val fragmentPageAdapter: FragPageAdapterVp2<String?> = object : FragPageAdapterVp2<String?>(this) {
             override fun createFragment(bean: String?, position: Int): Fragment {

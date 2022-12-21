@@ -163,11 +163,15 @@ class VideoDetailFragment : Fragment() {
             binding.btnLike.isSelected = !binding.btnLike.isSelected
         }
 
-
+        // 单独下载一个视频
         binding.btnDownload.setOnClickListener {
             XPopup.Builder(context).asConfirm("提示", "下载该视频？") {
                 playerViewModel.cacheVideo()
             }.show()
+        }
+
+        binding.btnGbook.setOnClickListener {
+
         }
 
         //todo 对应多地址的下载进行修改

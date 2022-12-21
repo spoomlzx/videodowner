@@ -103,7 +103,9 @@ class VideoDownloadingAdapter(private val context: Context) :
     }
 
     private fun getPositionById(id: String): Int? {
-        return positionMap[id]
+        return if (positionMap.containsKey(id)) {
+            positionMap[id]
+        } else null
     }
 
 

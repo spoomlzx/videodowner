@@ -47,10 +47,15 @@ class MineFragment : Fragment() {
      * 工具栏
      */
     private fun initToolbar() {
-        binding.ivConfig.setOnClickListener {
-            val intent = Intent(context, ConfigActivity::class.java)
-            context?.startActivity(intent)
+        binding.ivGbook.setOnClickListener {
+
         }
+
+
+//        binding.ivConfig.setOnClickListener {
+//            val intent = Intent(context, ConfigActivity::class.java)
+//            context?.startActivity(intent)
+//        }
     }
 
     /**

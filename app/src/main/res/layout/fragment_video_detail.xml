@@ -120,13 +120,13 @@
                 app:drawableTopCompat="@drawable/ic_download" />
 
             <TextView
-                android:id="@+id/btn_share"
+                android:id="@+id/btn_gbook"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawablePadding="@dimen/default_normal_margin"
                 android:padding="@dimen/default_tiny_margin"
-                android:text="@string/icon_text_share"
+                android:text="@string/icon_text_gbook"
                 android:textAlignment="center"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/text_size_smaller"

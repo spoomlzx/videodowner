@@ -38,8 +38,8 @@
         <activity
             android:name=".ui.player.OfflinePlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:launchMode="singleTop"
             android:exported="true"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.search.SearchActivity"
@@ -66,12 +66,16 @@
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.mine.ConfigActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.GBookActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"/>
+
     </application>
 
 </manifest>

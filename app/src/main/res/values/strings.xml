@@ -5,7 +5,7 @@
         <item>@string/section_tv</item>
         <item>@string/section_comic</item>
         <item>@string/section_variety</item>
-<!--        <item>@string/section_private</item>-->
+        <!--        <item>@string/section_private</item>-->
     </string-array>
 
     <!--    fragment tabLayout title-->
@@ -48,6 +48,7 @@
     <string name="icon_text_favorite">收藏</string>
     <string name="icon_text_download">缓存</string>
     <string name="icon_text_share">分享</string>
+    <string name="icon_text_gbook">报错</string>
 
     <string name="text_search">搜索</string>
     <string name="text_cancel">取消</string>
