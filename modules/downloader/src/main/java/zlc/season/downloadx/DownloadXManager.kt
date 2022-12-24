@@ -49,9 +49,6 @@ object DownloadXManager {
         downloadService.removeDownloadTask(taskInfo)
     }
 
-    // 获取未下载完成任务的list
-    fun queryUnfinishedTaskInfo() = downloadService.queryUnfinishedTaskInfo()
-
     // 获取未下载完成任务的Flow
     fun queryUnfinishedTaskInfoFlow() = downloadService.queryUnfinishedTaskInfoFlow()
 

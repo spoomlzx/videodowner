@@ -15,6 +15,7 @@ data class TaskInfo(
     var downloaded_bytes: Long,
     var total_bytes: Long,
     var modify_time: Long,
+    var add_time: Long,
     @DownloadStatus
     var status: Int
 )

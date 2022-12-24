@@ -24,8 +24,6 @@ class DownloadTaskManager(val context: Context) {
         dao.update(taskInfo)
     }
 
-    fun queryUnfinishedTaskInfo() = dao.queryUnfinishedTaskInfo()
-
     fun queryUnfinishedTaskInfoFlow() = dao.queryUnfinishedTaskInfoFlow()
 
     fun queryFinishedTaskInfoFlow() = dao.queryFinishedTaskInfoFlow()

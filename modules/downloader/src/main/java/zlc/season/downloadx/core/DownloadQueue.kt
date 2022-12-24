@@ -66,14 +66,14 @@ class DefaultDownloadQueue private constructor(private val maxTask: Int) : Downl
 
     override suspend fun enqueue(task: DownloadTask) {
         tempMap[task.param.tag()] = task
-        "enqueue task ${task.param.url}  && queue size is ${tempMap.size}".log()
+        //"enqueue task ${task.param.url}  && queue size is ${tempMap.size}".log()
         // send to channel to suspendStart task
         channel.send(task)
     }
 
     override suspend fun dequeue(task: DownloadTask) {
         tempMap.remove(task.param.tag())
-        "dequeue task ${task.param.url}  && queue size is ${tempMap.size}".log()
+        //"dequeue task ${task.param.url}  && queue size is ${tempMap.size}".log()
     }
 
     override fun contain(task: DownloadTask): Boolean {

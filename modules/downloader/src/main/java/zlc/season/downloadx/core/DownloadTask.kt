@@ -21,6 +21,12 @@ open class DownloadTask(
 ) {
     //private val stateHolder by lazy { StateHolder() }
 
+    var stateJob: Job? = null
+
+    fun stateListener(action: suspend (State) -> Unit) {
+        stateJob = this.state().onEach(action).launchIn(coroutineScope)
+    }
+
     var downloadJob: Job? = null
     private var downloader: Downloader? = null
 
@@ -187,7 +193,7 @@ open class DownloadTask(
 
     fun getState() = stateHolder.currentState
 
-    suspend fun notifyWaiting() {
+    private suspend fun notifyWaiting() {
         stateHolder.updateState(stateHolder.waiting, getProgress())
         downloadStateFlow.value = stateHolder.currentState
         config.taskManager.insertTaskInfo(buildTaskInfo())
@@ -202,14 +208,14 @@ open class DownloadTask(
         "url ${param.url} download task start.".log()
     }
 
-    suspend fun notifyPaused() {
+    private suspend fun notifyPaused() {
         stateHolder.updateState(stateHolder.paused, getProgress())
         downloadStateFlow.value = stateHolder.currentState
         config.taskManager.updateTaskInfo(buildTaskInfo())
         "url ${param.url} download task paused.".log()
     }
 
-    suspend fun notifyFailed() {
+    private suspend fun notifyFailed() {
         stateHolder.updateState(stateHolder.failed, getProgress())
         downloadStateFlow.value = stateHolder.currentState
         config.taskManager.updateTaskInfo(buildTaskInfo())
@@ -243,6 +249,7 @@ open class DownloadTask(
             state.progress.downloadSize,
             state.progress.totalSize,
             System.currentTimeMillis(),
+            param.addTime,
             state.status
         )
     }

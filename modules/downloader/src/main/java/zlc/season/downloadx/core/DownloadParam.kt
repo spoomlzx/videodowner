@@ -7,6 +7,7 @@ open class DownloadParam(
     var url: String,
     var extra: String = "",
     var savePath: String,
+    var addTime: Long,
     var saveName: String = ""
 ) {
 

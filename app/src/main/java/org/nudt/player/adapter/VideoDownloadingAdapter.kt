@@ -91,7 +91,7 @@ class VideoDownloadingAdapter(private val context: Context) :
         for (i in list.indices) {
             positionMap[list[i].task_id] = i
         }
-        SLog.d("notifyDataSetChanged: ${gson.toJson(positionMap)}")
+        //SLog.d("notifyDataSetChanged: ${gson.toJson(positionMap)}")
         notifyDataSetChanged()
     }
 

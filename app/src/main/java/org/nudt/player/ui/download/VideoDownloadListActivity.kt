@@ -29,7 +29,7 @@ class VideoDownloadListActivity : AppCompatActivity() {
         // 左上角返回按钮
         binding.tbCommon.ivBack.setOnClickListener { finish() }
 
-        requestPermission()
+        //requestPermission()
 
 
         // 点击进入下载列表

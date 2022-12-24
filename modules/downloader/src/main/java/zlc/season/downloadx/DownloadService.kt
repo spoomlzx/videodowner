@@ -31,27 +31,25 @@ class DownloadService() : LifecycleService() {
     fun getDownloadTask(url: String, extra: String): DownloadTask {
         // 先查询DB中是否有当前url对应的任务
         val dbTask = taskManager.findTaskInfoByUrl(url)
-        "query dbTask from db".log()
+        //"query dbTask from db".log()
         var downloadTask: DownloadTask?
         if (dbTask != null) {
             downloadTask = queue.getDownloadTaskByTag(dbTask.task_id)
             if (downloadTask != null) {
-                "get task from queue ${downloadTask.param.tag()}".log()
+                //"get task from queue ${downloadTask.param.tag()}".log()
                 return downloadTask
             }
             // 如果正在下载队列中，则返回队列中的task，否则从dbTask一个DownloadTask
             downloadTask = buildDownloadTask(lifecycleScope, dbTask)
-            "get task from db ${downloadTask.param.tag()}".log()
-            //downloadTask.start()
+            // "get task from db ${downloadTask.param.tag()}".log()
         } else {
             // 重新创建一个DownloadTask
-            val downloadParam = DownloadParam(url, extra, getDownloadsDirPath() + "/" + url.getMd5())
+            val downloadParam = DownloadParam(url, extra, getDownloadsDirPath() + "/" + url.getMd5(), System.currentTimeMillis())
             downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager, queue))
             "get new task ${downloadTask.param.tag()}".log()
             lifecycleScope.launch {
                 taskManager.insertTaskInfo(downloadTask.buildTaskInfo())
             }
-            //downloadTask.start()
         }
         return downloadTask
     }
@@ -59,10 +57,10 @@ class DownloadService() : LifecycleService() {
     fun pauseResumeDownloadTask(taskInfo: TaskInfo) {
         val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
         if (downloadTask.isStarted()) {
-            "stop task ${downloadTask.param.tag()}".log()
+            //"stop task ${downloadTask.param.tag()}".log()
             downloadTask.pause()
         } else if (downloadTask.canStart()) {
-            "restart task ${downloadTask.param.tag()}".log()
+            //"restart task ${downloadTask.param.tag()}".log()
             downloadTask.start()
         }
     }
@@ -97,9 +95,6 @@ class DownloadService() : LifecycleService() {
             }
         }
     }
-
-
-    fun queryUnfinishedTaskInfo() = taskManager.queryUnfinishedTaskInfo()
 
     fun queryUnfinishedTaskInfoFlow() = taskManager.queryUnfinishedTaskInfoFlow()
 
@@ -139,7 +134,7 @@ class DownloadService() : LifecycleService() {
      * 从已有的taskInfo初始化DownloadTask
      */
     private fun buildDownloadTask(coroutineScope: CoroutineScope, taskInfo: TaskInfo): DownloadTask {
-        val downloadParam = DownloadParam(taskInfo.url, taskInfo.extra, taskInfo.file_path, taskInfo.file_name)
+        val downloadParam = DownloadParam(taskInfo.url, taskInfo.extra, taskInfo.file_path, taskInfo.add_time, taskInfo.file_name)
         val stateHolder = DownloadTask.StateHolder()
         val state = when (taskInfo.status) {
             STATUS_NONE -> State.None()
