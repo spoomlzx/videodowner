@@ -4,12 +4,9 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import zlc.season.downloadx.core.*
 import zlc.season.downloadx.database.*
@@ -25,6 +22,13 @@ class DownloadService() : LifecycleService() {
     private val queue: DownloadQueue = DefaultDownloadQueue.get()
 
     fun download(url: String, extra: String): DownloadTask {
+        val task = getDownloadTask(url, extra)
+        if (task.canStart())
+            task.start()
+        return task
+    }
+
+    fun getDownloadTask(url: String, extra: String): DownloadTask {
         // 先查询DB中是否有当前url对应的任务
         val dbTask = taskManager.findTaskInfoByUrl(url)
         "query dbTask from db".log()
@@ -38,45 +42,39 @@ class DownloadService() : LifecycleService() {
             // 如果正在下载队列中，则返回队列中的task，否则从dbTask一个DownloadTask
             downloadTask = buildDownloadTask(lifecycleScope, dbTask)
             "get task from db ${downloadTask.param.tag()}".log()
-            lifecycleScope.launch {
-                startTask(downloadTask!!)
-            }
+            //downloadTask.start()
         } else {
             // 重新创建一个DownloadTask
             val downloadParam = DownloadParam(url, extra, getDownloadsDirPath() + "/" + url.getMd5())
-            downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager))
+            downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager, queue))
             "get new task ${downloadTask.param.tag()}".log()
             lifecycleScope.launch {
                 taskManager.insertTaskInfo(downloadTask.buildTaskInfo())
-                startTask(downloadTask)
             }
+            //downloadTask.start()
         }
         return downloadTask
     }
 
     fun pauseResumeDownloadTask(taskInfo: TaskInfo) {
         val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
-        lifecycleScope.launch {
-            if (downloadTask.isStarted()) {
-                pauseTask(downloadTask)
-            } else if (downloadTask.canStart()) {
-                startTask(downloadTask)
-            }
+        if (downloadTask.isStarted()) {
+            "stop task ${downloadTask.param.tag()}".log()
+            downloadTask.pause()
+        } else if (downloadTask.canStart()) {
+            "restart task ${downloadTask.param.tag()}".log()
+            downloadTask.start()
         }
     }
 
     fun startDownloadTask(taskInfo: TaskInfo) {
         val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
-        lifecycleScope.launch {
-            startTask(downloadTask)
-        }
+        downloadTask.start()
     }
 
     fun pauseDownloadTask(taskInfo: TaskInfo) {
         val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
-        lifecycleScope.launch {
-            pauseTask(downloadTask)
-        }
+        downloadTask.pause()
     }
 
     /**
@@ -90,34 +88,13 @@ class DownloadService() : LifecycleService() {
             val downloadTask = queue.getDownloadTaskByTag(taskInfo.task_id) ?: buildDownloadTask(lifecycleScope, taskInfo)
             downloadTask.let {
                 // 先暂停任务，移出下载队列
-                pauseTask(it)
+                it.pause()
                 // 然后删除下载的文件&文件夹
                 if (deleteFile) {
                     it.file()?.clear()
                     it.dir()?.delete()
                 }
             }
-        }
-    }
-
-    private suspend fun startTask(downloadTask: DownloadTask) {
-        if (downloadTask.checkJob()) return
-        downloadTask.notifyWaiting()
-        try {
-            queue.enqueue(downloadTask)
-        } catch (e: Exception) {
-            if (e !is CancellationException) {
-                downloadTask.notifyFailed()
-            }
-            e.log()
-        }
-    }
-
-    private suspend fun pauseTask(downloadTask: DownloadTask) {
-        if (downloadTask.isStarted()) {
-            queue.dequeue(downloadTask)
-            downloadTask.downloadJob?.cancel()
-            downloadTask.notifyPaused()
         }
     }
 
@@ -174,7 +151,7 @@ class DownloadService() : LifecycleService() {
             else -> State.None()
         }
         stateHolder.updateState(state, Progress(taskInfo.downloaded_bytes, taskInfo.total_bytes))
-        return DownloadTask(coroutineScope, downloadParam, DownloadConfig(taskManager), stateHolder)
+        return DownloadTask(coroutineScope, downloadParam, DownloadConfig(taskManager, queue), stateHolder)
     }
 
 }

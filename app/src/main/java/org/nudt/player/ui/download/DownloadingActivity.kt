@@ -9,12 +9,9 @@ import androidx.recyclerview.widget.SimpleItemAnimator
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadingAdapter
 import org.nudt.player.databinding.ActivityDownloadingBinding
-import org.nudt.player.ui.VideoViewModel
 import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.State
 import zlc.season.downloadx.database.*
@@ -44,7 +41,7 @@ class DownloadingActivity : AppCompatActivity() {
 
         val taskInfoList = DownloadXManager.queryUnfinishedTaskInfo()
         for (taskInfo in taskInfoList) {
-            val downloadTask = DownloadXManager.download(taskInfo.url,  taskInfo.extra)
+            val downloadTask = DownloadXManager.getDownloadTask(taskInfo.url, taskInfo.extra)
             downloadTask.state().onEach {
                 when (it) {
                     is State.None -> {
@@ -71,12 +68,11 @@ class DownloadingActivity : AppCompatActivity() {
                 downloadingAdapter.updateState(taskInfo)
             }.launchIn(lifecycleScope)
         }
-        downloadingAdapter.updateTaskInfoList(taskInfoList)
 
         // DB查询的Flow，转化为liveData可以自动隐藏已完成的任务
-//        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
-//            downloadingAdapter.updateTaskInfoList(it)
-//        }
+        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
+            downloadingAdapter.updateTaskInfoList(it)
+        }
     }
 
     override fun onDestroy() {

@@ -65,6 +65,38 @@ open class DownloadTask(
     }
 
     /**
+     * 开始下载，添加到下载队列
+     */
+    fun start() {
+        coroutineScope.launch {
+            if (checkJob()) return@launch
+
+            notifyWaiting()
+            try {
+                config.queue.enqueue(this@DownloadTask)
+            } catch (e: Exception) {
+                if (e !is CancellationException) {
+                    notifyFailed()
+                }
+                e.log()
+            }
+        }
+    }
+
+    /**
+     * 停止下载
+     */
+    fun pause() {
+        coroutineScope.launch {
+            if (isStarted()) {
+                config.queue.dequeue(this@DownloadTask)
+                downloadJob?.cancel()
+                notifyPaused()
+            }
+        }
+    }
+
+    /**
      * 开始下载并等待下载完成，直接开始下载，不添加到下载队列
      */
     suspend fun suspendStart() {

@@ -12,6 +12,11 @@ class DownloadConfig(
      * 下载管理
      */
     val taskManager: DownloadTaskManager,
+
+    /**
+     * 下载队列
+     */
+    val queue: DownloadQueue,
     /**
      * 禁用断点续传
      */

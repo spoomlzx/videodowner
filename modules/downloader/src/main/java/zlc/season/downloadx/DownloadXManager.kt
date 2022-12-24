@@ -25,6 +25,9 @@ object DownloadXManager {
 
     }
 
+    fun getDownloadTask(url: String, extra: String): DownloadTask {
+        return downloadService.getDownloadTask(url, extra)
+    }
 
     fun download(url: String, extra: String): DownloadTask {
         return downloadService.download(url, extra)
