@@ -1,15 +1,21 @@
 package org.nudt.player.ui.player
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
+import org.nudt.player.R
 import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.data.model.FavoriteVideo
@@ -165,9 +171,14 @@ class VideoDetailFragment : Fragment() {
 
         // 单独下载一个视频
         binding.btnDownload.setOnClickListener {
-            XPopup.Builder(context).asConfirm("提示", "下载该视频？") {
-                playerViewModel.cacheVideo()
-            }.show()
+            AlertDialog.Builder(context, R.style.AlertDialog).setMessage("下载该视频？")
+                .setPositiveButton("确定") { _, _ ->
+                    val ret = playerViewModel.cacheVideo()
+                    if (!ret) {
+                        Toast.makeText(context, "不能下载", LENGTH_SHORT).show()
+                    }
+                }.setNegativeButton("取消") { _, _ -> }
+                .create().show()
         }
 
         binding.btnGbook.setOnClickListener {

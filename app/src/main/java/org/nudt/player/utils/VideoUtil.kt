@@ -124,6 +124,17 @@ object VideoUtil {
     }
 
     /**
+     * 判断url是否是视频
+     */
+    fun checkMedia(url: String?): Boolean {
+        return if (url != null) {
+            url.endsWith("mp4") || url.endsWith("mkv")
+        } else {
+            false
+        }
+    }
+
+    /**
      * 根据后台获取的图片url，进行服务地址拼接
      */
     fun getPicUrl(url: String?): String? {

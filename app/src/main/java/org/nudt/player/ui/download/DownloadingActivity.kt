@@ -40,37 +40,8 @@ class DownloadingActivity : AppCompatActivity() {
         (binding.rvVideoDownloading.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
 
         // DB查询的Flow，转化为liveData可以自动隐藏已完成的任务
-        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) { taskInfoList ->
-            for (taskInfo in taskInfoList) {
-                val downloadTask = DownloadXManager.getDownloadTask(taskInfo.url, taskInfo.extra)
-                // 每次更新页面后重新设置监听
-                downloadTask.stateListener {
-                    when (it) {
-                        is State.None -> {
-                            taskInfo.status = STATUS_NONE
-                        }
-                        is State.Waiting -> {
-                            taskInfo.status = STATUS_WAITING
-                        }
-                        is State.Downloading -> {
-                            taskInfo.status = STATUS_DOWNLOADING
-                            taskInfo.downloaded_bytes = it.progress.downloadSize
-                            taskInfo.total_bytes = it.progress.totalSize
-                        }
-                        is State.Failed -> {
-                            taskInfo.status = STATUS_FAILED
-                        }
-                        is State.Paused -> {
-                            taskInfo.status = STATUS_PAUSED
-                        }
-                        is State.Succeed -> {
-                            taskInfo.status = STATUS_SUCCEED
-                        }
-                    }
-                    downloadingAdapter.updateState(taskInfo)
-                }
-            }
-            downloadingAdapter.updateTaskInfoList(taskInfoList)
+        DownloadXManager.queryUnfinishedTaskInfoFlow().asLiveData().observe(this) {
+            downloadingAdapter.updateTaskInfoList(it)
         }
     }
 
