@@ -12,6 +12,7 @@ import org.nudt.player.R
 import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.DownloadingListItemVideoBinding
 import zlc.season.downloadx.DownloadXManager
+import zlc.season.downloadx.State
 import zlc.season.downloadx.database.*
 import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.utils.ratio
@@ -22,8 +23,6 @@ class VideoDownloadingAdapter(private val context: Context) :
 
     private var downloadingTaskInfoList: ArrayList<TaskInfo> = arrayListOf()
     private val gson = Gson()
-
-    private val positionMap = ConcurrentHashMap<String, Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoDownloadingViewHolder {
         return VideoDownloadingViewHolder(DownloadingListItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -38,31 +37,47 @@ class VideoDownloadingAdapter(private val context: Context) :
             holder.binding.tvIndex.text = extra.vod_index
         }
 
-        when (taskInfo.status) {
-            STATUS_NONE -> {
-                holder.binding.tvState.text = "准备下载"
-            }
-            STATUS_WAITING -> {
-                holder.binding.tvState.text = "等待中"
-            }
-            STATUS_DOWNLOADING -> {
-                holder.binding.tvState.text = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toString() + "%"
-                holder.binding.progressBar.progress = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toInt()
-            }
-            STATUS_PAUSED -> {
-                holder.binding.tvState.text = "已暂停"
-            }
-            STATUS_SUCCEED -> {
-                holder.binding.tvState.text = "下载完成"
-                holder.binding.progressBar.progress = 100
-            }
-            STATUS_FAILED -> {
-                holder.binding.tvState.text = "下载出错，请重试"
+        holder.binding.progressBar.progress = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toInt()
+
+        val downloadTask = DownloadXManager.getDownloadTask(taskInfo.url, taskInfo.extra)
+        // 每次更新页面后重新设置监听
+        downloadTask.stateListener {
+            when (it) {
+                is State.None -> {
+                    holder.binding.tvState.text = "准备下载"
+                }
+                is State.Waiting -> {
+                    holder.binding.tvState.text = "等待中"
+                }
+                is State.Downloading -> {
+                    taskInfo.status = STATUS_DOWNLOADING
+                    taskInfo.downloaded_bytes = it.progress.downloadSize
+                    taskInfo.total_bytes = it.progress.totalSize
+
+                    holder.binding.tvState.text = it.progress.percentStr()
+                    holder.binding.progressBar.progress = it.progress.percent().toInt()
+                }
+                is State.Failed -> {
+                    holder.binding.tvState.text = "下载出错，请重试"
+                }
+                is State.Paused -> {
+                    holder.binding.tvState.text = "已暂停"
+                }
+                is State.Succeed -> {
+                    holder.binding.tvState.text = "下载完成"
+                    holder.binding.progressBar.progress = 100
+                }
             }
         }
 
         holder.binding.cvVideo.setOnClickListener {
-            DownloadXManager.pauseResumeDownloadTask(taskInfo)
+            if (downloadTask.isStarted()) {
+                //"stop task ${downloadTask.param.tag()}".log()
+                downloadTask.pause()
+            } else if (downloadTask.canStart()) {
+                //"restart task ${downloadTask.param.tag()}".log()
+                downloadTask.start()
+            }
         }
 
         holder.binding.cvVideo.setOnLongClickListener {
@@ -77,30 +92,11 @@ class VideoDownloadingAdapter(private val context: Context) :
         return downloadingTaskInfoList.size
     }
 
-    fun updateState(taskInfo: TaskInfo) {
-        getPositionById(taskInfo.task_id)?.let {
-            if (downloadingTaskInfoList.isNotEmpty()) {
-                downloadingTaskInfoList[it] = taskInfo
-                notifyItemChanged(it)
-            }
-        }
-    }
-
     fun updateTaskInfoList(list: List<TaskInfo>) {
         downloadingTaskInfoList = ArrayList(list)
-        for (i in list.indices) {
-            positionMap[list[i].task_id] = i
-        }
         //SLog.d("notifyDataSetChanged: ${gson.toJson(positionMap)}")
         notifyDataSetChanged()
     }
-
-    private fun getPositionById(id: String): Int? {
-        return if (positionMap.containsKey(id)) {
-            positionMap[id]
-        } else null
-    }
-
 
     class VideoDownloadingViewHolder(val binding: DownloadingListItemVideoBinding) : RecyclerView.ViewHolder(binding.root)
 }

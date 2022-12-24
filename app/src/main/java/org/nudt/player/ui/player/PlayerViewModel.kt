@@ -1,5 +1,6 @@
 package org.nudt.player.ui.player
 
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.google.gson.Gson
 import kotlinx.coroutines.*
@@ -9,6 +10,7 @@ import org.nudt.player.data.api.doFailure
 import org.nudt.player.data.api.doSuccess
 import org.nudt.player.data.model.*
 import org.nudt.player.data.repository.VideoRepository
+import org.nudt.player.utils.VideoUtil
 import zlc.season.downloadx.DownloadXManager
 
 class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel() {
@@ -79,12 +81,16 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
 
     }
 
-    fun cacheVideo() {
+    fun cacheVideo(): Boolean {
         val vod = vodInfo.value
         vod?.let {
             val subVideo = vod.subVideoList[currentIndex.value ?: 0]
-            val extra = VideoCacheExtra(vod.vod_name, subVideo.sub_video_pic ?: "", subVideo.sub_video_name)
-            DownloadXManager.download(subVideo.sub_video_url, gson.toJson(extra))
+            if (VideoUtil.checkMedia(subVideo.sub_video_url)) {
+                val extra = VideoCacheExtra(vod.vod_name, subVideo.sub_video_pic ?: "", subVideo.sub_video_name)
+                DownloadXManager.download(subVideo.sub_video_url, gson.toJson(extra))
+                return true
+            }
         }
+        return false
     }
 }

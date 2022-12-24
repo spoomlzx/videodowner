@@ -47,28 +47,8 @@
     </style>
 
 
-
     <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:windowNoTitle">true</item>
-        <!--dialog之外没有焦点的区域是否罩上黑色半透明-->
-        <item name="android:background">@color/white</item>
-        <item name="android:textColor">@color/text_gray</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="buttonBarButtonStyle">@style/positive</item>
-        <!-- 这里是修改内容区域背景颜色 -->
-        <item name="android:layout_gravity">center</item>
-    </style>
-
-    <style name="positive" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textSize">@dimen/text_size_normal</item>
-    </style>
-    <style name="BottomSheetDialogBg" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
-        <item name="android:backgroundDimEnabled">false</item>
-    </style>
-    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>
