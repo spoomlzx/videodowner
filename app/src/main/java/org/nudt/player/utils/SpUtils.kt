@@ -12,7 +12,7 @@ object SpUtils {
     //private var Ip = if (isDebug) "192.168.3.8" else "192.168.3.74:81"
 
     //var ip by Preference("IP", "192.168.0.173")
-    var ip by Preference("IP", "192.168.8.146")
+    var ip by Preference("IP", "192.168.0.173")
 
     //var baseUrl by Preference(API_BASE_URL, "http://$Ip/app/public/")
     val baseUrl = "http://$ip/app/public/"

@@ -11,14 +11,14 @@
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_main"
-            app:contentInsetStart="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:background="@color/tab_background"
-            android:contentInsetStart="0dp">
+            android:contentInsetStart="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -35,10 +35,10 @@
 
                     <ImageView
                         android:id="@+id/tv_main_avatar"
-                        app:srcCompat="@drawable/avatar"
                         android:layout_width="36dp"
                         android:layout_height="36dp"
-                        android:layout_marginStart="8dp" />
+                        android:layout_marginStart="8dp"
+                        app:srcCompat="@drawable/avatar" />
                 </LinearLayout>
 
                 <TextView
@@ -58,21 +58,15 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <com.cy.tablayoutniubility.TabLayoutScroll
-            android:id="@+id/tbs_main"
-            app:cy_space_horizontal="@dimen/tab_item_width"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="@dimen/tab_layout_height"
-            android:background="@color/tab_background">
-
-            <com.cy.tablayoutniubility.IndicatorLineView
-                app:cy_color_indicator="@color/colorPrimary"
-                app:cy_height_indicator="@dimen/height_indicator"
-                app:cy_width_indicator_max="@dimen/width_indicator_max"
-                app:cy_width_indicator_selected="@dimen/width_indicator_selected"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.cy.tablayoutniubility.TabLayoutScroll>
+            android:background="@color/tab_background"
+            app:tabIndicatorColor="@color/colorPrimary"
+            app:tabIndicatorFullWidth="false"
+            app:tabRippleColor="@null"
+            app:tabTextColor="@color/item_text_selector" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2

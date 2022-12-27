@@ -63,7 +63,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-    implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.3.0'
+    //implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.3.0'
     implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
 
     implementation "io.insert-koin:koin-android:$koin_version"

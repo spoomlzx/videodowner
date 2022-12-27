@@ -1,21 +1,18 @@
 package org.nudt.player.ui.home
 
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
-import com.cy.tablayoutniubility.*
+import com.google.android.material.tabs.TabLayoutMediator
 import org.nudt.player.R
-import org.nudt.player.component.TabMediatorVp2
-import org.nudt.player.databinding.FragmentHomeBinding
 import org.nudt.player.data.model.VideoType
+import org.nudt.player.databinding.FragmentHomeBinding
 import org.nudt.player.ui.search.SearchActivity
 import org.nudt.player.ui.setting.SettingActivity
 import java.lang.reflect.Field
@@ -47,9 +44,27 @@ class HomeFragment : Fragment() {
     private fun initTabLayout() {
         val viewPager2 = binding.vp2Main
         viewPager2.offscreenPageLimit = 5
-        val tabLayoutScroll = binding.tbsMain
         val titles = resources.getStringArray(R.array.sections)
-        val fragments = arrayOfNulls<Fragment>(titles.size)
+
+        viewPager2.adapter = object : FragmentStateAdapter(this@HomeFragment) {
+            override fun getItemCount(): Int {
+                return 4
+            }
+
+            override fun createFragment(position: Int): Fragment {
+                return when (position) {
+                    0 -> VideoFragment.newInstance(VideoType.MOVIE)
+                    1 -> VideoFragment.newInstance(VideoType.TV)
+                    2 -> VideoFragment.newInstance(VideoType.COMIC)
+                    3 -> VideoFragment.newInstance(VideoType.VARIETY)
+                    else -> VideoFragment.newInstance(VideoType.VARIETY)
+                }
+            }
+        }
+
+        TabLayoutMediator(binding.tabs, viewPager2, true, true) { tab, position ->
+            tab.text = titles[position]
+        }.attach()
 
         // 这段代码可以降低viewPager2的左右滑动灵敏度
         try {
@@ -62,49 +77,6 @@ class HomeFragment : Fragment() {
             touchSlopField.set(recyclerView, touchSlop * 4)
         } catch (ignore: java.lang.Exception) {
         }
-
-        val fragmentPageAdapter: FragPageAdapterVp2<String?> = object : FragPageAdapterVp2<String?>(this) {
-            override fun createFragment(bean: String?, position: Int): Fragment {
-                if (fragments[position] == null) {
-                    when (position) {
-                        0 -> fragments[position] = VideoFragment.newInstance(VideoType.MOVIE)
-                        1 -> fragments[position] = VideoFragment.newInstance(VideoType.TV)
-                        2 -> fragments[position] = VideoFragment.newInstance(VideoType.COMIC)
-                        3 -> fragments[position] = VideoFragment.newInstance(VideoType.VARIETY)
-                        //4 -> fragments[position] = VideoFragment.newInstance(VideoType.PRIVATE, VideoFragment.HORIZONTAL_PIC)
-                        else -> {}
-                    }
-                }
-                return fragments[position]!!
-            }
-
-            override fun bindDataToTab(holder: TabViewHolder?, position: Int, bean: String?, isSelected: Boolean) {
-                val textView = holder?.getView<TextView>(R.id.tv_tablayout_title)
-                textView?.let {
-                    if (isSelected) {
-                        textView.setTextColor(getColor(context!!, R.color.colorPrimary))
-                        textView.typeface = Typeface.defaultFromStyle(Typeface.BOLD)
-                    } else {
-                        textView.setTextColor(getColor(context!!, R.color.text_color))
-                        textView.typeface = Typeface.defaultFromStyle(Typeface.NORMAL)
-                    }
-                    textView.text = bean
-                }
-
-            }
-
-            override fun getTabLayoutID(position: Int, bean: String?): Int {
-                return R.layout.tab_item
-            }
-        }
-
-        val tabAdapter: TabAdapter<String> = TabMediatorVp2<String>(tabLayoutScroll, viewPager2).setAdapter(fragmentPageAdapter)
-
-        val list: ArrayList<String> = ArrayList()
-        list.addAll(listOf(*titles))
-        fragmentPageAdapter.add<IBaseTabPageAdapter<String?, TabViewHolder>>(list as List<String?>?)
-        tabAdapter.add<ITabAdapter<*, *>>(list)
-
     }
 
 }
