@@ -12,7 +12,7 @@ import org.nudt.player.utils.SpUtils
 class SettingActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySettingBinding.inflate(layoutInflater) }
 
-    private val ip = SpUtils.ip
+    private val url = SpUtils.baseUrl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,16 +21,16 @@ class SettingActivity : AppCompatActivity() {
         binding.tbCommon.tvTitle.text = getString(R.string.main_nav_config)
         binding.tbCommon.ivBack.setOnClickListener { finish() }
 
-        binding.tvUrl.text = ip
+        binding.tvUrl.text = url
 
         binding.clConfigUrl.setOnClickListener {
             val editText = EditText(this@SettingActivity)
-            editText.text.append(ip)
+            editText.text.append(url)
             val inputDialog = AlertDialog.Builder(this@SettingActivity, R.style.AlertDialog)
             inputDialog.setTitle("设置基本网址").setView(editText)
             inputDialog.setPositiveButton("确定") { dialog, which ->
-                SpUtils.ip = editText.text.toString()
-                binding.tvUrl.text = SpUtils.ip
+                SpUtils.baseUrl = editText.text.toString()
+                binding.tvUrl.text = SpUtils.baseUrl
             }.show()
         }
 

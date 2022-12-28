@@ -1,8 +1,6 @@
 package org.nudt.player.data.api
 
 import android.util.Log
-import com.google.gson.Gson
-import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.nudt.player.data.model.Video
@@ -44,12 +42,13 @@ interface VideoApi {
     )
 
     companion object {
-        private val BASE_URL = SpUtils.baseUrl
+        private val BASE_URL = SpUtils.baseApiUrl
         fun create(): VideoApi {
             val logger = HttpLoggingInterceptor { Log.d("API", it) }
             logger.level = HttpLoggingInterceptor.Level.BASIC
 
             val client = OkHttpClient.Builder()
+                .addInterceptor(HostInterceptor())
                 .addInterceptor(logger)
                 .build()
             return Retrofit.Builder()

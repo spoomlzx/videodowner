@@ -181,7 +181,7 @@ class VideoDetailFragment : Fragment() {
                 .create().show()
         }
 
-        binding.btnGbook.setOnClickListener {
+        binding.btnReportError.setOnClickListener {
 
         }
 
