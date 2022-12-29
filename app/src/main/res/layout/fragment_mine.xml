@@ -126,7 +126,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_general_margin"
-                android:text="@string/mine_nav_history"
+                android:text="@string/history"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_history"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -155,6 +155,7 @@
         android:layout_marginTop="@dimen/default_general_margin"
         android:background="@color/tab_background"
         android:orientation="vertical"
+        android:visibility="gone"
         android:padding="@dimen/default_general_margin">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,7 +176,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_general_margin"
-                android:text="@string/mine_nav_download"
+                android:text="@string/download"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/iv_download"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -198,6 +199,68 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/gl_download" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/default_general_margin"
+        android:layout_marginBottom="@dimen/default_general_margin"
+        android:orientation="horizontal"
+        android:background="@color/tab_background"
+        android:padding="@dimen/default_general_margin">
+
+        <TextView
+            android:id="@+id/btn_download"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/default_normal_margin"
+            android:padding="@dimen/default_tiny_margin"
+            android:text="@string/download"
+            android:textAlignment="center"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller"
+            app:drawableTopCompat="@drawable/vector_download" />
+
+        <TextView
+            android:id="@+id/btn_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/default_normal_margin"
+            android:padding="@dimen/default_tiny_margin"
+            android:text="@string/history"
+            android:textAlignment="center"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller"
+            app:drawableTopCompat="@drawable/vector_history" />
+
+        <TextView
+            android:id="@+id/btn_favorite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/default_normal_margin"
+            android:padding="@dimen/default_tiny_margin"
+            android:text="@string/favorite"
+            android:textAlignment="center"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller"
+            app:drawableTopCompat="@drawable/vector_favorite" />
+
+        <TextView
+            android:id="@+id/btn_contribute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="@dimen/default_normal_margin"
+            android:padding="@dimen/default_tiny_margin"
+            android:text="@string/contribute"
+            android:textAlignment="center"
+            android:textColor="@color/text_gray"
+            android:textSize="@dimen/text_size_smaller"
+            app:drawableTopCompat="@drawable/vector_contribute" />
     </LinearLayout>
 
 </LinearLayout>

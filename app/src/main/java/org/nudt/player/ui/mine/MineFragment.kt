@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,16 +36,14 @@ class MineFragment : Fragment() {
 
         initHistoryView()
 
-        initDownloadView()
+        initModulesView()
     }
 
     /**
      * 工具栏
      */
     private fun initToolbar() {
-        binding.ivGbook.setOnClickListener {
 
-        }
 
 
 //        binding.ivConfig.setOnClickListener {
@@ -72,6 +72,22 @@ class MineFragment : Fragment() {
 
         videoViewModel.historyTop.observe(viewLifecycleOwner) {
             historyAdapter.updateFavoriteList(it)
+        }
+    }
+
+    private fun initModulesView() {
+        binding.btnDownload.setOnClickListener {
+            val intent = Intent(context, VideoDownloadListActivity::class.java)
+            context?.startActivity(intent)
+        }
+
+        binding.btnHistory.setOnClickListener {
+            val intent = Intent(context, PlayHistoryActivity::class.java)
+            context?.startActivity(intent)
+        }
+
+        binding.btnContribute.setOnClickListener {
+            Toast.makeText(context, "敬请期待视频投稿功能", LENGTH_SHORT).show()
         }
     }
 

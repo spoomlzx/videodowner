@@ -5,10 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.R
 import org.nudt.player.adapter.FavoriteAdapter
@@ -24,7 +21,7 @@ class FavoriteFragment : Fragment() {
     private lateinit var adapter: FavoriteAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding.tbCommon.tvTitle.text = getText(R.string.main_nav_favorite)
+        binding.tbCommon.tvTitle.text = getText(R.string.favorite)
         binding.tbCommon.ivBack.visibility = View.GONE
         initRecyclerView()
         return binding.root

@@ -19,10 +19,10 @@
     <string name="section_cn">中文</string>
 
     <!--    mine page-->
-    <string name="mine_nav_history">观看历史</string>
-    <string name="mine_nav_download">离线缓存</string>
-    <string name="main_nav_download">下载管理</string>
-    <string name="main_nav_favorite">我的收藏</string>
+    <string name="history">观看历史</string>
+    <string name="download">离线缓存</string>
+    <string name="favorite">我的收藏</string>
+    <string name="contribute">视频投稿</string>
     <string name="main_nav_replay">稍后再看</string>
 
 
