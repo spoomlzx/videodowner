@@ -1,9 +1,7 @@
 package org.nudt.player.data.model
 
-import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import kotlinx.parcelize.Parcelize
 
 /**
  * 视频基本信息

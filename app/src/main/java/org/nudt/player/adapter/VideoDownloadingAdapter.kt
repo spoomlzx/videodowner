@@ -7,16 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.lxj.xpopup.XPopup
-import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.DownloadingListItemVideoBinding
 import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.State
-import zlc.season.downloadx.database.*
+import zlc.season.downloadx.database.STATUS_DOWNLOADING
 import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.utils.ratio
-import java.util.concurrent.ConcurrentHashMap
 
 class VideoDownloadingAdapter(private val context: Context) :
     RecyclerView.Adapter<VideoDownloadingAdapter.VideoDownloadingViewHolder>() {

@@ -1,6 +1,5 @@
 package org.nudt.player.ui.player
 
-import android.net.Uri
 import android.os.Bundle
 import android.widget.LinearLayout
 import org.nudt.player.databinding.ActivityOfflinePlayerBinding

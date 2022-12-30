@@ -9,13 +9,9 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import org.nudt.common.formatFileSize
 import org.nudt.player.R
-import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.DownloadedMineListItemVideoBinding
-import org.nudt.player.databinding.HistoryMineListItemBinding
 import org.nudt.player.ui.player.OfflinePlayerActivity
-import org.nudt.player.ui.player.OnlinePlayerActivity
-import org.nudt.player.utils.VideoUtil.buildProgressText
 import zlc.season.downloadx.database.TaskInfo
 
 class MineDownloadedAdapter(private val context: Context) : RecyclerView.Adapter<MineDownloadedAdapter.MineDownloadedViewHolder>() {

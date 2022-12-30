@@ -1,7 +1,7 @@
 package org.nudt.player.ui.history
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.adapter.HistoryAdapter

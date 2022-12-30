@@ -1,6 +1,5 @@
 package org.nudt.player.ui.download
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,11 +8,8 @@ import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.tbruyelle.rxpermissions3.RxPermissions
-import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadedAdapter
-import org.nudt.player.adapter.VideoDownloadingAdapter
 import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.ActivityVideoDownloadListBinding
 import zlc.season.downloadx.DownloadXManager
@@ -67,20 +63,5 @@ class VideoDownloadListActivity : AppCompatActivity() {
         DownloadXManager.queryFinishedTaskInfoFlow().asLiveData().observe(this) {
             downloadedAdapter.updateTaskInfoList(it)
         }
-    }
-
-    /**
-     * 请求磁盘读写权限
-     */
-    private fun requestPermission() {
-        val rxPermissions: RxPermissions = RxPermissions(this);
-        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE)
-            .subscribe { granted: Boolean ->
-                if (granted) { // Always true pre-M
-                    SLog.d("request permission success")
-                } else {
-                    SLog.e("request permission error")
-                }
-            }
     }
 }

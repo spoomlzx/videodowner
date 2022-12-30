@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
-import com.google.gson.Gson
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadingAdapter
 import org.nudt.player.databinding.ActivityDownloadingBinding

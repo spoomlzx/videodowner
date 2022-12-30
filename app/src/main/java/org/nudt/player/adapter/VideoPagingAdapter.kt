@@ -4,20 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
 import org.nudt.player.R
-import org.nudt.player.databinding.HomeListItemVideoBinding
 import org.nudt.player.data.model.Video
+import org.nudt.player.databinding.HomeListItemVideoBinding
 import org.nudt.player.databinding.HomeListItemVideoHorizontalBinding
-import org.nudt.player.ui.player.OnlinePlayerActivity
-import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.home.VideoFragment
-import org.nudt.player.utils.SpUtils
+import org.nudt.player.ui.player.OnlinePlayerActivity
 import org.nudt.player.utils.VideoUtil
 
 class VideoPagingAdapter(private val context: Context, private val itemViewType: Int = 1) :

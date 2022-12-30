@@ -7,13 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.next.easynavigation.view.EasyNavigationBar.OnTabClickListener
-import org.nudt.common.SLog
 import org.nudt.player.R
 import org.nudt.player.databinding.ActivityMainBinding
 import org.nudt.player.ui.favorite.FavoriteFragment
 import org.nudt.player.ui.home.HomeFragment
 import org.nudt.player.ui.mine.MineFragment
-import zlc.season.downloadx.DownloadXManager
 
 
 class MainActivity : AppCompatActivity() {

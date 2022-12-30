@@ -2,7 +2,6 @@ package org.nudt.player.data.db
 
 import androidx.paging.PagingSource
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 import org.nudt.player.data.model.Video
 
 @Dao

@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.nudt.player.R
-import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.Video
-import org.nudt.player.databinding.HistoryMineListItemBinding
 import org.nudt.player.databinding.RecommendListItemVideoBinding
 import org.nudt.player.ui.player.OnlinePlayerActivity
 import org.nudt.player.utils.VideoUtil
-import org.nudt.player.utils.VideoUtil.buildProgressText
 
 class RecommendAdapter(private val context: Context) : RecyclerView.Adapter<RecommendAdapter.RecommendViewHolder>() {
 

@@ -12,7 +12,6 @@ import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.HistoryListItemBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.player.OnlinePlayerActivity
-import org.nudt.player.ui.player.PlayerViewModel
 import org.nudt.player.utils.VideoUtil
 
 class HistoryAdapter(private val context: Context, private val videoViewModel: VideoViewModel) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {

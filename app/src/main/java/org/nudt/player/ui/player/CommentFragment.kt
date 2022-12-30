@@ -1,12 +1,10 @@
 package org.nudt.player.ui.player
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.FragmentCommentBinding
 
 private const val ARG_PARAM1 = "param1"

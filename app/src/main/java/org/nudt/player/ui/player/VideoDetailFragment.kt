@@ -1,13 +1,11 @@
 package org.nudt.player.ui.player
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import android.widget.Toast.LENGTH_LONG
 import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,8 +14,8 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.SLog
 import org.nudt.player.R
-import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.adapter.RecommendAdapter
+import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.databinding.FragmentVideoDetailBinding

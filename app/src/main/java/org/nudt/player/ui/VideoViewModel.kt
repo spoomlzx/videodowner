@@ -6,11 +6,9 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.PlayHistory
-import org.nudt.player.data.model.Video
 import org.nudt.player.data.repository.VideoRepository
 
 
