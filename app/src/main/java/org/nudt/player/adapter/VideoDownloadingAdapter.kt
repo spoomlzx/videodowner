@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.google.gson.Gson
 import com.lxj.xpopup.XPopup
 import org.nudt.player.R
@@ -30,7 +30,9 @@ class VideoDownloadingAdapter(private val context: Context) :
         val taskInfo = downloadingTaskInfoList[position]
         val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
         if (extra is VideoCacheExtra) {
-            Glide.with(context).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            holder.binding.ivVideoPic.load(extra.vod_thumb) {
+                placeholder(R.drawable.default_pic)
+            }
             holder.binding.tvTitle.text = extra.vod_name
             holder.binding.tvIndex.text = extra.vod_index
         }

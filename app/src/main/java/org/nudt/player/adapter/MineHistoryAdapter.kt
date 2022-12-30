@@ -5,7 +5,8 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import org.nudt.player.R
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.HistoryMineListItemBinding
@@ -27,7 +28,10 @@ class MineHistoryAdapter(private val context: Context) : RecyclerView.Adapter<Mi
         val progress = buildProgressText(playHistory)
         holder.binding.tvVideoProgress.text = progress
 
-        Glide.with(context).load(playHistory.vod_pic_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+        holder.binding.ivVideoPic.load(playHistory.vod_pic_thumb) {
+            placeholder(R.drawable.default_image)
+            transformations(RoundedCornersTransformation(12f))
+        }
 
         holder.binding.cvHistoryItem.setOnClickListener {
             val intent = Intent(context, OnlinePlayerActivity::class.java)

@@ -6,7 +6,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.load
 import com.google.gson.Gson
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadedAdapter
@@ -47,7 +47,11 @@ class VideoDownloadListActivity : AppCompatActivity() {
                 val taskInfo = it.first()
                 val gson = Gson()
                 val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
-                Glide.with(this@VideoDownloadListActivity).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(binding.ivDownloadingVideoPic)
+
+                binding.ivDownloadingVideoPic.load(extra.vod_thumb){
+                    placeholder(R.drawable.default_pic)
+                }
+
                 binding.tvDownloadingTitle.text = extra.vod_name
                 binding.tvDownloadingIndex.text = extra.vod_index
                 binding.tvDownloadingVideoNum.text = "${it.size}个内容"

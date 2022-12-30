@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import org.nudt.videoplayer.R
 import org.nudt.videoplayer.databinding.PlayerVideoListItemBinding
 import org.nudt.videoplayer.model.SubVideo
@@ -24,7 +24,10 @@ class VideoSelectAdapter(private val context: Context, private val itemClickList
         val subVideo = subVideoList[position]
         holder.binding.tvTitle.text = subVideo.video_name
         holder.binding.tvIndex.text = subVideo.sub_video_name
-        Glide.with(context).load(subVideo.sub_video_pic).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+
+        holder.binding.ivVideoPic.load(subVideo.sub_video_pic) {
+            placeholder(R.drawable.default_image)
+        }
 
         holder.binding.tvTitle.isSelected = currentIndex == position
 

@@ -39,7 +39,7 @@ dependencies {
     //api 'com.github.hty527.iPlayer:iplayer:2.1.1'
     // 临时引入包，修改BasePlayer 方便布局预览
 
-    implementation 'com.github.bumptech.glide:glide:4.13.1'
+    implementation "io.coil-kt:coil:2.2.2"
 
     api project(':modules:iplayer')
 

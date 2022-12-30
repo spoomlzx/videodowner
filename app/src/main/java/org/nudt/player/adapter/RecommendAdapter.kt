@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import org.nudt.player.R
 import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.RecommendListItemVideoBinding
@@ -25,7 +25,9 @@ class RecommendAdapter(private val context: Context) : RecyclerView.Adapter<Reco
         holder.binding.tvVideoName.text = video.vod_name
         holder.binding.tvVideoScore.text = video.vod_score
 
-        Glide.with(context).load(VideoUtil.getPicUrl(video.vod_pic_thumb)).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+        holder.binding.ivVideoPic.load(VideoUtil.getPicUrl(video.vod_pic_thumb)){
+            placeholder(R.drawable.default_pic)
+        }
 
         holder.binding.cvRecommendItem.setOnClickListener {
             val intent = Intent(context, OnlinePlayerActivity::class.java)

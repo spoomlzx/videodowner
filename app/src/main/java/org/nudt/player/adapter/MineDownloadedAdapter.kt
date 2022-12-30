@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.google.gson.Gson
 import org.nudt.common.formatFileSize
 import org.nudt.player.R
@@ -29,7 +29,11 @@ class MineDownloadedAdapter(private val context: Context) : RecyclerView.Adapter
         var title = "未知视频"
         if (extra is VideoCacheExtra) {
             title = "${extra.vod_name}-${extra.vod_index}"
-            Glide.with(context).load(extra.vod_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+
+            holder.binding.ivVideoPic.load(extra.vod_thumb) {
+                placeholder(R.drawable.default_pic)
+            }
+
         }
 
         holder.binding.tvVideoName.text = title

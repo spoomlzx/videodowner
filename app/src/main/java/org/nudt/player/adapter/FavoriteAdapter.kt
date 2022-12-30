@@ -5,7 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.lxj.xpopup.XPopup
 import org.nudt.player.R
 import org.nudt.player.data.model.FavoriteVideo
@@ -27,7 +27,9 @@ class FavoriteAdapter(private val context: Context, private val videoViewModel: 
             val video = it[position]
             holder.binding.tvTitle.text = video.vod_name
 
-            Glide.with(context).load(video.vod_pic_thumb).placeholder(R.drawable.default_image).into(holder.binding.ivVideoPic)
+            holder.binding.ivVideoPic.load(video.vod_pic_thumb){
+                placeholder(R.drawable.default_pic)
+            }
 
             holder.binding.tvRemarks.text = video.vod_remarks
 

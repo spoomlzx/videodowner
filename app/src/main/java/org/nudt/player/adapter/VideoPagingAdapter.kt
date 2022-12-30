@@ -8,7 +8,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.bumptech.glide.Glide
+import coil.load
 import org.nudt.player.R
 import org.nudt.player.data.model.Video
 import org.nudt.player.databinding.HomeListItemVideoBinding
@@ -36,7 +36,11 @@ class VideoPagingAdapter(private val context: Context, private val itemViewType:
             video?.let {
                 binding.tvTitle.text = video.vod_name
                 val pic = if (video.vod_pic_thumb?.isNotEmpty() == true) video.vod_pic_thumb else video.vod_pic
-                Glide.with(context).load(VideoUtil.getPicUrl(pic)).placeholder(R.drawable.default_pic).into(binding.ivVideoPic)
+
+                binding.ivVideoPic.load(VideoUtil.getPicUrl(pic)) {
+                    placeholder(R.drawable.default_pic)
+                }
+
                 binding.cvVideo.setOnClickListener {
                     val intent = Intent(context, OnlinePlayerActivity::class.java)
                     intent.putExtra("vodId", video.vod_id)
@@ -48,7 +52,9 @@ class VideoPagingAdapter(private val context: Context, private val itemViewType:
             video?.let {
                 binding.tvTitle.text = video.vod_name
 
-                Glide.with(context).load(VideoUtil.getPicUrl(video.vod_pic)).placeholder(R.drawable.default_pic).into(binding.ivVideoPic)
+                binding.ivVideoPic.load(VideoUtil.getPicUrl(video.vod_pic)) {
+                    placeholder(R.drawable.default_pic)
+                }
                 binding.cvVideo.setOnClickListener {
                     val intent = Intent(context, OnlinePlayerActivity::class.java)
                     intent.putExtra("vodId", video.vod_id)
