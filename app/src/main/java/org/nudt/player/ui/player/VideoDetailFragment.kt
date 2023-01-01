@@ -18,7 +18,10 @@ import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.adapter.SubVideoAdapter
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.VodInfoModel
+import org.nudt.player.data.network.doFailure
+import org.nudt.player.data.network.doSuccess
 import org.nudt.player.databinding.FragmentVideoDetailBinding
+import org.nudt.player.utils.SpUtils
 
 class VideoDetailFragment : Fragment() {
 
@@ -181,10 +184,14 @@ class VideoDetailFragment : Fragment() {
         }
 
         binding.btnReportError.setOnClickListener {
+            if (binding.btnReportError.isSelected) {
+                Toast.makeText(context, "请勿重复提交", LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             var content = ""
             playerViewModel.vodInfo.value?.let {
                 val subVideoName = it.subVideoList[playerViewModel.currentIndex.value!!].sub_video_name
-                content = "视频：${it.vod_name} - $subVideoName"
+                content = "视频：[${it.vod_name} - $subVideoName] "
             }
             XPopup.Builder(context)
                 .hasStatusBarShadow(false)
@@ -192,8 +199,16 @@ class VideoDetailFragment : Fragment() {
                 .isDestroyOnDismiss(true) //对于只使用一次的弹窗对象，推荐设置这个
                 .autoOpenSoftInput(true)
                 .asInputConfirm("提交错误", content, null, "具体问题") {
-                    //Toast.makeText(context, it, LENGTH_SHORT).show()
+                    playerViewModel.reportVideoError(SpUtils.userNickName, content + it)
                 }.show()
+        }
+
+        playerViewModel.reportResult.observe(viewLifecycleOwner) {
+            it.doSuccess { data ->
+                Toast.makeText(context, data, LENGTH_SHORT).show()
+                binding.btnReportError.isSelected = true
+            }
+            it.doFailure { error -> Toast.makeText(context, error.errorMsg, LENGTH_SHORT).show() }
         }
 
         //todo 对应多地址的下载进行修改

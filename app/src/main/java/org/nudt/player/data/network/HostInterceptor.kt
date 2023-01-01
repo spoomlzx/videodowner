@@ -1,4 +1,4 @@
-package org.nudt.player.data.api
+package org.nudt.player.data.network
 
 import androidx.core.net.toUri
 import okhttp3.Interceptor
@@ -8,7 +8,7 @@ import org.nudt.player.utils.SpUtils
 /**
  * 动态切换retrofit中的api的baseUrl
  */
-class HostInterceptor: Interceptor {
+class HostInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originRequest = chain.request()
         val oldHost = originRequest.url.host//release.course.api.cniao5.com 不带scheme http的

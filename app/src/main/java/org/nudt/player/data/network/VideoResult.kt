@@ -1,4 +1,4 @@
-package org.nudt.player.data.api
+package org.nudt.player.data.network
 
 /**
  * 处理fetch video 成功或者失败的类

@@ -1,4 +1,4 @@
-package org.nudt.player.data.api
+package org.nudt.player.data.network
 
 /**
  * 作者　: hegaojian

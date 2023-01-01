@@ -5,12 +5,12 @@ import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
-import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.db.VideoDao
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.db.VideoRemoteKeyDao
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VideoRemoteKey
+import org.nudt.player.data.network.VideoApi
 import retrofit2.HttpException
 import java.io.IOException
 

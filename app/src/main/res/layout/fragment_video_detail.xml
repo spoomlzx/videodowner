@@ -130,7 +130,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/text_gray"
                 android:textSize="@dimen/text_size_smaller"
-                app:drawableTopCompat="@drawable/ic_share" />
+                app:drawableTopCompat="@drawable/selector_report_error" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

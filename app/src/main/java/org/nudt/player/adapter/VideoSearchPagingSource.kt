@@ -3,7 +3,7 @@ package org.nudt.player.adapter
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import org.nudt.common.log
-import org.nudt.player.data.api.VideoApi
+import org.nudt.player.data.network.VideoApi
 import org.nudt.player.data.model.Video
 
 class VideoSearchPagingSource(private val videoApi: VideoApi, private val keyword: String) : PagingSource<Int, Video>() {

@@ -1,4 +1,4 @@
-package org.nudt.player.data.api
+package org.nudt.player.data.network
 
 import android.util.Log
 import okhttp3.OkHttpClient
@@ -7,6 +7,8 @@ import org.nudt.player.data.model.Video
 import org.nudt.player.utils.SpUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -29,21 +31,9 @@ interface VideoApi {
     @GET("?service=App.Video.GetRecommend")
     suspend fun getVideoRecommend(@Query("type") type: Int): ResponseData<ListBean<Video>>
 
+    @FormUrlEncoded
     @POST("?service=App.Video.ReportVideoError")
-    suspend fun reportVideoError(@Query("name") name: String, @Query("content") content: String): ResponseData<String>
-
-    class ListBean<T>(
-        val total: Int,
-        val page: Int,
-        val pageSize: Int,
-        val items: List<T>
-    )
-
-    class ResponseData<T>(
-        val Msg: String,
-        val Code: Int,
-        val Data: T
-    )
+    suspend fun reportVideoError(@Field("name") name: String, @Field("content") content: String): ResponseData<String>
 
     companion object {
         private val BASE_URL = SpUtils.baseApiUrl

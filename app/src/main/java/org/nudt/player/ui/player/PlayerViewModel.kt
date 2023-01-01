@@ -5,20 +5,24 @@ import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import org.nudt.common.log
-import org.nudt.player.data.api.doFailure
-import org.nudt.player.data.api.doSuccess
 import org.nudt.player.data.model.*
+import org.nudt.player.data.network.ResultState
+import org.nudt.player.data.network.doFailure
+import org.nudt.player.data.network.doSuccess
+import org.nudt.player.data.network.request
 import org.nudt.player.data.repository.VideoRepository
 import org.nudt.player.utils.VideoUtil
 import zlc.season.downloadx.DownloadXManager
 
 class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel() {
+    private val gson = Gson()
+
     val vodInfo = MutableLiveData<VodInfoModel>()
     val currentIndex = MutableLiveData(0)
 
     val recommendVideoList = MutableLiveData<List<Video>>()
 
-    private val gson = Gson()
+    val reportResult = MutableLiveData<ResultState<String>>()
 
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -77,8 +81,12 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
                 }
             }
         }
-
     }
+
+    fun reportVideoError(name: String, content: String) {
+        request({ videoRepository.reportVideoError(name, content) }, reportResult)
+    }
+
 
     fun cacheVideo(): Boolean {
         val vod = vodInfo.value
