@@ -7,7 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.databinding.ActivityOnlinePlayerBinding
 import org.nudt.videoplayer.VideoPlayer
@@ -84,7 +84,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
             override fun createFragment(position: Int): Fragment {
                 return when (position) {
                     0 -> VideoDetailFragment()
-                    else -> CommentFragment.newInstance(vodId)
+                    else -> CommentFragment()
                 }
             }
         }
@@ -98,7 +98,7 @@ class OnlinePlayerActivity : BasePlayerActivity() {
      * 关闭播放器时同步保存视频播放记录
      */
     override fun onDestroy() {
-        SLog.e("destroy player")
+        "destroy player".log()
         playerViewModel.vodInfo.value?.apply {
             val history = PlayHistory(
                 vod_id = vod_id,

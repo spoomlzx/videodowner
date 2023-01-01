@@ -14,13 +14,12 @@ import com.qingfeng.clinglibrary.Intents
 import com.qingfeng.clinglibrary.control.ClingPlayControl
 import com.qingfeng.clinglibrary.control.callback.ControlCallback
 import com.qingfeng.clinglibrary.control.callback.ControlReceiveCallback
-import com.qingfeng.clinglibrary.entity.ClingDeviceList
 import com.qingfeng.clinglibrary.entity.ClingVolumeResponse
 import com.qingfeng.clinglibrary.entity.DLANPlayState
 import com.qingfeng.clinglibrary.entity.IResponse
 import com.qingfeng.clinglibrary.service.manager.ClingManager
-import org.nudt.common.SLog
 import org.nudt.videoplayer.databinding.ActivityVideoControlBinding
+import org.nudt.videoplayer.util.log
 
 class VideoControlActivity : AppCompatActivity() {
     private val TAG = "VideoControlActivity"
@@ -78,12 +77,12 @@ class VideoControlActivity : AppCompatActivity() {
                 mClingPlayControl.setVolume(currentVolume, object : ControlCallback<Any?> {
                     override fun success(res: IResponse<Any?>?) {
                         if (res != null) {
-                            SLog.d("volume up success: ${res.response}")
+                            "volume up success: ${res.response}".log()
                         }
                     }
 
                     override fun fail(res: IResponse<Any?>?) {
-                        SLog.d("volume up failure: $res")
+                        "volume up failure: $res".log()
                     }
                 })
             }
@@ -96,11 +95,11 @@ class VideoControlActivity : AppCompatActivity() {
             }
             mClingPlayControl.setVolume(currentVolume, object : ControlCallback<Any?> {
                 override fun success(res: IResponse<Any?>?) {
-                    SLog.d("volume up success: $res")
+                    "volume up success: $res".log()
                 }
 
                 override fun fail(res: IResponse<Any?>?) {
-                    SLog.d("volume up failure: $res")
+                    "volume up failure: $res".log()
                 }
             })
         }
@@ -114,14 +113,13 @@ class VideoControlActivity : AppCompatActivity() {
     }
 
 
-
     private fun pause() {
         mClingPlayControl.pause(object : ControlCallback<Any?> {
             override fun success(response: IResponse<Any?>?) {
                 isPlaying = false
                 binding.btnPlay.text = "播放"
                 if (response != null) {
-                    SLog.d("pause: ${response.response}")
+                    "pause: ${response.response}".log()
                 }
             }
 
@@ -135,7 +133,7 @@ class VideoControlActivity : AppCompatActivity() {
                 isPlaying = true
                 binding.btnPlay.text = "暂停"
                 if (response != null) {
-                    SLog.d("continue play: ${response.response}")
+                    "continue play: ${response.response}".log()
                 }
             }
 
@@ -155,12 +153,12 @@ class VideoControlActivity : AppCompatActivity() {
                     binding.tvVolume.text = "音量：${response.response}"
                 }
 
-                SLog.d("get volume: $response")
+                "get volume: $response".log()
             }
 
             override fun success(response: IResponse<*>?) {
                 if (response != null) {
-                    SLog.d("get volume success: ${response.response}")
+                    "get volume success: ${response.response}".log()
                 }
             }
 

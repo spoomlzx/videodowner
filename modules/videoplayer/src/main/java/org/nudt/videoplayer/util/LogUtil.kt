@@ -1,10 +1,10 @@
-package zlc.season.downloadx.utils
+package org.nudt.videoplayer.util
 
 import android.util.Log
 
 var LOG_ENABLE = true
 
-const val LOG_TAG = "downloader"
+const val LOG_TAG = "videoPlayer"
 
 fun <T> T.log(prefix: String = ""): T {
     val prefixStr = if (prefix.isEmpty()) "" else "[$prefix] "

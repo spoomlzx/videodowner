@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.google.gson.Gson
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.data.api.doFailure
 import org.nudt.player.data.api.doSuccess
 import org.nudt.player.data.model.*
@@ -56,11 +56,11 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
                     currentIndex.value = it.vod_index
                 }
 
-                SLog.d("video: ${value.vod_name} index: ${value.history?.vod_index}")
+                "video: ${value.vod_name} index: ${value.history?.vod_index}".log()
                 emit(value)
             }
             result.doFailure { throwable ->
-                SLog.e("error: $throwable")
+                throwable.log()
             }
         }
     }
@@ -73,7 +73,7 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
                     recommendVideoList.postValue(value)
                 }
                 result.doFailure { throwable ->
-                    SLog.e("error: $throwable")
+                    throwable.log()
                 }
             }
         }

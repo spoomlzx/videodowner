@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.qingfeng.clinglibrary.entity.ClingDevice
 import com.qingfeng.clinglibrary.service.manager.ClingManager
-import com.qingfeng.clinglibrary.util.Utils
-import org.nudt.common.SLog
 import org.nudt.videoplayer.databinding.DlanDeviceItemBinding
 
 class DeviceListAdapter(val context: Context, private val devices: ArrayList<ClingDevice>, val onDeviceItemClickListener: OnDeviceItemClickListener?) :

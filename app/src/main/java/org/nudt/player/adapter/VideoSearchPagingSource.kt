@@ -2,7 +2,7 @@ package org.nudt.player.adapter
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.data.api.VideoApi
 import org.nudt.player.data.model.Video
 
@@ -39,7 +39,7 @@ class VideoSearchPagingSource(private val videoApi: VideoApi, private val keywor
 
 
         } catch (e: Exception) {
-            SLog.e(e.message ?: "error")
+            e.log()
             return LoadResult.Error(e)
         }
 

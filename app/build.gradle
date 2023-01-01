@@ -86,6 +86,8 @@ dependencies {
     //implementation 'com.github.AnJiaoDe:TabLayoutNiubility:V1.3.0'
     implementation 'com.github.Vincent7Wong:EasyNavigation:2.0.5'
 
+    implementation 'com.github.li-xiaojun:XPopup:2.9.2'
+
     implementation "io.insert-koin:koin-android:$koin_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"

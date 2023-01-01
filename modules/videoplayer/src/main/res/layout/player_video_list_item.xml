@@ -10,7 +10,7 @@
     android:paddingEnd="@dimen/default_general_margin"
     android:paddingBottom="@dimen/default_normal_margin">
 
-    <org.nudt.common.component.ShapeImageView
+    <ImageView
         android:id="@+id/iv_video_pic"
         android:layout_width="@dimen/video_cover_width"
         android:layout_height="@dimen/video_cover_height"

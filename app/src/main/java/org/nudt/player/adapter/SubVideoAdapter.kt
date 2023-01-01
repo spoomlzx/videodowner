@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.databinding.PlayUrlListItemBinding
 import org.nudt.player.ui.player.PlayerViewModel
 import org.nudt.videoplayer.model.SubVideo
@@ -30,7 +30,7 @@ class SubVideoAdapter(private val playerViewModel: PlayerViewModel) : RecyclerVi
 
         holder.binding.tvPlayUrlIndex.setOnClickListener {
             currentPosition = holder.bindingAdapterPosition
-            SLog.d("current index: $currentPosition && play url: $subVideo")
+            "current index: $currentPosition && play url: $subVideo".log()
             notifyDataSetChanged()
             playerViewModel.setCurrent(currentPosition)
         }

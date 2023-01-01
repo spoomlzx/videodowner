@@ -2,7 +2,7 @@ package org.nudt.player.ui.player
 
 import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.videoplayer.VideoPlayer
 
 open class BasePlayerActivity : AppCompatActivity() {
@@ -49,7 +49,7 @@ open class BasePlayerActivity : AppCompatActivity() {
      * 如果是全屏或者悬浮状态，则不调用super.onBackPressed()
      */
     override fun onBackPressed() {
-        SLog.d("onBackPressed-->$isForbidCycle")
+        "onBackPressed-->$isForbidCycle".log()
         if (!isForbidCycle && !player.isBackPressed) {
             return
         }

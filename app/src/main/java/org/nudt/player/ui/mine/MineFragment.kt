@@ -17,6 +17,7 @@ import org.nudt.player.databinding.FragmentMineBinding
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.download.VideoDownloadListActivity
 import org.nudt.player.ui.history.PlayHistoryActivity
+import org.nudt.player.utils.SpUtils
 import zlc.season.downloadx.DownloadXManager
 
 class MineFragment : Fragment() {
@@ -43,7 +44,6 @@ class MineFragment : Fragment() {
      * 工具栏
      */
     private fun initToolbar() {
-
 
 
 //        binding.ivConfig.setOnClickListener {
@@ -76,6 +76,10 @@ class MineFragment : Fragment() {
     }
 
     private fun initModulesView() {
+        binding.tvNickName.text = SpUtils.userNickName
+        binding.tvUserName.text = "ID：" + SpUtils.username
+
+
         binding.btnDownload.setOnClickListener {
             val intent = Intent(context, VideoDownloadListActivity::class.java)
             context?.startActivity(intent)

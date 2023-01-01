@@ -18,9 +18,9 @@ import com.qingfeng.clinglibrary.listener.DeviceListChangedListener
 import com.qingfeng.clinglibrary.service.ClingUpnpService
 import com.qingfeng.clinglibrary.service.manager.ClingManager
 import com.qingfeng.clinglibrary.service.manager.DeviceManager
-import org.nudt.common.SLog
 import org.nudt.videoplayer.R
 import org.nudt.videoplayer.ui.VideoControlActivity
+import org.nudt.videoplayer.util.log
 
 @SuppressLint("ViewConstructor")
 class DlanListPopupView(context: Context, val url: String, val title: String) : CenterPopupView(context) {
@@ -37,7 +37,7 @@ class DlanListPopupView(context: Context, val url: String, val title: String) : 
         val deviceAdapter = DeviceListAdapter(context, ArrayList(), object : DeviceListAdapter.OnDeviceItemClickListener {
             override fun onDeviceItemClick(device: ClingDevice?, isActive: Boolean) {
                 if (device != null && isActive) {
-                    SLog.d("video to control url: $url")
+                    "video to control url: $url".log()
                     val intent = Intent(context, VideoControlActivity::class.java)
                     intent.putExtra("title", title)
                     intent.putExtra("url", url)

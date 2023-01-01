@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.nudt.common.CommonUtil
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.R
 import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.adapter.SubVideoAdapter
@@ -35,11 +35,11 @@ class VideoDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initClickListener()
-        initFavoriteView()
+        initView()
         // 监听viewModel中的vidInfoModel，更新详情信息
         playerViewModel.vodInfo.observe(viewLifecycleOwner) {
-            SLog.d("vodInfo: in detail " + it.vod_name)
+            // "vodInfo: in detail ${it.vod_name}".log()
+            it.log()
             initVideoDetail(it)
 
             playerViewModel.getFavoriteById(it.vod_id).observe(viewLifecycleOwner) { favoriteVideo ->
@@ -66,7 +66,7 @@ class VideoDetailFragment : Fragment() {
 
         //根据视频窗口大小确定弹窗高度,3f是留出视频进度条的高度
         val height = resources.displayMetrics.heightPixels - playerHeight - CommonUtil.dpToPxInt(requireContext(), 3f)
-        SLog.d("fragment popup height: $height")
+        "fragment popup height: $height".log()
 
 
         // 点击出现视频详情弹窗
@@ -128,11 +128,22 @@ class VideoDetailFragment : Fragment() {
         playerViewModel.getVideoRecommend(type)
 
         playerViewModel.recommendVideoList.observe(viewLifecycleOwner) {
+            it.log()
             recommendAdapter.updateRecommendList(it)
         }
     }
 
-    private fun initFavoriteView() {
+    /**
+     * 添加点赞等按钮的监听
+     */
+    private fun initView() {
+
+
+        // 点赞图标变换状态
+        binding.btnLike.setOnClickListener {
+            binding.btnLike.isSelected = !binding.btnLike.isSelected
+        }
+
         // 收藏图标变换状态
         binding.btnFavor.setOnClickListener {
             if (binding.btnFavor.isSelected) {
@@ -156,16 +167,6 @@ class VideoDetailFragment : Fragment() {
                 }
             }
         }
-    }
-
-    /**
-     * 添加点赞等按钮的监听
-     */
-    private fun initClickListener() {
-        // 点赞图标变换状态
-        binding.btnLike.setOnClickListener {
-            binding.btnLike.isSelected = !binding.btnLike.isSelected
-        }
 
         // 单独下载一个视频
         binding.btnDownload.setOnClickListener {
@@ -180,7 +181,19 @@ class VideoDetailFragment : Fragment() {
         }
 
         binding.btnReportError.setOnClickListener {
-
+            var content = ""
+            playerViewModel.vodInfo.value?.let {
+                val subVideoName = it.subVideoList[playerViewModel.currentIndex.value!!].sub_video_name
+                content = "视频：${it.vod_name} - $subVideoName"
+            }
+            XPopup.Builder(context)
+                .hasStatusBarShadow(false)
+                .hasNavigationBar(false) //.dismissOnBackPressed(false)
+                .isDestroyOnDismiss(true) //对于只使用一次的弹窗对象，推荐设置这个
+                .autoOpenSoftInput(true)
+                .asInputConfirm("提交错误", content, null, "具体问题") {
+                    //Toast.makeText(context, it, LENGTH_SHORT).show()
+                }.show()
         }
 
         //todo 对应多地址的下载进行修改

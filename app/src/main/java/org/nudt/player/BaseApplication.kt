@@ -5,7 +5,7 @@ import com.tencent.mmkv.MMKV
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.nudt.common.SLog
+import org.nudt.common.log
 import org.nudt.player.di.modulePlayer
 import zlc.season.downloadx.DownloadXManager
 
@@ -24,7 +24,7 @@ class BaseApplication : Application() {
      */
     private fun initMMKV() {
         val rootDir = MMKV.initialize(this)
-        SLog.d("mmkv root: $rootDir")
+        "mmkv root: $rootDir".log("init")
     }
 
     /**

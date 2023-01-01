@@ -32,9 +32,15 @@ android {
 }
 
 dependencies {
-    implementation project(':modules:common')
-    //implementation project(':modules:clinglibrary')
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.google.android.material:material:1.7.0'
+
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
+
     implementation 'com.gitee.spoomlan.talentmov-master:clinglibrary:1.0.1'
+
+    implementation 'com.github.li-xiaojun:XPopup:2.9.2'
 
     //api 'com.github.hty527.iPlayer:iplayer:2.1.1'
     // 临时引入包，修改BasePlayer 方便布局预览

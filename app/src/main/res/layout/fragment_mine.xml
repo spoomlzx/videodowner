@@ -68,7 +68,7 @@
             app:srcCompat="@drawable/avatar" />
 
         <TextView
-            android:id="@+id/iv_nicheng"
+            android:id="@+id/tv_nick_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_grower_margin"
@@ -80,7 +80,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_user_id"
+            android:id="@+id/tv_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/default_grower_margin"
@@ -88,7 +88,7 @@
             android:textColor="@color/text_gray"
             android:textSize="@dimen/text_size_small"
             app:layout_constraintStart_toEndOf="@+id/tv_main_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/iv_nicheng" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_nick_name" />
 
         <ImageView
             android:id="@+id/iv_arrow_right"
