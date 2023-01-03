@@ -1,12 +1,12 @@
 package org.nudt.player.data.network
 
 class ResponseData<T>(
-    val Msg: String,
-    val Code: Int,
-    val Data: T
+    val msg: String,
+    val code: Int,
+    val data: T
 ) {
     fun isSuccess(): Boolean {
-        return 200 == Code
+        return 200 == code
     }
 }
 

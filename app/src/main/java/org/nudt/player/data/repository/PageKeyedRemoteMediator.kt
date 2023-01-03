@@ -49,7 +49,7 @@ class PageKeyedRemoteMediator(
                     LoadType.REFRESH -> state.config.pageSize
                     else -> state.config.pageSize
                 }
-            ).Data
+            ).data
 
             val videos = data.items
             val retPage = data.page

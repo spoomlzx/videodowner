@@ -44,7 +44,7 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
                 var videoInfo = videoDao.getVideoById(vodId)
                 // 如果数据库中没有，则从网络拉取
                 if (null == videoInfo) {
-                    videoInfo = videoApi.getVideoById(vodId).Data
+                    videoInfo = videoApi.getVideoById(vodId).data
                     // 并存储到数据库中
                     videoDao.insert(videoInfo)
                 }
@@ -62,7 +62,7 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
     suspend fun getVideoRecommend(type: Int): Flow<VideoResult<List<Video>>> {
         return flow {
             try {
-                val videoList = videoApi.getVideoRecommend(type).Data.items
+                val videoList = videoApi.getVideoRecommend(type).data.items
                 emit(VideoResult.Success(videoList))
             } catch (e: Exception) {
                 emit(VideoResult.Failure(e.cause))

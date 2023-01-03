@@ -19,7 +19,7 @@ class VideoSearchPagingSource(private val videoApi: VideoApi, private val keywor
 
             val data = videoApi.searchVideoList(
                 keyword, page, limit = pageSize
-            ).Data
+            ).data
 
 
             //val data = db.videoDao().getVideoListByKeyWord(start, pageSize, keyword)

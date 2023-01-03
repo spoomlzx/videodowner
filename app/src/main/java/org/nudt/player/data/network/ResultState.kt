@@ -31,10 +31,10 @@ inline fun <reified T> ResultState<T>.doFailure(failure: (ApiException) -> Unit)
 fun <T> MutableLiveData<ResultState<T>>.paresResult(result: ResponseData<T>) {
     value = when {
         result.isSuccess() -> {
-            ResultState.Success(result.Data)
+            ResultState.Success(result.data)
         }
         else -> {
-            ResultState.Error(ApiException(result.Code, result.Msg))
+            ResultState.Error(ApiException(result.code, result.msg))
         }
     }
 }

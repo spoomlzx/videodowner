@@ -88,6 +88,16 @@ dependencies {
 
     implementation 'com.github.li-xiaojun:XPopup:2.9.2'
 
+    // PictureSelector basic (Necessary)
+    implementation 'io.github.lucksiege:pictureselector:v3.10.7'
+    // image compress library (Not necessary)
+    implementation 'io.github.lucksiege:compress:v3.10.7'
+    // uCrop library (Not necessary)
+    implementation 'io.github.lucksiege:ucrop:v3.10.7'
+    // simple camerax library (Not necessary)
+    implementation 'io.github.lucksiege:camerax:v3.10.7'
+
+
     implementation "io.insert-koin:koin-android:$koin_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
