@@ -97,6 +97,8 @@ dependencies {
     // simple camerax library (Not necessary)
     implementation 'io.github.lucksiege:camerax:v3.10.7'
 
+    implementation 'com.huawei.hms:scanplus:2.9.0.300'
+
 
     implementation "io.insert-koin:koin-android:$koin_version"
 
