@@ -1,7 +1,6 @@
 package org.nudt.videoplayer
 
 import android.content.Context
-import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.Toast
@@ -11,7 +10,7 @@ import com.android.iplayer.listener.OnPlayerEventListener
 import com.android.iplayer.media.IMediaPlayer
 import com.lxj.xpopup.XPopup
 import org.nudt.videoplayer.controller.VideoController
-import org.nudt.videoplayer.controls.*
+import org.nudt.videoplayer.controls.ControlToolBarView
 import org.nudt.videoplayer.media.ExoPlayerFactory
 import org.nudt.videoplayer.model.SubVideo
 import org.nudt.videoplayer.view.DlanListPopupView
@@ -142,24 +141,7 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         setDataSource(subVideo.sub_video_url)
         this.url = subVideo.sub_video_url
         this.title = "${subVideo.video_name} - ${subVideo.sub_video_name}"
-        setTitle(title)
-        startPlay()
-    }
-
-    /**
-     * 暂时保留给离线视频，准备废弃
-     */
-    fun setTitle(title: String) {
         controller.setTitle(title)
-        this.title = title
-    }
-
-    /**
-     * 暂时保留给离线视频，准备废弃
-     */
-    fun setLocalDataSource(dataSource: String) {
-        val filePath = Uri.parse("file://$dataSource").toString()
-        setDataSource(filePath)
-        this.url = filePath
+        startPlay()
     }
 }

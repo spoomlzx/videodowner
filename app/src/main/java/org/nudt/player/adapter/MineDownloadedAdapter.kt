@@ -44,6 +44,7 @@ class MineDownloadedAdapter(private val context: Context) : RecyclerView.Adapter
             val intent = Intent(context, OfflinePlayerActivity::class.java)
             intent.putExtra("url", "${taskInfo.file_path}/${taskInfo.file_name}")
             intent.putExtra("title", title)
+            intent.putExtra("pic", extra.vod_thumb)
             context.startActivity(intent)
         }
     }

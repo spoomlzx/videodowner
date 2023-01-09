@@ -43,6 +43,7 @@ class VideoDownloadedAdapter(private val context: Context) :
             val intent = Intent(context, OfflinePlayerActivity::class.java)
             intent.putExtra("url", "${taskInfo.file_path}/${taskInfo.file_name}")
             intent.putExtra("title", "${extra.vod_name}-${extra.vod_index}")
+            intent.putExtra("pic", extra.vod_thumb)
             context.startActivity(intent)
         }
 

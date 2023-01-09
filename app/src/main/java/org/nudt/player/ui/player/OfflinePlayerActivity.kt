@@ -3,6 +3,7 @@ package org.nudt.player.ui.player
 import android.os.Bundle
 import android.widget.LinearLayout
 import org.nudt.player.databinding.ActivityOfflinePlayerBinding
+import org.nudt.videoplayer.model.SubVideo
 
 class OfflinePlayerActivity : BasePlayerActivity() {
     private val binding by lazy { ActivityOfflinePlayerBinding.inflate(layoutInflater) }
@@ -20,12 +21,11 @@ class OfflinePlayerActivity : BasePlayerActivity() {
 
         val url = intent.getStringExtra("url")
         val title = intent.getStringExtra("title")
-        if (title != null) {
-            player.setTitle(title)
-        }
-        if (url != null) {
-            player.setLocalDataSource(url)
-            player.prepareAsync()
+        val pic = intent.getStringExtra("pic")
+
+        if (title != null && url != null) {
+            val subVideo = SubVideo(title, "HD", pic, url)
+            player.setSubVideoList(arrayListOf(subVideo))
         }
     }
 }
