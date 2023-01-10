@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0-rc01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.recyclerview:recyclerview:1.3.0-rc01"
 
     implementation 'com.gitee.spoomlan.talentmov-master:clinglibrary:1.0.1'
 

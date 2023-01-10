@@ -3,11 +3,11 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         google()
+        maven { url 'https://developer.huawei.com/repo/' }
+        mavenCentral()
         maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
-        maven {url 'https://developer.huawei.com/repo/'}
         maven { url 'https://jitpack.io' }
-        mavenCentral()
     }
 }
 dependencyResolutionManagement {
@@ -15,10 +15,10 @@ dependencyResolutionManagement {
     repositories {
         mavenLocal()
         google()
-        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
-        maven {url 'https://developer.huawei.com/repo/'}
-        maven { url 'https://jitpack.io' }
         mavenCentral()
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "videodowner"
