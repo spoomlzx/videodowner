@@ -11,7 +11,7 @@ import com.android.iplayer.media.IMediaPlayer
 import com.lxj.xpopup.XPopup
 import org.nudt.videoplayer.controller.VideoController
 import org.nudt.videoplayer.controls.ControlToolBarView
-import org.nudt.videoplayer.media.ExoPlayerFactory
+import org.nudt.videoplayer.media.IjkPlayerFactory
 import org.nudt.videoplayer.model.SubVideo
 import org.nudt.videoplayer.view.DlanListPopupView
 
@@ -85,7 +85,8 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
         setOnPlayerActionListener(object : OnPlayerEventListener() {
             //自定义解码器
             override fun createMediaPlayer(): AbstractMediaPlayer {
-                return ExoPlayerFactory.create().createPlayer(context) //IJK解码器
+                // 使用IJK解码器时，nginx不能开limit_rate，否则mp4会播放出错
+                return IjkPlayerFactory.create().createPlayer(context)
             }
         })
 

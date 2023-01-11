@@ -49,15 +49,6 @@ dependencies {
 
     api project(':modules:iplayer')
 
-    //EXO解码器
-    api 'com.google.android.exoplayer:exoplayer:2.18.1'
-    api 'com.google.android.exoplayer:exoplayer-core:2.18.1'
-    api 'com.google.android.exoplayer:exoplayer-dash:2.18.1'
-    api "com.google.android.exoplayer:extension-rtmp:2.18.1"
-    api "com.google.android.exoplayer:exoplayer-hls:2.18.1"
-    api "com.google.android.exoplayer:exoplayer-rtsp:2.18.1"
-    api "com.google.android.exoplayer:exoplayer-transformer:2.18.1"
-
     // test
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'

@@ -57,13 +57,13 @@ object VideoUtil {
                     }
                 }
             }
-        } else if (vodPlayUrls.contains("mp4") || vodPlayUrls.contains("mkv")) {
+        } else if (vodPlayUrls.contains("mp4") || vodPlayUrls.contains("mkv") || vodPlayUrls.contains("rmvb") || vodPlayUrls.contains("avi")) {
             // 实际视频播放地址
             // 多集
             if (vodPlayUrls.contains("#")) {
                 val playUrls: Array<String> = vodPlayUrls.split("#").toTypedArray()
                 for (i in playUrls.indices) {
-                    if (playUrls[i].endsWith("mp4") || playUrls[i].endsWith("mkv")) {
+                    if (playUrls[i].endsWith("mp4") || playUrls[i].endsWith("mkv") || playUrls[i].endsWith("rmvb") || playUrls[i].endsWith("avi")) {
                         val singleUrl = playUrls[i]
                         if (singleUrl.contains("$")) {
                             val vodData = singleUrl.split("$").toTypedArray()
