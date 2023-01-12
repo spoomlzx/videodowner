@@ -8,6 +8,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace "org.nudt.player"
     compileSdk 33
 
     defaultConfig {

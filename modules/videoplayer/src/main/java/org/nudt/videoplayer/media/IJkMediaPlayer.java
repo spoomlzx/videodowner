@@ -51,7 +51,7 @@ public class IJkMediaPlayer extends AbstractMediaPlayer implements IMediaPlayer.
             mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-handle-resolution-change", 0);
 
             //播放重连次数
-            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 1);
+            mMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "reconnect", 10);
 
 
             //setOption(isLive);

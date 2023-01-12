@@ -32,7 +32,7 @@ class Preference<T>(private val key: String, private val default: T) : ReadWrite
                 is Long -> it.encode(key, value)
                 is Double -> it.encode(key, value)
                 is ByteArray -> it.encode(key, value)
-                is Nothing -> return@let
+                else -> return@let
             }
         }
     }

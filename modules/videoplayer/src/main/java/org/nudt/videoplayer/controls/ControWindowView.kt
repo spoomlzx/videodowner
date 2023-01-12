@@ -224,22 +224,20 @@ class ControWindowView(context: Context?) : BaseControlWidget(context), View.OnC
      * 结束延时任务
      */
     private fun stopDelayedRunnable(msg: Int = 0) {
-        if (null != mExHandel) {
-            if (0 == msg) {
-                mExHandel.removeCallbacksAndMessages(null)
-            } else {
-                mExHandel.removeMessages(msg)
-            }
+        if (0 == msg) {
+            mExHandel.removeCallbacksAndMessages(null)
+        } else {
+            mExHandel.removeMessages(msg)
         }
     }
 
     /**
      * 使用这个Handel替代getHandel(),避免多播放器同时工作的相互影响
      */
-    private val mExHandel: BaseHandel? = object : BaseHandel(Looper.getMainLooper()) {
+    private val mExHandel: BaseHandel = object : BaseHandel(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
-            if (null != msg && MESSAGE_HIDE_CONTROLLER == msg.what) {
+            if (MESSAGE_HIDE_CONTROLLER == msg.what) {
                 hideControl(true)
             }
         }

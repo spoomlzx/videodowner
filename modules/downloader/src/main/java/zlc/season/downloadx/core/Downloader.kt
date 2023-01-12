@@ -30,6 +30,7 @@ abstract class BaseDownloader(protected val coroutineScope: CoroutineScope) : Do
 
     private val progress = Progress()
 
+    @OptIn(DelicateCoroutinesApi::class)
     override var actor = GlobalScope.actor<QueryProgress>(Dispatchers.IO) {
         for (each in channel) {
             each.completableDeferred.complete(progress.also {

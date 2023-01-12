@@ -73,7 +73,7 @@ fun Response<*>.calcRanges(rangeSize: Long): Long {
 }
 
 private fun Response<*>.contentDisposition(): String {
-    val contentDisposition = header("Content-Disposition").toLowerCase(Locale.getDefault())
+    val contentDisposition = header("Content-Disposition").lowercase(Locale.getDefault())
 
     if (contentDisposition.isEmpty()) {
         return ""
@@ -85,16 +85,17 @@ private fun Response<*>.contentDisposition(): String {
     }
 
     var result = matcher.group(1)
-    if (result.startsWith("\"")) {
-        result = result.substring(1)
-    }
-    if (result.endsWith("\"")) {
-        result = result.substring(0, result.length - 1)
+    if (result != null) {
+        if (result.startsWith("\"")) {
+            result = result.substring(1)
+        }
+        if (result.endsWith("\"")) {
+            result = result.substring(0, result.length - 1)
+        }
+        result = result.replace("/", "_", false)
     }
 
-    result = result.replace("/", "_", false)
-
-    return result
+    return result ?: ""
 }
 
 fun getFileNameFromUrl(url: String): String {
