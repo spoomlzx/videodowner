@@ -1,6 +1,7 @@
 package org.nudt.videoplayer
 
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.Toast
@@ -140,7 +141,12 @@ class VideoPlayer(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : 
     }
 
     private fun playSubVideo(subVideo: SubVideo) {
-        setDataSource(subVideo.sub_video_url)
+        if (subVideo.sub_video_url.startsWith("http")) {
+            setDataSource(subVideo.sub_video_url)
+        } else {
+            val filePath = Uri.parse("file://${subVideo.sub_video_url}").toString()
+            setDataSource(filePath)
+        }
         this.url = subVideo.sub_video_url
         this.title = "${subVideo.video_name} - ${subVideo.sub_video_name}"
         controller.setTitle(title)
