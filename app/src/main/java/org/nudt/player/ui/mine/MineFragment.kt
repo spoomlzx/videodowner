@@ -2,6 +2,7 @@ package org.nudt.player.ui.mine
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,24 +12,24 @@ import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.player.adapter.MineDownloadedAdapter
+import org.nudt.common.log
 import org.nudt.player.adapter.MineHistoryAdapter
+import org.nudt.player.data.network.doSuccess
 import org.nudt.player.databinding.FragmentMineBinding
 import org.nudt.player.ui.MainActivity.Companion.CAMERA_REQ_CODE
 import org.nudt.player.ui.VideoViewModel
 import org.nudt.player.ui.download.VideoDownloadListActivity
 import org.nudt.player.ui.history.PlayHistoryActivity
+import org.nudt.player.ui.setting.SettingActivity
 import org.nudt.player.utils.SpUtils
-import zlc.season.downloadx.DownloadXManager
 
 class MineFragment : Fragment() {
     private val binding by lazy { FragmentMineBinding.inflate(layoutInflater) }
     private val videoViewModel: VideoViewModel by viewModel()
     private lateinit var historyAdapter: MineHistoryAdapter
-    private lateinit var downloadedAdapter: MineDownloadedAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return binding.root
@@ -42,6 +43,41 @@ class MineFragment : Fragment() {
         initHistoryView()
 
         initModulesView()
+
+        initCheckUpdateView()
+
+        initSettingView()
+    }
+
+    private fun initCheckUpdateView() {
+        videoViewModel.checkUpdate()
+
+        videoViewModel.checkUpdateResult.observe(viewLifecycleOwner) { resultState ->
+            resultState.doSuccess {
+                val packageManager = context!!.packageManager
+                val packageInfo = packageManager.getPackageInfo(context!!.packageName, 0)
+                val versionCode = packageInfo.longVersionCode
+                if (it.version_code > versionCode) {
+                    binding.clNewVersion.visibility = View.VISIBLE
+                    binding.tvNewVersion.text = "版本更新(${it.version})"
+                } else {
+                    binding.clNewVersion.visibility = View.GONE
+                }
+            }
+        }
+
+        binding.clNewVersion.setOnClickListener {
+            val intent = Intent(context, UpdateActivity::class.java)
+            context?.startActivity(intent)
+        }
+    }
+
+    private fun initSettingView() {
+
+        binding.clConfig.setOnClickListener {
+            val intent = Intent(context, SettingActivity::class.java)
+            context?.startActivity(intent)
+        }
     }
 
     /**
@@ -113,30 +149,4 @@ class MineFragment : Fragment() {
         }
     }
 
-    /**
-     * downloaded video 部分
-     */
-    private fun initDownloadView() {
-        binding.clDownload.setOnClickListener {
-            val intent = Intent(context, VideoDownloadListActivity::class.java)
-            context?.startActivity(intent)
-        }
-
-        val linearLayoutManager = LinearLayoutManager(context)
-        linearLayoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        binding.rvVideoDownloaded.layoutManager = linearLayoutManager
-
-        context?.let {
-            downloadedAdapter = MineDownloadedAdapter(it)
-            binding.rvVideoDownloaded.adapter = downloadedAdapter
-        }
-
-
-    }
-
-    fun fetchDownloadedTaskInfo() {
-        DownloadXManager.queryFinishedTaskInfoTopFlow().asLiveData().observe(viewLifecycleOwner) {
-            downloadedAdapter.updateTaskInfoList(it)
-        }
-    }
 }

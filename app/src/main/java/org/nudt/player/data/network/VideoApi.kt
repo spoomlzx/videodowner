@@ -3,6 +3,7 @@ package org.nudt.player.data.network
 import android.util.Log
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.nudt.player.data.model.Version
 import org.nudt.player.data.model.Video
 import org.nudt.player.utils.SpUtils
 import retrofit2.Retrofit
@@ -34,6 +35,9 @@ interface VideoApi {
     @FormUrlEncoded
     @POST("?service=App.Video.ReportVideoError")
     suspend fun reportVideoError(@Field("name") name: String, @Field("content") content: String): ResponseData<String>
+
+    @GET("?service=App.Version.CheckUpdate")
+    suspend fun checkUpdate(): ResponseData<Version>
 
     companion object {
         private val BASE_URL = SpUtils.baseApiUrl

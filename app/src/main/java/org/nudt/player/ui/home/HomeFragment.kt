@@ -31,12 +31,6 @@ class HomeFragment : Fragment() {
             context?.startActivity(intent)
         }
 
-        binding.tvMainAvatar.setOnClickListener {
-            val intent = Intent(context, SettingActivity::class.java)
-            context?.startActivity(intent)
-        }
-
-
         return binding.root
     }
 

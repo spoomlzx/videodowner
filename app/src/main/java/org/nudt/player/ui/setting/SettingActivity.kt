@@ -22,7 +22,13 @@ class SettingActivity : AppCompatActivity() {
         binding.tbCommon.ivBack.setOnClickListener { finish() }
 
         binding.tvUrl.text = url
+        // initSetupIp()
 
+
+
+    }
+
+    private fun initSetupIp() {
         binding.clConfigUrl.setOnClickListener {
             val editText = EditText(this@SettingActivity)
             editText.text.append(url)
@@ -33,6 +39,5 @@ class SettingActivity : AppCompatActivity() {
                 binding.tvUrl.text = SpUtils.baseUrl
             }.show()
         }
-
     }
 }

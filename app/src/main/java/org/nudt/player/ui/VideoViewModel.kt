@@ -1,14 +1,14 @@
 package org.nudt.player.ui
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.paging.cachedIn
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.PlayHistory
+import org.nudt.player.data.model.Version
+import org.nudt.player.data.network.ResultState
+import org.nudt.player.data.network.request
 import org.nudt.player.data.repository.VideoRepository
 
 
@@ -40,6 +40,13 @@ class VideoViewModel(private val videoRepository: VideoRepository) : ViewModel()
         viewModelScope.launch(Dispatchers.IO) {
             videoRepository.deleteFavorite(favoriteVideo.vod_id)
         }
+    }
+
+
+    val checkUpdateResult = MutableLiveData<ResultState<Version>>()
+
+    fun checkUpdate() {
+        request({ videoRepository.checkUpdate() }, checkUpdateResult)
     }
 
 }

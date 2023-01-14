@@ -70,7 +70,15 @@ class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
         }.flowOn(Dispatchers.IO)
     }
 
+    /**
+     * 发布一条视频报错信息
+     */
     suspend fun reportVideoError(name: String, content: String) = videoApi.reportVideoError(name, content)
+
+    /**
+     * 获取最新版本
+     */
+    suspend fun checkUpdate() = videoApi.checkUpdate()
 
     /**
      * 保存视频观看记录
