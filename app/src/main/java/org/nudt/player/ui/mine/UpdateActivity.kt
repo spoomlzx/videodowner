@@ -7,11 +7,11 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.nudt.player.data.network.doSuccess
-import org.nudt.player.databinding.ActivityNewVersionBinding
+import org.nudt.player.databinding.ActivityUpdateBinding
 import org.nudt.player.ui.VideoViewModel
 
 class UpdateActivity : AppCompatActivity() {
-    private val binding by lazy { ActivityNewVersionBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityUpdateBinding.inflate(layoutInflater) }
     private val videoViewModel: VideoViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
