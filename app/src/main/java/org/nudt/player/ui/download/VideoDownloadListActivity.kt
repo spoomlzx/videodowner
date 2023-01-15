@@ -53,7 +53,7 @@ class VideoDownloadListActivity : AppCompatActivity() {
                 }
 
                 binding.tvDownloadingTitle.text = extra.vod_name
-                binding.tvDownloadingIndex.text = extra.vod_index
+                binding.tvDownloadingIndex.text = extra.sub_video_name
                 binding.tvDownloadingVideoNum.text = "${it.size}个内容"
             }
         }

@@ -91,9 +91,10 @@ class PlayerViewModel(private val videoRepository: VideoRepository) : ViewModel(
     fun cacheVideo(): Boolean {
         val vod = vodInfo.value
         vod?.let {
-            val subVideo = vod.subVideoList[currentIndex.value ?: 0]
+            val index = currentIndex.value ?: 0
+            val subVideo = vod.subVideoList[index]
             if (VideoUtil.checkMedia(subVideo.sub_video_url)) {
-                val extra = VideoCacheExtra(vod.vod_name, subVideo.sub_video_pic ?: "", subVideo.sub_video_name)
+                val extra = VideoCacheExtra(vod.vod_name, subVideo.sub_video_pic ?: "", subVideo.sub_video_name, index)
                 DownloadXManager.download(subVideo.sub_video_url, gson.toJson(extra))
                 return true
             }
