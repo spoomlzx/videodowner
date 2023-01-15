@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import org.nudt.player.adapter.VideoSearchPagingSource
-import org.nudt.player.data.network.VideoResult
 import org.nudt.player.data.db.VideoDb
 import org.nudt.player.data.model.FavoriteVideo
 import org.nudt.player.data.model.PlayHistory
 import org.nudt.player.data.model.Video
 import org.nudt.player.data.model.VodInfoModel
 import org.nudt.player.data.network.VideoApi
+import org.nudt.player.data.network.VideoResult
 
 class VideoRepository(val db: VideoDb, private val videoApi: VideoApi) {
 

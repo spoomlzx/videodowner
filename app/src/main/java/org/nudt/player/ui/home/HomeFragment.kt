@@ -14,7 +14,6 @@ import org.nudt.player.R
 import org.nudt.player.data.model.VideoType
 import org.nudt.player.databinding.FragmentHomeBinding
 import org.nudt.player.ui.search.SearchActivity
-import org.nudt.player.ui.setting.SettingActivity
 import java.lang.reflect.Field
 
 class HomeFragment : Fragment() {

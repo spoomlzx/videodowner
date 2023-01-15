@@ -2,7 +2,6 @@ package org.nudt.player.ui.mine
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +12,7 @@ import android.widget.Toast.LENGTH_SHORT
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.nudt.common.log
 import org.nudt.player.adapter.MineHistoryAdapter
 import org.nudt.player.data.network.doSuccess
 import org.nudt.player.databinding.FragmentMineBinding

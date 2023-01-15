@@ -8,11 +8,7 @@ import org.nudt.player.data.model.Video
 import org.nudt.player.utils.SpUtils
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface VideoApi {
 
