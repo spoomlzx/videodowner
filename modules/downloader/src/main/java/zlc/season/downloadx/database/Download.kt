@@ -19,3 +19,7 @@ const val STATUS_FAILED = 5
 )
 @Retention(AnnotationRetention.SOURCE)
 annotation class DownloadStatus
+
+
+const val TYPE_VIDEO = 0
+const val TYPE_FILE = 1

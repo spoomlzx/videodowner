@@ -5,10 +5,14 @@ import zlc.season.downloadx.utils.getMd5
 
 open class DownloadParam(
     var url: String,
-    var extra: String = "",
     var savePath: String,
     var addTime: Long,
-    var saveName: String = ""
+    var saveName: String = "",
+    var type: Int = 0,
+    var videoName: String,
+    var videoThumb: String,
+    var subName: String,
+    var subIndex: Int,
 ) {
 
     /**

@@ -2,9 +2,7 @@ package zlc.season.downloadx
 
 import android.content.*
 import android.os.IBinder
-import android.util.Log
 import zlc.season.downloadx.core.DownloadTask
-import zlc.season.downloadx.database.DownloadTaskManager
 import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.utils.log
 
@@ -25,12 +23,20 @@ object DownloadXManager {
 
     }
 
-    fun getDownloadTask(url: String, extra: String): DownloadTask {
-        return downloadService.getDownloadTask(url, extra)
+    fun getDownloadTask(url: String): DownloadTask? {
+        return downloadService.getDownloadTask(url)
     }
 
-    fun download(url: String, extra: String): DownloadTask {
-        return downloadService.download(url, extra)
+    fun fetchOrInsertDownloadTask(url: String, videoName: String, videoThumb: String, subName: String, subIndex: Int, type: Int = 0): DownloadTask {
+        return downloadService.fetchOrInsertDownloadTask(url, type, videoName, videoThumb, subName, subIndex)
+    }
+
+    fun downloadVideo(url: String, videoName: String, videoThumb: String, subName: String, subIndex: Int, type: Int = 0): DownloadTask {
+        return downloadService.downloadVideo(url, videoName, videoThumb, subName, subIndex, type)
+    }
+
+    fun downloadFile(url: String): DownloadTask {
+        return downloadService.downloadFile(url)
     }
 
     fun pauseResumeDownloadTask(taskInfo: TaskInfo) {
@@ -54,10 +60,6 @@ object DownloadXManager {
 
     // 获取已下载完成任务的Flow
     fun queryFinishedTaskInfoFlow() = downloadService.queryFinishedTaskInfoFlow()
-
-    // 获取后10条已下载完成任务的Flow
-    fun queryFinishedTaskInfoTopFlow() = downloadService.queryFinishedTaskInfoTopFlow()
-
 
     fun initWithServiceMode(contextWrapper: ContextWrapper): DownloadXManager {
         val serviceIntent = Intent(contextWrapper, DownloadService::class.java)

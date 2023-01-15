@@ -5,10 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.google.gson.Gson
 import com.lxj.xpopup.XPopup
 import org.nudt.player.R
-import org.nudt.player.data.model.VideoCacheExtra
 import org.nudt.player.databinding.DownloadingListItemVideoBinding
 import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.State
@@ -20,7 +18,6 @@ class VideoDownloadingAdapter(private val context: Context) :
     RecyclerView.Adapter<VideoDownloadingAdapter.VideoDownloadingViewHolder>() {
 
     private var downloadingTaskInfoList: ArrayList<TaskInfo> = arrayListOf()
-    private val gson = Gson()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoDownloadingViewHolder {
         return VideoDownloadingViewHolder(DownloadingListItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -28,20 +25,17 @@ class VideoDownloadingAdapter(private val context: Context) :
 
     override fun onBindViewHolder(holder: VideoDownloadingViewHolder, position: Int) {
         val taskInfo = downloadingTaskInfoList[position]
-        val extra = gson.fromJson(taskInfo.extra, VideoCacheExtra::class.java)
-        if (extra is VideoCacheExtra) {
-            holder.binding.ivVideoPic.load(extra.vod_thumb) {
-                placeholder(R.drawable.default_pic)
-            }
-            holder.binding.tvTitle.text = extra.vod_name
-            holder.binding.tvIndex.text = extra.vod_index
+        holder.binding.ivVideoPic.load(taskInfo.video_thumb) {
+            placeholder(R.drawable.default_pic)
         }
+        holder.binding.tvTitle.text = taskInfo.video_name
+        holder.binding.tvIndex.text = taskInfo.sub_name
 
         holder.binding.progressBar.progress = (taskInfo.downloaded_bytes ratio taskInfo.total_bytes).toInt()
 
-        val downloadTask = DownloadXManager.getDownloadTask(taskInfo.url, taskInfo.extra)
+        val downloadTask = DownloadXManager.getDownloadTask(taskInfo.url)
         // 每次更新页面后重新设置监听
-        downloadTask.stateListener {
+        downloadTask?.stateListener {
             when (it) {
                 is State.None -> {
                     holder.binding.tvState.text = "准备下载"
@@ -71,12 +65,14 @@ class VideoDownloadingAdapter(private val context: Context) :
         }
 
         holder.binding.cvVideo.setOnClickListener {
-            if (downloadTask.isStarted()) {
-                //"stop task ${downloadTask.param.tag()}".log()
-                downloadTask.pause()
-            } else if (downloadTask.canStart()) {
-                //"restart task ${downloadTask.param.tag()}".log()
-                downloadTask.start()
+            if (downloadTask != null) {
+                if (downloadTask.isStarted()) {
+                    //"stop task ${downloadTask.param.tag()}".log()
+                    downloadTask.pause()
+                } else if (downloadTask.canStart()) {
+                    //"restart task ${downloadTask.param.tag()}".log()
+                    downloadTask.start()
+                }
             }
         }
 

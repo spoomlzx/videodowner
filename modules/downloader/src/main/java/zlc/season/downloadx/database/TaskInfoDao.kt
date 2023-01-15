@@ -15,14 +15,11 @@ interface TaskInfoDao {
     @Update
     suspend fun update(vararg taskInfo: TaskInfo)
 
-    @Query("select * from TaskInfo where status <> $STATUS_SUCCEED order by add_time")
+    @Query("select * from TaskInfo where status <> $STATUS_SUCCEED and type=0 order by add_time")
     fun queryUnfinishedTaskInfoFlow(): Flow<List<TaskInfo>>
 
-    @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time")
+    @Query("select * from TaskInfo where status = $STATUS_SUCCEED and type=0 order by video_name, sub_index, modify_time")
     fun queryFinishedTaskInfoFlow(): Flow<List<TaskInfo>>
-
-    @Query("select * from TaskInfo where status = $STATUS_SUCCEED order by modify_time desc limit 10")
-    fun queryFinishedTaskInfoTopFlow(): Flow<List<TaskInfo>>
 
     @Query("select * from TaskInfo where url=:url")
     fun findByUrl(url: String): TaskInfo?

@@ -21,14 +21,48 @@ class DownloadService() : LifecycleService() {
     // 下载队列
     private val queue: DownloadQueue = DefaultDownloadQueue.get()
 
-    fun download(url: String, extra: String): DownloadTask {
-        val task = getDownloadTask(url, extra)
+    fun downloadVideo(url: String, videoName: String, videoThumb: String, subName: String, subIndex: Int, type: Int): DownloadTask {
+        val task = fetchOrInsertDownloadTask(url, type, videoName, videoThumb, subName, subIndex)
         if (task.canStart())
             task.start()
         return task
     }
 
-    fun getDownloadTask(url: String, extra: String): DownloadTask {
+    fun downloadFile(url: String): DownloadTask {
+        val task = fetchOrInsertDownloadTask(url, TYPE_FILE)
+        if (task.canStart())
+            task.start()
+        return task
+    }
+
+    /**
+     * 获取已经存在的任务，用于下载列表界面
+     * 如果没有则返回null
+     */
+    fun getDownloadTask(url: String): DownloadTask? {
+        // 先查询DB中是否有当前url对应的任务
+        val dbTask = taskManager.findTaskInfoByUrl(url)
+        //"query dbTask from db".log()
+        var downloadTask: DownloadTask?
+        if (dbTask != null) {
+            downloadTask = queue.getDownloadTaskByTag(dbTask.task_id)
+            if (downloadTask != null) {
+                //"get task from queue ${downloadTask.param.tag()}".log()
+                return downloadTask
+            }
+            // 如果正在下载队列中，则返回队列中的task，否则从dbTask一个DownloadTask
+            downloadTask = buildDownloadTask(lifecycleScope, dbTask)
+            // "get task from db ${downloadTask.param.tag()}".log()
+            return downloadTask
+        } else {
+            return null
+        }
+    }
+
+    /**
+     * 获取任务，如果db中没有，则创建新任务
+     */
+    fun fetchOrInsertDownloadTask(url: String, type: Int = TYPE_VIDEO, videoName: String = "", videoThumb: String = "", subName: String = "", subIndex: Int = 0): DownloadTask {
         // 先查询DB中是否有当前url对应的任务
         val dbTask = taskManager.findTaskInfoByUrl(url)
         //"query dbTask from db".log()
@@ -44,7 +78,9 @@ class DownloadService() : LifecycleService() {
             // "get task from db ${downloadTask.param.tag()}".log()
         } else {
             // 重新创建一个DownloadTask
-            val downloadParam = DownloadParam(url, extra, getDownloadsDirPath() + "/" + url.getMd5(), System.currentTimeMillis())
+            val downloadParam = DownloadParam(
+                url, getDownloadsDirPath() + "/" + url.getMd5(), System.currentTimeMillis(), "", type, videoName, videoThumb, subName, subIndex
+            )
             downloadTask = DownloadTask(lifecycleScope, downloadParam, DownloadConfig(taskManager, queue))
             "get new task ${downloadTask.param.tag()}".log()
             lifecycleScope.launch {
@@ -100,9 +136,6 @@ class DownloadService() : LifecycleService() {
 
     fun queryFinishedTaskInfoFlow() = taskManager.queryFinishedTaskInfoFlow()
 
-    fun queryFinishedTaskInfoTopFlow() = taskManager.queryFinishedTaskInfoTopFlow()
-
-
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         return DownloadServiceBinder()
@@ -134,7 +167,10 @@ class DownloadService() : LifecycleService() {
      * 从已有的taskInfo初始化DownloadTask
      */
     private fun buildDownloadTask(coroutineScope: CoroutineScope, taskInfo: TaskInfo): DownloadTask {
-        val downloadParam = DownloadParam(taskInfo.url, taskInfo.extra, taskInfo.file_path, taskInfo.add_time, taskInfo.file_name)
+        val downloadParam = DownloadParam(
+            taskInfo.url, taskInfo.file_path, taskInfo.add_time, taskInfo.file_name,
+            taskInfo.type, taskInfo.video_name, taskInfo.video_thumb, taskInfo.sub_name, taskInfo.sub_index
+        )
         val stateHolder = DownloadTask.StateHolder()
         val state = when (taskInfo.status) {
             STATUS_NONE -> State.None()

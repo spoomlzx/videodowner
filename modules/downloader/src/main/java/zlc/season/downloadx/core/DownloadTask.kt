@@ -7,12 +7,11 @@ import zlc.season.downloadx.State
 import zlc.season.downloadx.database.TaskInfo
 import zlc.season.downloadx.helper.Default
 import zlc.season.downloadx.utils.closeQuietly
-import zlc.season.downloadx.utils.fileName
 import zlc.season.downloadx.utils.fileType
 import zlc.season.downloadx.utils.log
 import java.io.File
 
-@OptIn(ObsoleteCoroutinesApi::class, FlowPreview::class, ExperimentalCoroutinesApi::class)
+@OptIn(FlowPreview::class)
 open class DownloadTask(
     val coroutineScope: CoroutineScope,
     val param: DownloadParam,
@@ -244,13 +243,17 @@ open class DownloadTask(
             param.tag(),
             param.saveName,
             param.savePath,
-            param.extra,
             param.url,
             state.progress.downloadSize,
             state.progress.totalSize,
             System.currentTimeMillis(),
             param.addTime,
-            state.status
+            state.status,
+            param.videoName,
+            param.videoThumb,
+            param.subName,
+            param.subIndex,
+            param.type
         )
     }
 
