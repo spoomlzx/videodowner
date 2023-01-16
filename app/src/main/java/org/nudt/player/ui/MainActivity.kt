@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -14,6 +13,7 @@ import com.huawei.hms.hmsscankit.ScanUtil
 import com.huawei.hms.ml.scan.HmsScan
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions
 import com.next.easynavigation.view.EasyNavigationBar.OnTabClickListener
+import org.nudt.common.shortToast
 import org.nudt.player.R
 import org.nudt.player.databinding.ActivityMainBinding
 import org.nudt.player.ui.favorite.FavoriteFragment
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_SCAN_ONE) {
             val obj: HmsScan? = data.getParcelableExtra(ScanUtil.RESULT)
             if (obj != null) {
-                Toast.makeText(this, obj.originalValue, Toast.LENGTH_SHORT).show()
+                shortToast(obj.originalValue)
             }
         }
     }
@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (System.currentTimeMillis() - mExitTime > 2000) {
             //Snackbar.make(binding.container, "再按一次退出", Snackbar.LENGTH_SHORT).show()
-            Toast.makeText(this@MainActivity, "再按一次退出", Toast.LENGTH_SHORT).show()
+            shortToast("再按一次退出")
             mExitTime = System.currentTimeMillis()
         } else {
             // 退出app前暂停所有下载任务

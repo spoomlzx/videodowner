@@ -16,6 +16,7 @@
         android:paddingEnd="@dimen/default_general_margin"
         android:paddingBottom="@dimen/default_normal_margin">
 
+
         <org.nudt.common.component.ShapeImageView
             android:id="@+id/iv_video_pic"
             android:layout_width="@dimen/video_cover_width"
@@ -27,6 +28,34 @@
             app:layout_constraintTop_toTopOf="parent"
             app:siv_round_radius="@dimen/image_radius"
             tools:srcCompat="@drawable/default_image" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_normal_margin"
+            android:layout_marginBottom="@dimen/default_normal_margin"
+            android:background="@color/video_remark_background"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_video_pic"
+            app:layout_constraintEnd_toEndOf="@+id/iv_video_pic">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/default_tiny_margin"
+                android:visibility="gone"
+                android:src="@drawable/ic_multi_videos" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/default_tiny_margin"
+                android:paddingEnd="@dimen/default_tiny_margin"
+                android:text="16:08"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_smaller" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_title"

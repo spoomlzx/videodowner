@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lxj.xpopup.XPopup
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.nudt.common.CommonUtil
 import org.nudt.common.log
+import org.nudt.common.shortToast
 import org.nudt.player.R
 import org.nudt.player.adapter.RecommendAdapter
 import org.nudt.player.adapter.SubVideoAdapter
@@ -173,19 +172,19 @@ class VideoDetailFragment : Fragment() {
 
         // 单独下载一个视频
         binding.btnDownload.setOnClickListener {
-            AlertDialog.Builder(context, R.style.AlertDialog).setMessage("下载该视频？")
-                .setPositiveButton("确定") { _, _ ->
+            AlertDialog.Builder(context, R.style.AlertDialog).setMessage(R.string.download_this_video)
+                .setPositiveButton(R.string.text_sure) { _, _ ->
                     val ret = playerViewModel.cacheVideo()
                     if (!ret) {
-                        Toast.makeText(context, "不能下载", LENGTH_SHORT).show()
+                        shortToast(R.string.cannot_download)
                     }
-                }.setNegativeButton("取消") { _, _ -> }
+                }.setNegativeButton(R.string.text_cancel) { _, _ -> }
                 .create().show()
         }
 
         binding.btnReportError.setOnClickListener {
             if (binding.btnReportError.isSelected) {
-                Toast.makeText(context, "请勿重复提交", LENGTH_SHORT).show()
+                shortToast(R.string.do_not_reform)
                 return@setOnClickListener
             }
             var content = ""
@@ -205,10 +204,10 @@ class VideoDetailFragment : Fragment() {
 
         playerViewModel.reportResult.observe(viewLifecycleOwner) {
             it.doSuccess { data ->
-                Toast.makeText(context, data, LENGTH_SHORT).show()
+                shortToast(data)
                 binding.btnReportError.isSelected = true
             }
-            it.doFailure { error -> Toast.makeText(context, error.errorMsg, LENGTH_SHORT).show() }
+            it.doFailure { error -> shortToast(error.errorMsg) }
         }
 
         //todo 对应多地址的下载进行修改

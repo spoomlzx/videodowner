@@ -11,7 +11,6 @@ import org.nudt.common.formatFileSize
 import org.nudt.player.R
 import org.nudt.player.databinding.DownloadedListItemVideoBinding
 import org.nudt.player.ui.player.OfflinePlayerActivity
-import zlc.season.downloadx.DownloadXManager
 import zlc.season.downloadx.database.TaskInfo
 
 class VideoDownloadedAdapter(private val context: Context) :
@@ -43,7 +42,7 @@ class VideoDownloadedAdapter(private val context: Context) :
 
         holder.binding.cvVideo.setOnLongClickListener {
             XPopup.Builder(context).asConfirm("提示", "确认删除本视频？") {
-                DownloadXManager.removeDownloadTask(taskInfo)
+                // DownloadXManager.removeDownloadTask(taskInfo)
             }.show()
             true
         }

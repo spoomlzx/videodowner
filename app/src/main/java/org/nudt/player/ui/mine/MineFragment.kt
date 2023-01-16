@@ -7,12 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.nudt.common.shortToast
 import org.nudt.player.adapter.MineHistoryAdapter
 import org.nudt.player.data.network.doSuccess
 import org.nudt.player.databinding.FragmentMineBinding
@@ -142,7 +141,7 @@ class MineFragment : Fragment() {
         }
 
         binding.btnContribute.setOnClickListener {
-            Toast.makeText(context, "敬请期待视频投稿功能", LENGTH_SHORT).show()
+            shortToast("敬请期待视频投稿功能")
         }
     }
 

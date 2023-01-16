@@ -42,6 +42,9 @@
     <string name="main_menu_offline_download">离线缓存</string>
     <string name="main_menu_offline_downloading">正在缓存</string>
     <string name="title_downloaded">已缓存视频</string>
+    <string name="download_this_video">下载该视频？</string>
+    <string name="cannot_download">不能下载</string>
+    <string name="do_not_reform">请勿重复提交</string>
 
     <!--    history-->
     <string name="main_menu_history">缓存视频信息</string>
@@ -56,6 +59,7 @@
     <string name="icon_text_report_error">报错</string>
 
     <string name="text_search">搜索</string>
+    <string name="text_sure">确定</string>
     <string name="text_cancel">取消</string>
     <string name="text_search_hint">搜索关键词</string>
 
