@@ -7,10 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.google.gson.Gson
 import com.lxj.xpopup.XPopup
 import org.nudt.player.R
 import org.nudt.player.data.model.VideoSet
 import org.nudt.player.databinding.DownloadedListItemVideoBinding
+import org.nudt.player.ui.download.DownloadedSetActivity
 import org.nudt.player.ui.player.OfflinePlayerActivity
 import zlc.season.downloadx.utils.formatSize
 
@@ -18,6 +20,7 @@ class VideoDownloadedAdapter(private val context: Context) :
     RecyclerView.Adapter<VideoDownloadedAdapter.VideoDownloadedViewHolder>() {
 
     private var downloadedTaskInfoList: ArrayList<VideoSet> = arrayListOf()
+    val gson = Gson()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoDownloadedViewHolder {
         return VideoDownloadedViewHolder(DownloadedListItemVideoBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -35,6 +38,7 @@ class VideoDownloadedAdapter(private val context: Context) :
         if (videoSet.subVideoList.size > 1) {
             holder.binding.llRemark.visibility = View.VISIBLE
             holder.binding.tvRemark.text = videoSet.subVideoList.size.toString()
+            val intent = Intent(context, DownloadedSetActivity::class.java)
         } else {
             holder.binding.llRemark.visibility = View.GONE
             holder.binding.cvVideo.setOnClickListener {

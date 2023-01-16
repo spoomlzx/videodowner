@@ -8,12 +8,12 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -69,6 +69,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.download.DownloadedSetActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.setting.SettingActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false"
@@ -81,8 +86,7 @@
         <activity
             android:name=".ui.mine.GBookActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
 
 </manifest>
