@@ -30,6 +30,7 @@
             tools:srcCompat="@drawable/default_image" />
 
         <LinearLayout
+            android:id="@+id/ll_remark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_normal_margin"
@@ -43,10 +44,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/default_tiny_margin"
-                android:visibility="gone"
                 android:src="@drawable/ic_multi_videos" />
 
             <TextView
+                android:id="@+id/tv_remark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/default_tiny_margin"

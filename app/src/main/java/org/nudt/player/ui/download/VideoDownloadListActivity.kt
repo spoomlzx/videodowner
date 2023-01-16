@@ -7,10 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.asLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
+import com.google.gson.Gson
+import org.nudt.common.log
 import org.nudt.player.R
 import org.nudt.player.adapter.VideoDownloadedAdapter
+import org.nudt.player.data.model.VideoSet
 import org.nudt.player.databinding.ActivityVideoDownloadListBinding
 import zlc.season.downloadx.DownloadXManager
+import zlc.season.downloadx.database.TaskInfo
 
 class VideoDownloadListActivity : AppCompatActivity() {
     private val binding by lazy { ActivityVideoDownloadListBinding.inflate(layoutInflater) }
@@ -61,7 +65,30 @@ class VideoDownloadListActivity : AppCompatActivity() {
         binding.rvVideoDownloaded.adapter = downloadedAdapter
 
         DownloadXManager.queryFinishedTaskInfoFlow().asLiveData().observe(this) {
-            downloadedAdapter.updateTaskInfoList(it)
+            downloadedAdapter.updateTaskInfoList(buildVideoSet(it))
         }
+    }
+
+    private fun buildVideoSet(taskInfoList: List<TaskInfo>): List<VideoSet> {
+        val videoSetList = arrayListOf<VideoSet>()
+        var list = arrayListOf<TaskInfo>()
+        var bytes = 0L
+        var tempTask: TaskInfo? = null
+        for (task in taskInfoList) {
+            // 如果是第一个task或者是同名视频集的task
+            if (tempTask == null || task.video_name == tempTask.video_name) {
+                list.add(task)
+                bytes += task.total_bytes
+            } else {
+                videoSetList.add(VideoSet(tempTask.video_name, tempTask.video_thumb, bytes, list))
+                list = arrayListOf(task)
+                bytes = task.total_bytes
+            }
+            tempTask = task
+        }
+        if (tempTask != null) {
+            videoSetList.add(VideoSet(tempTask.video_name, tempTask.video_thumb, bytes, list))
+        }
+        return videoSetList
     }
 }

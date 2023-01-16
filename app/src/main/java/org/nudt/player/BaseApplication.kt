@@ -24,7 +24,7 @@ class BaseApplication : Application() {
      */
     private fun initMMKV() {
         val rootDir = MMKV.initialize(this)
-        "mmkv root: $rootDir".log("init")
+        // "mmkv root: $rootDir".log("init")
     }
 
     /**
