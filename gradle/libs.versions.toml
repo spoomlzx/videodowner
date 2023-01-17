@@ -1,103 +1,70 @@
 [versions]
-aboutlib_version = "10.5.2"
+compileSdk = "33"
+minSdk = "26"
+targetSdk = "33"
+
+kotlin_version = "1.7.21"
+kotlinx-coroutines = "1.6.4"
+
+retrofit_version = "2.9.0"
 okhttp_version = "5.0.0-alpha.11"
+
+exoplayer_version = "2.18.2"
+picture_selector_version = "v3.10.7"
+
 coil_version = "2.2.2"
-shizuku_version = "12.2.0"
-sqlite = "2.3.0-rc01"
-sqldelight = "1.5.4"
-leakcanary = "2.10"
-voyager = "1.0.0-rc07"
-richtext = "0.16.0"
+koin_version = "3.2.0"
+
+lottie_version = "5.2.0"
 
 [libraries]
-desugar = "com.android.tools:desugar_jdk_libs:1.2.2"
-android-shortcut-gradle = "com.github.zellius:android-shortcut-gradle-plugin:0.1.2"
-google-services-gradle = "com.google.gms:google-services:4.3.14"
+coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
-rxandroid = "io.reactivex:rxandroid:1.2.1"
-rxjava = "io.reactivex:rxjava:1.3.8"
-rxrelay = "com.jakewharton.rxrelay:rxrelay:1.2.0"
-flowreactivenetwork = "ru.beryukhov:flowreactivenetwork:1.0.4"
+com-huawei-agconnect = "com.huawei.agconnect:agcp:1.6.0.300"
+huawei-scanplus = "com.huawei.hms:scanplus:2.9.0.300"
+mmkv = "com.tencent:mmkv:1.2.13"
 
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit_version" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit_version" }
 okhttp-core = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp_version" }
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp_version" }
-okhttp-dnsoverhttps = { module = "com.squareup.okhttp3:okhttp-dnsoverhttps", version.ref = "okhttp_version" }
 okio = "com.squareup.okio:okio:3.3.0"
 
-conscrypt-android = "org.conscrypt:conscrypt-android:2.5.2"
-
-quickjs-android = "app.cash.quickjs:quickjs-android:0.9.2"
-
-jsoup = "org.jsoup:jsoup:1.15.3"
-
-disklrucache = "com.jakewharton:disklrucache:2.0.2"
-unifile = "com.github.tachiyomiorg:unifile:17bec43"
-junrar = "com.github.junrar:junrar:7.5.4"
-
-sqlite-framework = { module = "androidx.sqlite:sqlite-framework", version.ref = "sqlite" }
-sqlite-ktx = { module = "androidx.sqlite:sqlite-ktx", version.ref = "sqlite" }
-sqlite-android = "com.github.requery:sqlite-android:3.39.2"
-
-preferencektx = "androidx.preference:preference-ktx:1.2.0"
-
-injekt-core = "com.github.inorichi.injekt:injekt-core:65b0440"
+exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exoplayer_version" }
+exoplayer-core = { module = "com.google.android.exoplayer:exoplayer-core", version.ref = "exoplayer_version" }
+exoplayer-dash = { module = "com.google.android.exoplayer:exoplayer-dash", version.ref = "exoplayer_version" }
+exoplayer-extension-rtmp = { module = "com.google.android.exoplayer:extension-rtmp", version.ref = "exoplayer_version" }
+exoplayer-hls = { module = "com.google.android.exoplayer:exoplayer-hls", version.ref = "exoplayer_version" }
+exoplayer-rtsp = { module = "com.google.android.exoplayer:exoplayer-rtsp", version.ref = "exoplayer_version" }
+exoplayer-transformer = { module = "com.google.android.exoplayer:exoplayer-transformer", version.ref = "exoplayer_version" }
 
 coil-core = { module = "io.coil-kt:coil", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil_version" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil_version" }
+coil-svg = { module = "io.coil-kt:coil-svg", version.ref = "coil_version" }
 
-subsamplingscaleimageview = "com.github.tachiyomiorg:subsampling-scale-image-view:846abe0"
-image-decoder = "com.github.tachiyomiorg:image-decoder:7879b45"
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin_version" }
 
-natural-comparator = "com.github.gpanther:java-nat-sort:natural-comparator-1.1"
+pictureselector-core = { module = "io.github.lucksiege:pictureselector", version.ref = "picture_selector_version" }
+pictureselector-compress = { module = "io.github.lucksiege:compress", version.ref = "picture_selector_version" }
+pictureselector-ucrop = { module = "io.github.lucksiege:ucrop", version.ref = "picture_selector_version" }
+pictureselector-camerax = { module = "io.github.lucksiege:camerax", version.ref = "picture_selector_version" }
 
-richtext-commonmark = { module = "com.halilibo.compose-richtext:richtext-commonmark", version.ref = "richtext" }
-richtext-m3 = { module = "com.halilibo.compose-richtext:richtext-ui-material3", version.ref = "richtext" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie_version" }
 
-material = "com.google.android.material:material:1.7.0"
-flexible-adapter-core = "com.github.arkon.FlexibleAdapter:flexible-adapter:c8013533"
-flexible-adapter-ui = "com.github.arkon.FlexibleAdapter:flexible-adapter-ui:c8013533"
-photoview = "com.github.chrisbanes:PhotoView:2.3.0"
-directionalviewpager = "com.github.tachiyomiorg:DirectionalViewPager:1.0.0"
-insetter = "dev.chrisbanes.insetter:insetter:0.6.1"
-cascade = "me.saket.cascade:cascade-compose:2.0.0-beta1"
-wheelpicker = "com.github.commandiron:WheelPickerCompose:1.0.11"
-materialmotion-core = "io.github.fornewid:material-motion-compose-core:0.10.3"
+cling-library = "com.gitee.spoomlan.talentmov-master:clinglibrary:1.0.1"
+xpopup = "com.github.li-xiaojun:XPopup:2.9.2"
+easy-navigation = "com.github.Vincent7Wong:EasyNavigation:2.0.5"
 
-logcat = "com.squareup.logcat:logcat:0.1"
-
-acra-http = "ch.acra:acra-http:5.9.7"
-firebase-analytics = "com.google.firebase:firebase-analytics-ktx:21.2.0"
-
-aboutLibraries-gradle = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin", version.ref = "aboutlib_version" }
-aboutLibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutlib_version" }
-
-shizuku-api = { module = "dev.rikka.shizuku:api", version.ref = "shizuku_version" }
-shizuku-provider = { module = "dev.rikka.shizuku:provider", version.ref = "shizuku_version" }
-
-leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
-leakcanary-plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
-
-sqldelight-android-driver = { module = "com.squareup.sqldelight:android-driver", version.ref = "sqldelight" }
-sqldelight-coroutines = { module = "com.squareup.sqldelight:coroutines-extensions-jvm", version.ref = "sqldelight" }
-sqldelight-android-paging = { module = "com.squareup.sqldelight:android-paging3-extensions", version.ref = "sqldelight" }
-sqldelight-gradle = { module = "com.squareup.sqldelight:gradle-plugin", version.ref = "sqldelight" }
-
-junit = "org.junit.jupiter:junit-jupiter:5.9.1"
-
-voyager-navigator = { module = "ca.gosyer:voyager-navigator", version.ref = "voyager" }
-voyager-tab-navigator = { module = "ca.gosyer:voyager-tab-navigator", version.ref = "voyager" }
-voyager-transitions = { module = "ca.gosyer:voyager-transitions", version.ref = "voyager" }
+junit = "junit:junit:4.13.2"
 
 [bundles]
-reactivex = ["rxandroid", "rxjava", "rxrelay"]
-okhttp = ["okhttp-core", "okhttp-logging", "okhttp-dnsoverhttps"]
-js-engine = ["quickjs-android"]
-sqlite = ["sqlite-framework", "sqlite-ktx", "sqlite-android"]
-coil = ["coil-core", "coil-gif", "coil-compose"]
-shizuku = ["shizuku-api", "shizuku-provider"]
-voyager = ["voyager-navigator", "voyager-tab-navigator", "voyager-transitions"]
-richtext = ["richtext-commonmark", "richtext-m3"]
+retrofit = ["retrofit-core", "retrofit-converter-gson", "okhttp-core", "okhttp-logging", "okio"]
+exoplayer = ["exoplayer", "exoplayer-core", "exoplayer-dash", "exoplayer-extension-rtmp", "exoplayer-hls", "exoplayer-rtsp", "exoplayer-transformer"]
+pictureselector = ["pictureselector-core", "pictureselector-compress", "pictureselector-ucrop", "pictureselector-camerax"]
+coil = ["coil-core", "coil-svg", "coil-compose"]
+
 
 [plugins]
-kotlinter = { id = "org.jmailen.kotlinter", version = "3.13.0" }
+android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }

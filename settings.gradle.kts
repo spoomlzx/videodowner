@@ -13,7 +13,7 @@ pluginManagement {
 dependencyResolutionManagement {
     versionCatalogs {
         create("androidx") {
-            from(files("gradle/androidx.versions.toml"))
+            from(files("${rootDir.path}/gradle/androidx.versions.toml"))
         }
     }
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
