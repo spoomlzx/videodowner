@@ -38,7 +38,11 @@ class VideoDownloadedAdapter(private val context: Context) :
         if (videoSet.subVideoList.size > 1) {
             holder.binding.llRemark.visibility = View.VISIBLE
             holder.binding.tvRemark.text = videoSet.subVideoList.size.toString()
-            val intent = Intent(context, DownloadedSetActivity::class.java)
+            holder.binding.cvVideo.setOnClickListener {
+                val intent = Intent(context, DownloadedSetActivity::class.java)
+                intent.putExtra("videos", gson.toJson(videoSet))
+                context.startActivity(intent)
+            }
         } else {
             holder.binding.llRemark.visibility = View.GONE
             holder.binding.cvVideo.setOnClickListener {
